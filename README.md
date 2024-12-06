@@ -11,21 +11,19 @@
 - **`History Management`:** Effortlessly access and manage your past conversations, stored locally using Hive DB.
 - **`State-of-the-Art Architecture`:** Built with Bloc for scalable, efficient state management, and structured with the **`MVVM`** (Model-View-ViewModel) architecture for maintainable and testable code.
 
-
 ## 📱 Screenshots
-<table>
-  <tr>
-    <td><img src="https://github.com/user-attachments/assets/66df802c-4500-44c7-8a35-5047da9db25b" alt="Screenshot 1" width="250"/></td>
-    <td><img src="https://github.com/user-attachments/assets/893a3a3b-0a88-4a44-8eba-0ebce4bb8503" alt="Screenshot 2" width="250"/></td>
-       <td><img src="https://github.com/user-attachments/assets/99432f04-3e82-4f72-b9b1-314df3d19e35" alt="Screenshot 3" width="250"/></td>
-    <td><img src="https://github.com/user-attachments/assets/8df971c4-a349-45b4-af49-5d45806fa7ae" alt="Screenshot 4" width="250"/></td>
-  </tr>
-  <tr>
-    <td><img src="https://github.com/user-attachments/assets/981aa5c3-5c81-4858-a7cc-98e51aeba3ef" alt="Screenshot 5" width="250"/></td>
-    <td><img src="https://github.com/user-attachments/assets/f56ab606-5658-45b7-af06-f3339b44e425" alt="Screenshot 6" width="250"/></td>
-    <td><img src="https://github.com/user-attachments/assets/9c463e01-4ac6-40d7-8dd7-deb480270194" alt="Screenshot 7" width="250"/></td>
-  </tr>
-</table>
+<div style="display: flex; justify-content: space-between;">
+ 
+  <img src="https://github.com/user-attachments/assets/66df802c-4500-44c7-8a35-5047da9db25b" alt="Screenshot 1" style="width: 24%;"/>
+  <img src="https://github.com/user-attachments/assets/893a3a3b-0a88-4a44-8eba-0ebce4bb8503" alt="Screenshot 2" style="width: 24%;"/>
+  <img src="https://github.com/user-attachments/assets/99432f04-3e82-4f72-b9b1-314df3d19e35" alt="Screenshot 3" style="width: 24%;"/>
+  <img src="https://github.com/user-attachments/assets/8df971c4-a349-45b4-af49-5d45806fa7ae" alt="Screenshot 4" style="width: 24%;"/>
+  <img src="https://github.com/user-attachments/assets/981aa5c3-5c81-4858-a7cc-98e51aeba3ef" alt="Screenshot 6" style="width: 24%;"/>
+  <img src="https://github.com/user-attachments/assets/f56ab606-5658-45b7-af06-f3339b44e425" alt="Screenshot 7" style="width: 24%;"/>
+  <img src="https://github.com/user-attachments/assets/9c463e01-4ac6-40d7-8dd7-deb480270194" alt="Screenshot 8" style="width: 24%;"/>
+
+
+</div>
  
 ## 🚀 Getting Started
 
@@ -34,7 +32,7 @@ To get started with Qubic AI, follow these steps:
 - **`Step 1:`** Clone the Repository
 First, you'll need to clone the repository from GitHub. Open your terminal and run the following command:
 ```
-https://github.com/MAHMOUDELSAYED69/Qubic-AI.git
+https://github.com/MAHMOUDELSAYED7/Qubic-AI.git
 ```
 Replace <repository-url> with the actual URL of your repository if it was changed.
 
@@ -112,4 +110,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## ✉️ Contact
 
-For any questions or feedback, please reach out via email: [gcfjxvkj@gmail.com](gcfjxvkj@gmail.com)
+For any questions or feedback, please reach out via email: [mahmoudelsayed.dev@gmail.com](mahmoudelsayed.dev@gmail.com)
