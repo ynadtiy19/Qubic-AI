@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:qubic_ai/presentation/view/home.dart';
-import '../../core/utils/constants/routes.dart';
+import '../utils/constants/routes.dart';
 import '../../presentation/view/chat.dart';
 import '../../presentation/view/splash.dart';
 import 'page_transition.dart';
 
-abstract class AppRouter {
+class AppRouter {
   const AppRouter._();
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {

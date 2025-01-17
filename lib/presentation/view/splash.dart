@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qubic_ai/core/utils/constants/colors.dart';
 import 'package:qubic_ai/core/utils/constants/routes.dart';
-import 'package:qubic_ai/core/utils/extentions/extentions.dart';
+import 'package:qubic_ai/core/utils/extension/extension.dart';
 
 import '../../core/utils/constants/images.dart';
-import 'widgets/animation/colorize_text_animation.dart';
+import '../../core/widgets/colorize_text_animation.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

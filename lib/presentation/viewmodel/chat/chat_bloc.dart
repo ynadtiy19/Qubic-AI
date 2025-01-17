@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../../../core/model/hive.dart';
-import '../../../core/repositories/message_repository.dart';
-import '../../../core/services/apis/genetative_ai.dart';
+import '../../../data/model/hive.dart';
+import '../../../data/repositories/message_repository.dart';
+import '../../../data/services/apis/genetative_ai.dart';
 
 part 'chat_event.dart';
 part 'chat_state.dart';

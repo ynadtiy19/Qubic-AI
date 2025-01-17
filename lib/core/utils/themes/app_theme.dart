@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../core/utils/constants/colors.dart';
+import '../constants/colors.dart';
 
-abstract class AppTheme {
+class AppTheme {
   //!! dark THEME
   static ThemeData get darkTheme {
     return ThemeData(

@@ -1,17 +1,18 @@
 import 'package:get_it/get_it.dart';
+
 import 'package:qubic_ai/presentation/viewmodel/validation/validation_cubit.dart';
 
+import '../../data/repositories/message_repository.dart';
+import '../../data/services/apis/genetative_ai.dart';
+import '../../data/services/database/hive_service.dart';
 import '../../presentation/viewmodel/chat/chat_bloc.dart';
-import '../repositories/message_repository.dart';
-import '../services/apis/genetative_ai.dart';
-import '../services/database/hivedb.dart';
 
 final getIt = GetIt.instance;
 
 void getItSetup() {
   getIt.registerLazySingleton<GenerativeAIWebService>(
       () => GenerativeAIWebService());
-  getIt.registerLazySingleton<HiveDb>(() => HiveDb());
+  getIt.registerLazySingleton<HiveService>(() => HiveService());
 
   getIt.registerLazySingleton<MessageRepository>(() => MessageRepository());
 

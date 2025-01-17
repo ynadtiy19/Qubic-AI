@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qubic_ai/core/utils/extentions/extentions.dart';
+import 'package:qubic_ai/core/utils/extension/extension.dart';
 
-import '../../../core/model/hive.dart';
+import '../../../data/model/hive.dart';
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/constants/routes.dart';
 import '../../viewmodel/chat/chat_bloc.dart';

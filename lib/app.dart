@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qubic_ai/app/router/app_router.dart';
-import 'package:qubic_ai/core/utils/constants/routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qubic_ai/app/themes/app_theme.dart';
 
-import '../core/di/get_it.dart';
-import '../presentation/viewmodel/chat/chat_bloc.dart';
-import '../presentation/viewmodel/validation/validation_cubit.dart';
+import '../../core/router/app_router.dart';
+import '../../core/utils/constants/routes.dart';
+import '../../core/utils/themes/app_theme.dart';
+import 'core/di/get_it.dart';
+import 'presentation/viewmodel/chat/chat_bloc.dart';
+import 'presentation/viewmodel/validation/validation_cubit.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

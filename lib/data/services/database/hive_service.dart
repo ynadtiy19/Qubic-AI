@@ -2,14 +2,14 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../model/hive.dart';
 
-class HiveDb {
-  static final HiveDb _instance = HiveDb._internal();
+class HiveService {
+  static final HiveService _instance = HiveService._internal();
 
-  factory HiveDb() {
+  factory HiveService() {
     return _instance;
   }
 
-  HiveDb._internal();
+  HiveService._internal();
 
   Future<void> initializeDatabase() async {
     await Hive.initFlutter();

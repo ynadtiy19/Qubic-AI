@@ -19,9 +19,8 @@ extension ThemeExtensions on BuildContext {
   OutlinedButtonThemeData get outlinedButtonTheme =>
       Theme.of(this).outlinedButtonTheme;
   TextButtonThemeData get textButtonTheme => Theme.of(this).textButtonTheme;
-  ButtonBarThemeData get buttonBarTheme => Theme.of(this).buttonBarTheme;
-  CardTheme get cardTheme => Theme.of(this).cardTheme;
-  DialogTheme get dialogTheme => Theme.of(this).dialogTheme;
+  CardThemeData get cardTheme => Theme.of(this).cardTheme;
+  DialogThemeData get dialogTheme => Theme.of(this).dialogTheme;
   FloatingActionButtonThemeData get floatingActionButtonTheme =>
       Theme.of(this).floatingActionButtonTheme;
   BottomNavigationBarThemeData get bottomNavigationBarTheme =>
@@ -29,7 +28,7 @@ extension ThemeExtensions on BuildContext {
   NavigationRailThemeData get navigationRailTheme =>
       Theme.of(this).navigationRailTheme;
   SliderThemeData get sliderTheme => Theme.of(this).sliderTheme;
-  TabBarTheme get tabBarTheme => Theme.of(this).tabBarTheme;
+  TabBarThemeData get tabBarTheme => Theme.of(this).tabBarTheme;
   TooltipThemeData get tooltipTheme => Theme.of(this).tooltipTheme;
   PopupMenuThemeData get popupMenuTheme => Theme.of(this).popupMenuTheme;
   MaterialBannerThemeData get bannerTheme => Theme.of(this).bannerTheme;

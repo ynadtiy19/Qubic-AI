@@ -12,7 +12,7 @@ class Message extends HiveObject {
   @HiveField(3)
   final String timestamp;
 
-  Message({
+  Message({ 
     required this.chatId,
     required this.isUser,
     required this.message,

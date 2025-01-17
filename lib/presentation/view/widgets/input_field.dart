@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:qubic_ai/core/utils/extentions/extentions.dart';
+import 'package:qubic_ai/core/utils/extension/extension.dart';
 
 import '../../../core/di/get_it.dart';
 import '../../../core/utils/constants/colors.dart';
@@ -110,8 +110,8 @@ class _BuildInputFieldState extends State<BuildInputField> {
                   )
                 : null,
           ),
-          enabledBorder: context.inputDecoration.border,
-          focusedBorder: context.inputDecoration.border,
+          enabledBorder: context.inputDecorationTheme.border,
+          focusedBorder: context.inputDecorationTheme.border,
         ),
       ),
     );

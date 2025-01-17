@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qubic_ai/core/utils/constants/colors.dart';
-import 'package:qubic_ai/core/utils/extentions/extentions.dart';
+import 'package:qubic_ai/core/utils/extension/extension.dart';
 
 class SnackBarManager {
   static DateTime? _lastSnackBarTime;

@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:formatted_text/formatted_text.dart';
-import 'package:qubic_ai/core/utils/extentions/extentions.dart';
+import 'package:qubic_ai/core/utils/extension/extension.dart';
 
 class TypewriterAnimatedText extends StatefulWidget {
   final String text;
