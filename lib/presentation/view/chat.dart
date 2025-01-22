@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:qubic_ai/core/utils/constants/colors.dart';
-import 'package:qubic_ai/core/utils/constants/images.dart';
-import 'package:qubic_ai/core/utils/helper/snackbar.dart';
+import '../../core/utils/constants/colors.dart';
+import '../../core/utils/constants/images.dart';
+import '../../core/utils/helper/snackbar.dart';
 import '../viewmodel/chat/chat_bloc.dart';
 import 'widgets/build_chat_list_view.dart';
 import 'widgets/empty_body.dart';
@@ -13,6 +13,7 @@ class ChatScreen extends StatefulWidget {
   final int chatId;
   final bool isChatHistory;
   final ChatAIBloc chatAIBloc;
+
   const ChatScreen(
       {super.key,
       required this.chatId,
@@ -75,7 +76,7 @@ class _ChatScreenState extends State<ChatScreen> {
         }
         if (state is ChatAIFailure) {
           _isLoading = false;
-          SnackBarManager.snackBar(context, state.error);
+          showSnackBar(context, message: state.error);
         }
         if (state is ChatAIStreaming) {
           _isLoading = true;
@@ -88,8 +89,8 @@ class _ChatScreenState extends State<ChatScreen> {
           _scrollToEnd(100);
         }
         if (state is NewChatSessionCreated) {
-          SnackBarManager.snackBar(
-              context, "New Chat Created Successfully!");
+          _isLoading = false;
+          showSnackBar(context, message: "New Chat Created Successfully!");
         }
       },
       builder: (context, state) {
