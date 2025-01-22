@@ -33,6 +33,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.6
   flutter_dotenv: ^5.1.0
+  flutter_local_notifications: ^18.0.1
   flutter_screenutil: ^5.9.3
   formatted_text: ^4.0.1
   get_it: ^7.7.0
