@@ -1,15 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:url_launcher/url_launcher.dart'; // For link handling
-import '../../../core/utils/extension/extension.dart';
-import '../../../presentation/viewmodel/validation/validation_cubit.dart';
-import 'package:flutter/services.dart';
 
 import '../../../core/di/get_it.dart';
 import '../../../core/utils/constants/colors.dart';
+import '../../../core/utils/extension/extension.dart';
+import '../../../core/utils/helper/clipboard.dart';
+import '../../../core/utils/helper/url_launcher.dart';
+import '../../../presentation/viewmodel/validation/validation_cubit.dart';
 
 class AiBubble extends StatefulWidget {
   const AiBubble({
@@ -34,26 +32,6 @@ class _AiBubbleState extends State<AiBubble> {
     setState(() {});
   }
 
-  // Handle link taps
-  void _launchUrl(String url) async {
-    try {
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    }
-  }
-
-  // Copy code to clipboard
-  void _copyCode(String code) {
-    Clipboard.setData(ClipboardData(text: code));
-  }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -65,7 +43,6 @@ class _AiBubbleState extends State<AiBubble> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Message Bubble
             Container(
               constraints: BoxConstraints(maxWidth: context.width / 1.3),
               padding: EdgeInsets.all(12.w),
@@ -83,7 +60,7 @@ class _AiBubbleState extends State<AiBubble> {
                   child: MarkdownBody(
                     data: widget.message,
                     styleSheet:
-                    MarkdownStyleSheet.fromTheme(context.theme).copyWith(
+                        MarkdownStyleSheet.fromTheme(context.theme).copyWith(
                       p: context.textTheme.bodySmall?.copyWith(
                         color: ColorManager.white,
                       ),
@@ -101,12 +78,12 @@ class _AiBubbleState extends State<AiBubble> {
                     ),
                     onTapLink: (text, href, title) {
                       if (href != null) {
-                        _launchUrl(href); // Handle link taps
+                        UrlLauncher.launch(href);
                       }
                     },
                     builders: {
                       'code': CodeBlockBuilder(
-                        onCopy: _copyCode,
+                        onCopy: ClipboardService.copyToClipboard,
                       ),
                     },
                   ),
@@ -166,24 +143,6 @@ class _UserBubbleState extends State<UserBubble> {
     _isShowDateTime = !_isShowDateTime;
     setState(() {});
   }
-  void _launchUrl(String url) async {
-    try {
-      final uri = Uri.parse(url);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri);
-      } else {
-        throw 'Could not launch $url';
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-    }
-  }
-  // Copy code to clipboard
-  void _copyCode(String code) {
-    Clipboard.setData(ClipboardData(text: code));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +155,6 @@ class _UserBubbleState extends State<UserBubble> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            // Message Bubble
             Container(
               constraints: BoxConstraints(maxWidth: context.width / 1.3),
               padding: EdgeInsets.all(12.w),
@@ -206,7 +164,7 @@ class _UserBubbleState extends State<UserBubble> {
                   bottomLeft: Radius.circular(16),
                   topLeft: Radius.circular(16),
                 ),
-                color: ColorManager.dark, // Black background
+                color: ColorManager.dark,
               ),
               child: TextSelectionTheme(
                 data: context.theme.textSelectionTheme,
@@ -214,17 +172,17 @@ class _UserBubbleState extends State<UserBubble> {
                   child: MarkdownBody(
                     data: widget.message,
                     styleSheet:
-                    MarkdownStyleSheet.fromTheme(context.theme).copyWith(
+                        MarkdownStyleSheet.fromTheme(context.theme).copyWith(
                       p: context.textTheme.bodySmall?.copyWith(
-                        color: ColorManager.white, // White text for contrast
+                        color: ColorManager.white,
                       ),
                       strong: context.textTheme.bodySmall?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: ColorManager.white, // White text for contrast
+                        color: ColorManager.white,
                       ),
                       em: context.textTheme.bodySmall?.copyWith(
                         fontStyle: FontStyle.italic,
-                        color: ColorManager.white, // White text for contrast
+                        color: ColorManager.white,
                       ),
                       code: context.textTheme.bodySmall?.copyWith(
                         backgroundColor: Colors.grey[800],
@@ -232,14 +190,13 @@ class _UserBubbleState extends State<UserBubble> {
                       ),
                     ),
                     onTapLink: (text, href, title) {
-
                       if (href != null) {
-                        _launchUrl(href); // Handle link taps
+                        UrlLauncher.launch(href);
                       }
                     },
                     builders: {
                       'code': CodeBlockBuilder(
-                        onCopy: _copyCode,
+                        onCopy: ClipboardService.copyToClipboard,
                       ),
                     },
                   ),
@@ -247,7 +204,6 @@ class _UserBubbleState extends State<UserBubble> {
               ),
             ),
             SizedBox(height: 5.h),
-            // Timestamp and User Label
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

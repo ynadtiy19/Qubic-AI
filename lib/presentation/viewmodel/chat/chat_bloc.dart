@@ -28,7 +28,7 @@ class ChatAIBloc extends Bloc<ChatAIEvent, ChatAIState> {
         final newChatId = await _messageRepository.createNewChatSession();
         emit(NewChatSessionCreated(newChatId));
       } else {
-        emit(ChatAIFailure("Failed to create new chat session"));
+        emit(ChatAIFailure("Already in new chat!"));
       }
     } catch (error) {
       emit(ChatAIFailure(
@@ -47,8 +47,6 @@ class ChatAIBloc extends Bloc<ChatAIEvent, ChatAIState> {
   List<ChatSession> getChatSessions() {
     return _messageRepository.getChatSessions().reversed.toList();
   }
-
-
 
   Future<void> _onDeleteChatSession(
       DeleteChatSessionEvent event, Emitter<ChatAIState> emit) async {

@@ -73,7 +73,6 @@ class _TopSnackBarState extends State<TopSnackBar>
       curve: Curves.easeOut,
     ));
 
-    // Remove the snackbar after the specified duration
     Future.delayed(Duration(milliseconds: widget.durationInMilliseconds), () {
       if (mounted) {
         _controller.reverse().then((_) {
@@ -94,22 +93,23 @@ class _TopSnackBarState extends State<TopSnackBar>
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 0,
+      top: 40,
       left: 0,
       right: 0,
       child: SlideTransition(
         position: _animation,
-        child: Material(
-          color: Colors.transparent,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(16),
-              bottomRight: Radius.circular(16),
-            ),
-            child: Container(
-              color: widget.color.withOpacity(0.85),
-              padding: const EdgeInsets.all(16),
-              child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Material(
+            color: Colors.transparent,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(
+                Radius.circular(16),
+              ),
+              child: Container(
+                color: widget.color.withOpacity(0.9),
+                padding: const EdgeInsets.all(16),
+
                 child: Center(
                   child: Text(
                     widget.message,

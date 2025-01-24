@@ -8,7 +8,6 @@ class HiveService {
   factory HiveService() {
     return _instance;
   }
-
   HiveService._internal();
 
   Future<void> initializeDatabase() async {

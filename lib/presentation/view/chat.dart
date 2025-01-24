@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../core/utils/constants/colors.dart';
 import '../../core/utils/constants/images.dart';
 import '../../core/utils/helper/snackbar.dart';
@@ -66,6 +67,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   late ChatAIBloc _chatAIBloc;
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ChatAIBloc, ChatAIState>(
