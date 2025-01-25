@@ -1,11 +1,10 @@
 import 'package:get_it/get_it.dart';
 
-import 'package:qubic_ai/presentation/viewmodel/validation/validation_cubit.dart';
-
 import '../../data/repositories/message_repository.dart';
 import '../../data/services/apis/genetative_ai.dart';
 import '../../data/services/database/hive_service.dart';
 import '../../presentation/viewmodel/chat/chat_bloc.dart';
+import '../../presentation/viewmodel/validation/validation_cubit.dart';
 
 final getIt = GetIt.instance;
 

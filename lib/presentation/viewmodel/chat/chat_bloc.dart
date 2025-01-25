@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../../../data/model/hive.dart';
+import '../../../data/model/chat/hive.dart';
 import '../../../data/repositories/message_repository.dart';
 import '../../../data/services/apis/genetative_ai.dart';
 

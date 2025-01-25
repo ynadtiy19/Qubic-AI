@@ -5,12 +5,13 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   // Define your channel ID and name
-  static const String channelId = 'default_channel';
-  static const String channelName = 'Default Channel';
+  static const String channelId = 'qubic_ai_channel';
+  static const String channelName = 'Qubic AI Reminders';
 
   Future<void> init() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/launcher_icon'); // Use the correct icon name
+        AndroidInitializationSettings(
+            '@mipmap/ic_launcher'); // Use your app's launcher icon
 
     const InitializationSettings initializationSettings =
         InitializationSettings(
@@ -29,7 +30,6 @@ class NotificationService {
       channelId, // Channel ID
       channelName, // Channel Name
       importance: Importance.max, // Importance level
-      // priority: Priority.high, // Priority level
       showBadge: true, // Show a badge on the app icon
     );
 

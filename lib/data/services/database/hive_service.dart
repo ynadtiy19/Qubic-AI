@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../model/hive.dart';
+import '../../model/chat/hive.dart';
 
 class HiveService {
   static final HiveService _instance = HiveService._internal();
@@ -8,6 +8,7 @@ class HiveService {
   factory HiveService() {
     return _instance;
   }
+
   HiveService._internal();
 
   Future<void> initializeDatabase() async {

@@ -18,12 +18,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    goToNextScreen();
+    _goToNextScreen();
   }
 
-  Future<void> goToNextScreen() async => Future.delayed(
+  Future<void> _goToNextScreen() async => Future.delayed(
       const Duration(seconds: 3),
       () => Navigator.pushReplacementNamed(context, RouteManager.home));
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

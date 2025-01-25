@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:hive/hive.dart';
 
-import '../model/hive.dart';
+import '../model/chat/hive.dart';
 
 class MessageRepository {
   static final MessageRepository _instance = MessageRepository._internal();
@@ -14,6 +14,7 @@ class MessageRepository {
   }
 
   MessageRepository._internal();
+
   Future<void> addMessage({
     required int chatId,
     required bool isUser,

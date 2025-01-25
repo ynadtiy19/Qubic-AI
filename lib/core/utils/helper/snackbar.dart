@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/extension/extension.dart';
 
@@ -107,9 +108,8 @@ class _TopSnackBarState extends State<TopSnackBar>
                 Radius.circular(16),
               ),
               child: Container(
-                color: widget.color.withOpacity(0.9),
+                color: widget.color.withOpacity(0.95),
                 padding: const EdgeInsets.all(16),
-
                 child: Center(
                   child: Text(
                     widget.message,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/model/hive.dart';
+import '../../../data/model/chat/hive.dart';
 import '../../viewmodel/chat/chat_bloc.dart';
 import 'chat_bubble.dart';
 
