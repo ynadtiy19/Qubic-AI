@@ -4,7 +4,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../../core/di/get_it.dart';
 import 'app.dart';
-import 'core/notifications/local_notifications.dart';
+import 'core/service/local_notifications.dart';
+import 'core/service/permission.dart';
+import 'core/service/work_manager.dart';
 import 'core/utils/constants/colors.dart';
 import 'data/services/database/hive_service.dart';
 
@@ -14,11 +16,13 @@ Future<void> main() async {
   };
 
   WidgetsFlutterBinding.ensureInitialized();
-  await NotificationService().init();
   await HiveService().initializeDatabase();
   await dotenv.load(fileName: '.env');
-
   getItSetup();
+  await PermissionService().requestNotificationPermission();
+  await NotificationService().init();
+  WorkManagerService.initialize();
+  WorkManagerService.registerPeriodicNotificationTask();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       systemNavigationBarColor: ColorManager.black,

@@ -1,36 +1,36 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import 'permission.dart';
+
 class NotificationService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
+  final PermissionService _permissionService = PermissionService();
 
-  // Define your channel ID and name
   static const String channelId = 'qubic_ai_channel';
   static const String channelName = 'Qubic AI Reminders';
+  bool _isInitialized = false;
 
-  Future<void> init() async {
+  Future<void> init({bool createChannel = true}) async {
+    if (_isInitialized) return;
+
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings(
-            '@mipmap/ic_launcher'); // Use your app's launcher icon
+        AndroidInitializationSettings('@mipmap/launcher_icon');
 
-    const InitializationSettings initializationSettings =
-        InitializationSettings(
-      android: initializationSettingsAndroid,
-      // Add iOS settings if needed
+    await flutterLocalNotificationsPlugin.initialize(
+      const InitializationSettings(android: initializationSettingsAndroid),
     );
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
-    // Create the notification channel
-    await _createNotificationChannel();
+    if (createChannel) await _createNotificationChannel();
+    _isInitialized = true;
   }
 
   Future<void> _createNotificationChannel() async {
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      channelId, // Channel ID
-      channelName, // Channel Name
-      importance: Importance.max, // Importance level
-      showBadge: true, // Show a badge on the app icon
+      channelId,
+      channelName,
+      importance: Importance.max,
+      showBadge: true,
     );
 
     await flutterLocalNotificationsPlugin
@@ -44,10 +44,18 @@ class NotificationService {
     required String title,
     required String body,
   }) async {
+    // Check and request notification permission
+    final hasPermission =
+        await _permissionService.checkNotificationPermission();
+    if (!hasPermission) {
+      print('Notification permission denied');
+      return;
+    }
+
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      channelId, // Use the same channel ID
-      channelName, // Use the same channel name
+      channelId,
+      channelName,
       importance: Importance.max,
       priority: Priority.high,
     );
