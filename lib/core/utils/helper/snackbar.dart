@@ -97,32 +97,39 @@ class _TopSnackBarState extends State<TopSnackBar>
       top: 40,
       left: 0,
       right: 0,
-      child: SlideTransition(
-        position: _animation,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Material(
-            color: Colors.transparent,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(16),
-              ),
-              child: Container(
-                color: widget.color.withOpacity(0.95),
-                padding: const EdgeInsets.all(16),
-                child: Center(
-                  child: Text(
-                    widget.message,
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SlideTransition(
+            position: _animation,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Material(
+                color: Colors.transparent,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(25),
+                  ),
+                  child: Container(
+                    color: widget.color.withOpacity(0.95),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16, horizontal: 32),
+                    child: Center(
+                      child: Text(
+                        widget.message,
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:qubic_ai/core/di/get_it.dart';
 
 import 'permission.dart';
 
 class NotificationService {
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-  final PermissionService _permissionService = PermissionService();
+  final flutterLocalNotificationsPlugin =
+      getIt<FlutterLocalNotificationsPlugin>();
+  final _permissionService = getIt<PermissionService>();
 
   static const String channelId = 'qubic_ai_channel';
   static const String channelName = 'Qubic AI Reminders';
