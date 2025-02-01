@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:qubic_ai/core/di/get_it.dart';
 
 import 'permission.dart';
 
 class NotificationService {
-  final flutterLocalNotificationsPlugin =
-      getIt<FlutterLocalNotificationsPlugin>();
-  final _permissionService = getIt<PermissionService>();
+  final _flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  final _permissionService = PermissionService();
 
   static const String channelId = 'qubic_ai_channel';
   static const String channelName = 'Qubic AI Reminders';
@@ -19,7 +17,7 @@ class NotificationService {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/launcher_icon');
 
-    await flutterLocalNotificationsPlugin.initialize(
+    await _flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(android: initializationSettingsAndroid),
     );
 
@@ -35,7 +33,7 @@ class NotificationService {
       showBadge: true,
     );
 
-    await flutterLocalNotificationsPlugin
+    await _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
@@ -65,7 +63,7 @@ class NotificationService {
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.show(
+    await _flutterLocalNotificationsPlugin.show(
       id,
       title,
       body,

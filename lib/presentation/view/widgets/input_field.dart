@@ -15,6 +15,7 @@ class BuildInputField extends StatefulWidget {
       required this.isLoading,
       required this.chatId,
       required this.isChatHistory});
+
   final ChatAIBloc generativeAIBloc;
   final bool isLoading;
   final int? chatId;
@@ -48,6 +49,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
   }
 
   final _validationCubit = getIt<ValidationCubit>();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -69,7 +71,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
             _validationCubit.getFieldDirection(_textInputFieldController.text),
         onSubmitted: (_) => !widget.isLoading ? _sendMessage() : null,
         decoration: InputDecoration(
-          hintText: 'Write Your Message..',
+          hintText: 'Message Qubic AI',
           suffixIcon: Padding(
             padding: EdgeInsets.all(5.w),
             child: IconButton(

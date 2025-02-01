@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'local_notifications.dart';
@@ -14,8 +15,8 @@ void callbackDispatcher() {
         title: 'Qubic AI Reminder',
         body: "You can ask Qubic AI about anything",
       );
-    } catch (e) {
-      print("Error showing notification: $e");
+    } catch (err) {
+      debugPrint("Error showing notification: $err");
     }
     return Future.value(true);
   });
@@ -38,7 +39,7 @@ class WorkManagerService {
     Workmanager().registerPeriodicTask(
       "1",
       periodicTaskName,
-      frequency: const Duration(minutes: 30),
+      frequency: const Duration(minutes: 15),
       initialDelay: const Duration(seconds: 10),
     );
   }
