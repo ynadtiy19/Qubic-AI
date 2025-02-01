@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'permission.dart';
@@ -48,7 +49,7 @@ class NotificationService {
     final hasPermission =
         await _permissionService.checkNotificationPermission();
     if (!hasPermission) {
-      print('Notification permission denied');
+      debugPrint('Notification permission denied');
       return;
     }
 

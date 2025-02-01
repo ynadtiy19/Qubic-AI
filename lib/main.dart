@@ -6,7 +6,7 @@ import '../../core/di/get_it.dart';
 import 'app.dart';
 import 'core/service/local_notifications.dart';
 import 'core/service/permission.dart';
-import 'core/service/work_manager.dart';
+import 'core/service/workmanger.dart';
 import 'core/utils/constants/colors.dart';
 import 'data/services/database/hive_service.dart';
 

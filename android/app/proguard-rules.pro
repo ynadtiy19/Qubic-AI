@@ -1,0 +1,2 @@
+-keep class be.tramckrijte.workmanager.** { *; }
+-keep class com.dexterous.flutterlocalnotifications.** { *; }

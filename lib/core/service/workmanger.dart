@@ -2,6 +2,7 @@ import 'package:workmanager/workmanager.dart';
 
 import 'local_notifications.dart';
 
+@pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     final notificationService = NotificationService();
@@ -26,7 +27,7 @@ class WorkManagerService {
   static void initialize() {
     Workmanager().initialize(
       callbackDispatcher,
-      isInDebugMode: true,
+      isInDebugMode: false,
     );
   }
 
