@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qubic_ai/core/di/get_it.dart';
 import 'package:qubic_ai/core/utils/extension/extension.dart';
+import 'package:qubic_ai/core/utils/helper/network_status.dart';
 import 'package:qubic_ai/presentation/viewmodel/chat/chat_bloc.dart';
 
 import '../../core/utils/constants/colors.dart';
 import '../../core/utils/constants/images.dart';
+import '../../core/utils/helper/snackbar.dart';
 import 'chat.dart';
 import 'history.dart';
 
@@ -24,12 +26,24 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
+    _chcecInternetConnection();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       setState(() {
         _currentTabIndex = _tabController.index;
       });
     });
+  }
+
+  void _chcecInternetConnection() async {
+    if (!await NetworkHelper.isConnected()) {
+      showCustomToast(
+        context,
+        message: "No internet connection",
+        durationInMilliseconds: 5000,
+        color: ColorManager.error,
+      );
+    }
   }
 
   @override
