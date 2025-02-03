@@ -33,13 +33,13 @@ class WorkManagerService {
   }
 
   static void registerPeriodicNotificationTask() {
-    // Cancel existing task before registering new one
-    Workmanager().cancelByUniqueName("1");
+    // // Cancel existing task before registering new one
+    // Workmanager().cancelByUniqueName("1");
 
     Workmanager().registerPeriodicTask(
       "1",
       periodicTaskName,
-      frequency: const Duration(minutes: 15),
+      frequency: const Duration(hours: 8),
       initialDelay: const Duration(seconds: 10),
     );
   }

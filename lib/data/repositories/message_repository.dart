@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:hive/hive.dart';
 
-import '../model/chat/hive.dart';
+import '../models/hive.dart';
 
 class MessageRepository {
   static final MessageRepository _instance = MessageRepository._internal();

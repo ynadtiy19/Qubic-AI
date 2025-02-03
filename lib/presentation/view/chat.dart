@@ -78,7 +78,7 @@ class _ChatScreenState extends State<ChatScreen> {
         }
         if (state is ChatAIFailure) {
           _isLoading = false;
-          showSnackBar(context, message: state.error);
+          showCustomToast(context, message: state.error);
         }
         if (state is ChatAIStreaming) {
           _isLoading = true;
@@ -92,7 +92,7 @@ class _ChatScreenState extends State<ChatScreen> {
         }
         if (state is NewChatSessionCreated) {
           _isLoading = false;
-          showSnackBar(context, message: "New Chat Created Successfully!");
+          showCustomToast(context, message: "New Chat Created Successfully!");
         }
       },
       builder: (context, state) {

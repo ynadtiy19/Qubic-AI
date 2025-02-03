@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../../model/chat/hive.dart';
+import '../../models/hive.dart';
 
 class HiveService {
   static final HiveService _instance = HiveService._internal();

@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../../../data/model/chat/hive.dart';
+import '../../../data/models/hive.dart';
 import '../../../data/repositories/message_repository.dart';
-import '../../../data/services/apis/genetative_ai.dart';
+import '../../../data/services/apis/generative_ai_web_service.dart';
 
 part 'chat_event.dart';
 part 'chat_state.dart';
@@ -116,7 +116,7 @@ class ChatAIBloc extends Bloc<ChatAIEvent, ChatAIState> {
 
       emit(ChatAISuccess(completeResponse));
     } catch (error) {
-      emit(ChatAIFailure("Failed to get a response from stream $error"));
+      emit(ChatAIFailure(error.toString()));
     }
   }
 }

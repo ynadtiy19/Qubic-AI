@@ -4,7 +4,7 @@ import 'package:qubic_ai/core/utils/extension/extension.dart';
 
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/constants/routes.dart';
-import '../../../data/model/chat/hive.dart';
+import '../../../data/models/hive.dart';
 import '../../viewmodel/chat/chat_bloc.dart';
 import '../../viewmodel/validation/validation_cubit.dart';
 

@@ -5,7 +5,7 @@ import '../../../core/utils/extension/extension.dart';
 
 DateTime? _lastSnackBarTime;
 
-void showSnackBar(
+void showCustomToast(
   BuildContext context, {
   String? message,
   Color? color,
