@@ -72,16 +72,10 @@ class AppTheme {
         // fillColor: ColorManager.grey.withOpacity(0.12),
         contentPadding:
             EdgeInsets.only(left: 10, right: 10, top: 13.h, bottom: 13.h),
-        hintStyle: const TextStyle(color: Colors.white),
-        border: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-        ),
+        hintStyle: const TextStyle(color: ColorManager.white),
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
       ),
     );
   }

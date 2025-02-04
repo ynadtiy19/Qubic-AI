@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:google_generative_ai/google_generative_ai.dart' as ai;
 import 'package:meta/meta.dart';
 
 import '../../../core/utils/helper/network_status.dart';
@@ -75,7 +76,11 @@ class ChatAIBloc extends Bloc<ChatAIEvent, ChatAIState> {
         timestamp: DateTime.now().toString(),
       );
 
-      final response = await _webService.postData(event.prompt);
+      final messages = _messageRepository.getMessages(event.chatId);
+      final contents =
+          messages.map((msg) => ai.Content.text(msg.message)).toList();
+
+      final response = await _webService.postData(contents);
       if (response != null) {
         await _messageRepository.addMessage(
           chatId: event.chatId,
@@ -109,7 +114,11 @@ class ChatAIBloc extends Bloc<ChatAIEvent, ChatAIState> {
         timestamp: DateTime.now().toString(),
       );
 
-      await for (final chunk in _webService.streamData(event.prompt)) {
+      final messages = _messageRepository.getMessages(event.chatId);
+      final contents =
+          messages.map((msg) => ai.Content.text(msg.message)).toList();
+
+      await for (final chunk in _webService.streamData(contents)) {
         if (chunk != null) {
           fullResponse.write(chunk);
           emit(ChatAIStreaming(chunk));

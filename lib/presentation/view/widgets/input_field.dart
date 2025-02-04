@@ -71,23 +71,24 @@ class _BuildInputFieldState extends State<BuildInputField> {
           right: 9.w,
           left: 9.w,
           bottom: MediaQuery.of(context).viewInsets.bottom + 10.h),
+      padding: EdgeInsets.only(top: 5.h, bottom: 5.h),
       decoration: BoxDecoration(
-        color: ColorManager.grey.withOpacity(0.12),
+        color: ColorManager.grey.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 5.w, top: 5.h, bottom: 5.h),
+            padding: EdgeInsets.only(left: 5.w),
             child: !widget.isChatHistory
                 ? IconButton(
                     onPressed: () => widget.generativeAIBloc
                         .add(CreateNewChatSessionEvent()),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.add,
                       color: ColorManager.white,
-                      size: 25,
+                      size: 25.w,
                     ),
                   )
                 : null,
@@ -113,7 +114,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(5.w),
+            padding: EdgeInsets.symmetric(horizontal: 5.w),
             child: IconButton(
               style: IconButton.styleFrom(
                 backgroundColor: widget.isLoading
@@ -124,17 +125,17 @@ class _BuildInputFieldState extends State<BuildInputField> {
               ),
               onPressed: () => !widget.isLoading ? _sendMessage() : null,
               icon: widget.isLoading
-                  ? const SizedBox(
-                      height: 25,
-                      width: 25,
-                      child: LoadingIndicator(
+                  ? SizedBox(
+                      height: 25.w,
+                      width: 25.w,
+                      child: const LoadingIndicator(
                         indicatorType: Indicator.lineSpinFadeLoader,
                       ),
                     )
                   : Icon(
                       Icons.arrow_upward_rounded,
                       color: ColorManager.dark,
-                      size: 25,
+                      size: 25.w,
                     ),
             ),
           ),

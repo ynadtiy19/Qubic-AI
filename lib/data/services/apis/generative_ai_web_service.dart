@@ -9,12 +9,9 @@ class GenerativeAIWebService {
     apiKey: EnvManager.apiKey,
   );
 
-  Future<String?> postData(String prompt) async {
+  Future<String?> postData(List<Content> contents) async {
     try {
-      final content = [Content.text(prompt)];
-      final response = await _model.generateContent(content);
-      log("Data posted successfully!");
-
+      final response = await _model.generateContent(contents);
       return response.text?.trim();
     } on Exception catch (err) {
       log('Error in postData: ${err.toString()}');
@@ -22,11 +19,9 @@ class GenerativeAIWebService {
     }
   }
 
-  Stream<String?> streamData(String prompt) async* {
+  Stream<String?> streamData(List<Content> contents) async* {
     try {
-      final content = [Content.text(prompt)];
-      final response = _model.generateContentStream(content);
-
+      final response = _model.generateContentStream(contents);
       await for (final chunk in response) {
         if (chunk.text != null) yield chunk.text;
       }
