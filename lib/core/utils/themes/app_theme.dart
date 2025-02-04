@@ -67,22 +67,19 @@ class AppTheme {
 
       //--------------------------------------------------//* INPUT DECORATION Text Field
       inputDecorationTheme: InputDecorationTheme(
-        filled: true,
+        // filled: false,
         isDense: true,
-        fillColor: ColorManager.grey.withOpacity(0.12),
+        // fillColor: ColorManager.grey.withOpacity(0.12),
         contentPadding:
             EdgeInsets.only(left: 10, right: 10, top: 13.h, bottom: 13.h),
         hintStyle: const TextStyle(color: Colors.white),
         border: const OutlineInputBorder(
           borderSide: BorderSide.none,
-          borderRadius: BorderRadius.all(Radius.circular(30)),
         ),
         enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30)),
           borderSide: BorderSide.none,
         ),
         focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30)),
           borderSide: BorderSide.none,
         ),
       ),

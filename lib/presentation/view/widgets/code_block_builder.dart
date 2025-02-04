@@ -47,7 +47,7 @@ class PreBlockBuilder extends MarkdownElementBuilder {
                 color: ColorManager.codeBg!,
               ),
             ),
-            color: ColorManager.codeBg,
+            color: ColorManager.dark,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

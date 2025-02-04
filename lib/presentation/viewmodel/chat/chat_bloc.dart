@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+import '../../../core/utils/helper/network_status.dart';
 import '../../../data/models/hive.dart';
 import '../../../data/repositories/message_repository.dart';
 import '../../../data/services/apis/generative_ai_web_service.dart';
@@ -62,6 +65,9 @@ class ChatAIBloc extends Bloc<ChatAIEvent, ChatAIState> {
       PostDataEvent event, Emitter<ChatAIState> emit) async {
     emit(ChatAILoading());
     try {
+      if (!await NetworkHelper.isConnected()) {
+        emit(ChatAIFailure("No internet connection"));
+      }
       await _messageRepository.addMessage(
         chatId: event.chatId,
         isUser: true,
@@ -82,7 +88,8 @@ class ChatAIBloc extends Bloc<ChatAIEvent, ChatAIState> {
         emit(ChatAIFailure("Failed to get a response"));
       }
     } catch (error) {
-      emit(ChatAIFailure(error.toString()));
+      log(error.toString());
+      emit(ChatAIFailure("Failed to get a response"));
     }
   }
 
@@ -92,6 +99,9 @@ class ChatAIBloc extends Bloc<ChatAIEvent, ChatAIState> {
     final StringBuffer fullResponse = StringBuffer();
 
     try {
+      if (!await NetworkHelper.isConnected()) {
+        emit(ChatAIFailure("No internet connection"));
+      }
       await _messageRepository.addMessage(
         chatId: event.chatId,
         isUser: true,
@@ -116,7 +126,8 @@ class ChatAIBloc extends Bloc<ChatAIEvent, ChatAIState> {
 
       emit(ChatAISuccess(completeResponse));
     } catch (error) {
-      emit(ChatAIFailure(error.toString()));
+      log(error.toString());
+      emit(ChatAIFailure("Failed to get a response"));
     }
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/utils/constants/colors.dart';
 import '../../core/utils/constants/images.dart';
-import '../../core/utils/helper/snackbar.dart';
+import '../../core/utils/helper/custom_toast.dart';
 import '../viewmodel/chat/chat_bloc.dart';
 import 'widgets/build_chat_list_view.dart';
 import 'widgets/empty_body.dart';
@@ -78,7 +78,8 @@ class _ChatScreenState extends State<ChatScreen> {
         }
         if (state is ChatAIFailure) {
           _isLoading = false;
-          showCustomToast(context, message: state.error);
+          showCustomToast(context,
+              message: state.error, color: ColorManager.error);
         }
         if (state is ChatAIStreaming) {
           _isLoading = true;
@@ -91,6 +92,7 @@ class _ChatScreenState extends State<ChatScreen> {
           _scrollToEnd(100);
         }
         if (state is NewChatSessionCreated) {
+          _isButtonVisible = false;
           _isLoading = false;
           showCustomToast(context, message: "New Chat Created Successfully!");
         }

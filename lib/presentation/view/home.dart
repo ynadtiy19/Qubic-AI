@@ -7,7 +7,7 @@ import 'package:qubic_ai/presentation/viewmodel/chat/chat_bloc.dart';
 
 import '../../core/utils/constants/colors.dart';
 import '../../core/utils/constants/images.dart';
-import '../../core/utils/helper/snackbar.dart';
+import '../../core/utils/helper/custom_toast.dart';
 import 'chat.dart';
 import 'history.dart';
 

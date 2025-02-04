@@ -65,6 +65,9 @@ class BuildDismissibleCard extends StatelessWidget {
                   title: Text(
                     chatMessages.last.message,
                     maxLines: 2,
+                    textDirection: _validationCubit.getTextDirection(
+                      chatMessages.last.message,
+                    ),
                     overflow: TextOverflow.ellipsis,
                   ),
                   subtitle: Text(
