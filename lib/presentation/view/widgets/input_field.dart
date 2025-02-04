@@ -34,6 +34,18 @@ class _BuildInputFieldState extends State<BuildInputField> {
     _textInputFieldController = TextEditingController();
   }
 
+  void _onChanged(String text) {
+    if (_isFieldEmpty) {
+      _isFieldEmpty = false;
+      setState(() {});
+    } else if (text.trim().length == 1 || text.trim().isEmpty) {
+      if (text.trim().isEmpty) {
+        _isFieldEmpty = true;
+      }
+      setState(() {});
+    }
+  }
+
   void _sendMessage() {
     if (_textInputFieldController.text.trim().isNotEmpty) {
       widget.generativeAIBloc.add(
@@ -45,34 +57,62 @@ class _BuildInputFieldState extends State<BuildInputField> {
       );
       _textInputFieldController.clear();
     }
+    _isFieldEmpty = true;
     setState(() {});
   }
 
   final _validationCubit = getIt<ValidationCubit>();
+  bool _isFieldEmpty = true;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
+    return Container(
+      margin: EdgeInsets.only(
           right: 9.w,
           left: 9.w,
           bottom: MediaQuery.of(context).viewInsets.bottom + 10.h),
-      child: TextField(
-        minLines: 1,
-        maxLines: 4,
-        onChanged: (text) {
-          if (text.trim().length == 1 || text.trim().isEmpty) {
-            setState(() {});
-          }
-        },
-        style: context.textTheme.bodyMedium,
-        controller: _textInputFieldController,
-        textDirection:
-            _validationCubit.getFieldDirection(_textInputFieldController.text),
-        onSubmitted: (_) => !widget.isLoading ? _sendMessage() : null,
-        decoration: InputDecoration(
-          hintText: 'Message Qubic AI',
-          suffixIcon: Padding(
+      decoration: BoxDecoration(
+        color: ColorManager.grey.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 5.w, top: 5.h, bottom: 5.h),
+            child: !widget.isChatHistory
+                ? IconButton(
+                    onPressed: () => widget.generativeAIBloc
+                        .add(CreateNewChatSessionEvent()),
+                    icon: const Icon(
+                      Icons.add,
+                      color: ColorManager.white,
+                      size: 25,
+                    ),
+                  )
+                : null,
+          ),
+          Expanded(
+            child: TextField(
+              minLines: 1,
+              maxLines: 5,
+              onChanged: _onChanged,
+              style: context.textTheme.bodyMedium,
+              controller: _textInputFieldController,
+              textDirection: _validationCubit
+                  .getFieldDirection(_textInputFieldController.text),
+              onSubmitted: (_) => !widget.isLoading ? _sendMessage() : null,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(
+                    left: !widget.isChatHistory ? 0 : 15,
+                    right: 10,
+                    top: 13.h,
+                    bottom: 13.h),
+                hintText: 'Message Qubic AI',
+              ),
+            ),
+          ),
+          Padding(
             padding: EdgeInsets.all(5.w),
             child: IconButton(
               style: IconButton.styleFrom(
@@ -98,23 +138,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
                     ),
             ),
           ),
-          prefixIcon: Padding(
-            padding: EdgeInsets.all(5.w),
-            child: !widget.isChatHistory
-                ? IconButton(
-                    onPressed: () => widget.generativeAIBloc
-                        .add(CreateNewChatSessionEvent()),
-                    icon: const Icon(
-                      Icons.add,
-                      color: ColorManager.white,
-                      size: 25,
-                    ),
-                  )
-                : null,
-          ),
-          enabledBorder: context.inputDecorationTheme.border,
-          focusedBorder: context.inputDecorationTheme.border,
-        ),
+        ],
       ),
     );
   }
