@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _chcecInternetConnection() async {
-    if (!await NetworkHelper.isConnected()) {
+    if (!await NetworkManager.isConnected()) {
       showCustomToast(
         context,
         message: "No internet connection",

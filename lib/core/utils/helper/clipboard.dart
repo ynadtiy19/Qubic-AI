@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 
-class ClipboardService {
-  const ClipboardService._();
+class ClipboardManager {
+  const ClipboardManager._();
 
   static Future<void> copyToClipboard(String text) async {
     await Clipboard.setData(ClipboardData(text: text));

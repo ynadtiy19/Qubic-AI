@@ -66,7 +66,7 @@ class ChatAIBloc extends Bloc<ChatAIEvent, ChatAIState> {
       PostDataEvent event, Emitter<ChatAIState> emit) async {
     emit(ChatAILoading());
     try {
-      if (!await NetworkHelper.isConnected()) {
+      if (!await NetworkManager.isConnected()) {
         emit(ChatAIFailure("No internet connection"));
       }
       await _messageRepository.addMessage(
@@ -104,7 +104,7 @@ class ChatAIBloc extends Bloc<ChatAIEvent, ChatAIState> {
     final StringBuffer fullResponse = StringBuffer();
 
     try {
-      if (!await NetworkHelper.isConnected()) {
+      if (!await NetworkManager.isConnected()) {
         emit(ChatAIFailure("No internet connection"));
       }
       await _messageRepository.addMessage(

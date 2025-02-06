@@ -80,12 +80,12 @@ class _UserBubbleState extends State<UserBubble> {
                     ),
                     onTapLink: (text, href, title) {
                       if (href != null) {
-                        UrlLauncher.launch(href);
+                        UrlManager.launch(href);
                       }
                     },
                     builders: {
                       'pre': PreBlockBuilder(
-                          onCopy: ClipboardService.copyToClipboard),
+                          onCopy: ClipboardManager.copyToClipboard),
                       'code': InlineCodeBuilder(),
                     },
                   ),

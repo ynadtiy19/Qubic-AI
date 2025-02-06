@@ -1,7 +1,7 @@
 import 'package:url_launcher/url_launcher.dart';
 
-class UrlLauncher {
-  const UrlLauncher._();
+class UrlManager {
+  const UrlManager._();
 
   static Future<void> launch(String url) async {
     try {
