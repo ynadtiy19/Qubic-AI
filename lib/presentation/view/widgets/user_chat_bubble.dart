@@ -7,8 +7,8 @@ import '../../../core/di/get_it.dart';
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/helper/clipboard.dart';
 import '../../../core/utils/helper/url_launcher.dart';
+import '../../../core/widgets/code_block_builder.dart';
 import '../../viewmodel/validation/validation_cubit.dart';
-import 'code_block_builder.dart';
 
 class UserBubble extends StatefulWidget {
   const UserBubble({

@@ -9,11 +9,12 @@ import '../../viewmodel/chat/chat_bloc.dart';
 import '../../viewmodel/validation/validation_cubit.dart';
 
 class BuildInputField extends StatefulWidget {
-  const BuildInputField({super.key,
-    required this.generativeAIBloc,
-    required this.isLoading,
-    required this.chatId,
-    required this.isChatHistory});
+  const BuildInputField(
+      {super.key,
+      required this.generativeAIBloc,
+      required this.isLoading,
+      required this.chatId,
+      required this.isChatHistory});
 
   final ChatAIBloc generativeAIBloc;
   final bool isLoading;
@@ -37,14 +38,8 @@ class _BuildInputFieldState extends State<BuildInputField> {
     if (_isFieldEmpty) {
       _isFieldEmpty = false;
       setState(() {});
-    } else if (text
-        .trim()
-        .length == 1 || text
-        .trim()
-        .isEmpty) {
-      if (text
-          .trim()
-          .isEmpty) {
+    } else if (text.trim().length == 1 || text.trim().isEmpty) {
+      if (text.trim().isEmpty) {
         _isFieldEmpty = true;
       }
       setState(() {});
@@ -52,9 +47,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
   }
 
   void _sendMessage() {
-    if (_textInputFieldController.text
-        .trim()
-        .isNotEmpty) {
+    if (_textInputFieldController.text.trim().isNotEmpty) {
       widget.generativeAIBloc.add(
         StreamDataEvent(
           prompt: _textInputFieldController.text.trim(),
@@ -77,10 +70,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
       margin: EdgeInsets.only(
           right: 9.w,
           left: 9.w,
-          bottom: MediaQuery
-              .of(context)
-              .viewInsets
-              .bottom + 10.h),
+          bottom: MediaQuery.of(context).viewInsets.bottom + 8.h),
       decoration: BoxDecoration(
         color: ColorManager.grey.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(30),
@@ -92,15 +82,14 @@ class _BuildInputFieldState extends State<BuildInputField> {
             padding: EdgeInsets.only(left: 5.w, top: 5.w, bottom: 5.w),
             child: !widget.isChatHistory
                 ? IconButton(
-              onPressed: () =>
-                  widget.generativeAIBloc
-                      .add(CreateNewChatSessionEvent()),
-              icon: Icon(
-                Icons.add,
-                color: ColorManager.white,
-                size: 25.w,
-              ),
-            )
+                    onPressed: () => widget.generativeAIBloc
+                        .add(CreateNewChatSessionEvent()),
+                    icon: Icon(
+                      Icons.add,
+                      color: ColorManager.white,
+                      size: 25.w,
+                    ),
+                  )
                 : null,
           ),
           Expanded(
@@ -127,28 +116,31 @@ class _BuildInputFieldState extends State<BuildInputField> {
             padding: EdgeInsets.all(5.w),
             child: IconButton(
               style: IconButton.styleFrom(
+                enableFeedback:
+                    _textInputFieldController.text.trim().isNotEmpty,
+                overlayColor: _textInputFieldController.text.trim().isEmpty
+                    ? Colors.transparent
+                    : null,
                 backgroundColor: widget.isLoading
                     ? ColorManager.white
-                    : _textInputFieldController.text
-                    .trim()
-                    .isEmpty
-                    ? ColorManager.grey
-                    : ColorManager.white,
+                    : _textInputFieldController.text.trim().isEmpty
+                        ? ColorManager.grey
+                        : ColorManager.white,
               ),
               onPressed: () => !widget.isLoading ? _sendMessage() : null,
               icon: widget.isLoading
                   ? SizedBox(
-                height: 25.w,
-                width: 25.w,
-                child: const LoadingIndicator(
-                  indicatorType: Indicator.lineSpinFadeLoader,
-                ),
-              )
+                      height: 25.w,
+                      width: 25.w,
+                      child: const LoadingIndicator(
+                        indicatorType: Indicator.lineSpinFadeLoader,
+                      ),
+                    )
                   : Icon(
-                Icons.arrow_upward_rounded,
-                color: ColorManager.dark,
-                size: 25.w,
-              ),
+                      Icons.arrow_upward_rounded,
+                      color: ColorManager.dark,
+                      size: 25.w,
+                    ),
             ),
           ),
         ],

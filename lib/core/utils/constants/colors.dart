@@ -10,7 +10,8 @@ class ColorManager {
   static const Color transparent = Colors.transparent;
   static const Color purple = Colors.purple;
   static Color? error = Colors.red[700];
-  static Color? codeBg = Colors.grey[800];
+  static Color? codeBlockBg = Colors.black.withValues(alpha: 0.3);
+  static Color? codeInlineg = Colors.grey[800];
 
   static const colorizeColors = [
     Colors.purple,

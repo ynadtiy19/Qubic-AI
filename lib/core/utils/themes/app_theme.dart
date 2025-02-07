@@ -68,7 +68,7 @@ class AppTheme {
       //--------------------------------------------------//* INPUT DECORATION Text Field
       inputDecorationTheme: InputDecorationTheme(
         // filled: false,
-        isDense: true,
+        // isDense: true,
         // fillColor: ColorManager.grey.withOpacity(0.12),
         contentPadding:
             EdgeInsets.only(left: 10, right: 10, top: 13.h, bottom: 13.h),

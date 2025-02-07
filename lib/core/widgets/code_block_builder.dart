@@ -38,13 +38,16 @@ class PreBlockBuilder extends MarkdownElementBuilder {
           decoration: BoxDecoration(
             border: Border(
               top: BorderSide(
-                color: ColorManager.codeBg!,
+                width: 1.5,
+                color: ColorManager.codeBlockBg!,
               ),
               right: BorderSide(
-                color: ColorManager.codeBg!,
+                width: 1.5,
+                color: ColorManager.codeBlockBg!,
               ),
               left: BorderSide(
-                color: ColorManager.codeBg!,
+                width: 1.5,
+                color: ColorManager.codeBlockBg!,
               ),
             ),
             color: ColorManager.dark,
@@ -66,7 +69,7 @@ class PreBlockBuilder extends MarkdownElementBuilder {
                 child: Container(
                   padding: const EdgeInsets.all(3),
                   decoration: BoxDecoration(
-                    color: ColorManager.codeBg,
+                    color: ColorManager.codeBlockBg,
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: const Icon(
@@ -82,7 +85,7 @@ class PreBlockBuilder extends MarkdownElementBuilder {
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: ColorManager.codeBg,
+            color: ColorManager.codeBlockBg,
           ),
           padding: const EdgeInsets.all(5),
           child: SingleChildScrollView(
@@ -110,7 +113,7 @@ class InlineCodeBuilder extends MarkdownElementBuilder {
   Widget? visitElementAfter(md.Element element, TextStyle? preferredStyle) {
     return Container(
       decoration: BoxDecoration(
-        color: ColorManager.codeBg,
+        color: ColorManager.codeInlineg,
       ),
       child: SelectableText(
         element.textContent,

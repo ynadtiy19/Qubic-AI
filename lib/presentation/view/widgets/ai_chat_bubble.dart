@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qubic_ai/core/utils/helper/custom_toast.dart';
 
 import '../../../core/di/get_it.dart';
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/extension/extension.dart';
 import '../../../core/utils/helper/clipboard.dart';
 import '../../../core/utils/helper/url_launcher.dart';
+import '../../../core/widgets/code_block_builder.dart';
 import '../../../presentation/viewmodel/validation/validation_cubit.dart';
-import 'code_block_builder.dart';
 
 class AiBubble extends StatefulWidget {
   const AiBubble({
@@ -27,10 +28,22 @@ class AiBubble extends StatefulWidget {
 class _AiBubbleState extends State<AiBubble> {
   bool _isShowDateTime = false;
   final _validationCubit = getIt<ValidationCubit>();
+  bool _isCopyMessage = false;
 
   void _showDate() {
     _isShowDateTime = !_isShowDateTime;
     setState(() {});
+  }
+
+  void _copyToClipboard() {
+    ClipboardManager.copyToClipboard(widget.message);
+    showCustomToast(context, message: "Copied to clipboard");
+    _isCopyMessage = true;
+    setState(() {});
+    Future.delayed(const Duration(milliseconds: 2500), () {
+      _isCopyMessage = false;
+      setState(() {});
+    });
   }
 
   @override
@@ -56,9 +69,7 @@ class _AiBubbleState extends State<AiBubble> {
                           bottomRight: Radius.circular(16),
                           topLeft: Radius.circular(16),
                         ),
-                        color: widget.message == "No internet connection"
-                            ? ColorManager.error
-                            : ColorManager.dark,
+                        color: ColorManager.dark,
                       ),
                       child: TextSelectionTheme(
                         data: context.theme.textSelectionTheme,
@@ -113,9 +124,24 @@ class _AiBubbleState extends State<AiBubble> {
                             duration: const Duration(milliseconds: 250),
                             height: _isShowDateTime ? 18.h : 0.0,
                             padding: EdgeInsets.only(left: 16.w),
-                            child: Text(
-                              _validationCubit.formatDateTime(widget.time),
-                              style: context.textTheme.bodySmall,
+                            child: Row(
+                              children: [
+                                Text(
+                                  _validationCubit.formatDateTime(widget.time),
+                                  style: context.textTheme.bodySmall,
+                                ),
+                                SizedBox(width: 15.w),
+                                GestureDetector(
+                                  onTap: _copyToClipboard,
+                                  child: Icon(
+                                    _isCopyMessage
+                                        ? Icons.file_download_done_rounded
+                                        : Icons.copy_all_rounded,
+                                    size: 16,
+                                    color: ColorManager.white,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),

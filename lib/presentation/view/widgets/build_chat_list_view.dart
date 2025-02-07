@@ -24,6 +24,7 @@ class BuildChatListViewBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      key: ValueKey(messagesLength),
       controller: _scrollController,
       reverse: true,
       itemCount: messagesLength,
