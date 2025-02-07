@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:qubic_ai/core/utils/constants/colors.dart';
+import 'package:qubic_ai/core/utils/helper/custom_toast.dart';
 
+import '../utils/helper/clipboard.dart';
 import '../utils/helper/reg_exp_methods.dart';
 
 class PreBlockBuilder extends MarkdownElementBuilder {
-  final void Function(String) onCopy;
+  final BuildContext? context;
 
-  PreBlockBuilder({required this.onCopy});
+  PreBlockBuilder([this.context]);
 
   @override
   Widget? visitElementAfter(md.Element element, TextStyle? preferredStyle) {
@@ -50,16 +52,18 @@ class PreBlockBuilder extends MarkdownElementBuilder {
               bottomRight: Radius.circular(4),
             ),
           ),
-          padding: const EdgeInsets.all(12),
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: SelectableText.rich(
-              TextSpan(
-                children: _parseCode(content, language),
-                style: const TextStyle(
-                  fontFamily: 'Consolas',
-                  fontSize: 14,
-                  color: ColorManager.codeBaseText,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: SelectableText.rich(
+                TextSpan(
+                  children: _parseCode(content, language),
+                  style: const TextStyle(
+                    fontFamily: 'Consolas',
+                    fontSize: 14,
+                    color: ColorManager.codeBaseText,
+                  ),
                 ),
               ),
             ),
@@ -91,7 +95,13 @@ class PreBlockBuilder extends MarkdownElementBuilder {
             ),
           ),
           InkWell(
-            onTap: () => onCopy(content),
+            onTap: () {
+              ClipboardManager.copyToClipboard(content);
+              context != null
+                  ? showCustomToast(context!,
+                      message: 'Code copied to clipboard')
+                  : null;
+            },
             child: const Icon(
               Icons.copy,
               color: ColorManager.codeHeaderIcon,

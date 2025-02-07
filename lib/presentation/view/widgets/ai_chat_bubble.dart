@@ -100,9 +100,7 @@ class _AiBubbleState extends State<AiBubble> {
                               }
                             },
                             builders: {
-                              'pre': PreBlockBuilder(
-                                onCopy: ClipboardManager.copyToClipboard,
-                              ),
+                              'pre': PreBlockBuilder(context),
                               'code': InlineCodeBuilder(),
                             },
                           ),
@@ -133,7 +131,8 @@ class _AiBubbleState extends State<AiBubble> {
                                 ),
                                 SizedBox(width: 15.w),
                                 GestureDetector(
-                                  onTap: _copyToClipboard,
+                                  onTap:
+                                      _isCopyMessage ? null : _copyToClipboard,
                                   child: Icon(
                                     _isCopyMessage
                                         ? Icons.file_download_done_rounded

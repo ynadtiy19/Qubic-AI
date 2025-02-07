@@ -37,7 +37,7 @@ class BuildChatListViewBuilder extends StatelessWidget {
         } else {
           final adjustedIndex = state is ChatAIStreaming ? index - 1 : index;
           final message = messages[adjustedIndex];
-
+ 
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: message.isUser

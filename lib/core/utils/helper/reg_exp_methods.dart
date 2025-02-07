@@ -18,8 +18,8 @@ class RegExpManager {
             r'|(?<type>\b(int|double|num|String|bool|List|Map|Set|Widget|BuildContext|State|StatefulWidget|StatelessWidget)\b)'
             r'|(?<number>\b\d+\.?\d*\b)'
             r'|(?<class>(\b_?[A-Z]\w*\b))'
-            r'|(?<function>\b\w+(?=\())'
-            r'|(?<variable>\b_?[A-Z]\w*\b)'
+            r'|(?<function>\b[a-z][a-zA-Z0-9]*(?=\())' // Function pattern (camelCase + parentheses)
+            r'|(?<variable>\b_?[a-z][a-zA-Z0-9]*\b)' // Variable pattern (camelCase without parentheses)
             r'|(?<symbol><|>|=|\+|-|\*|/|%|!|\?|:|\$|&|\[|\]|\{|\}|\(|\))',
   );
 }
