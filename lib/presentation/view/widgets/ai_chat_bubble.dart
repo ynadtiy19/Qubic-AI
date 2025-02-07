@@ -101,7 +101,8 @@ class _AiBubbleState extends State<AiBubble> {
                             },
                             builders: {
                               'pre': PreBlockBuilder(
-                                  onCopy: ClipboardManager.copyToClipboard),
+                                onCopy: ClipboardManager.copyToClipboard,
+                              ),
                               'code': InlineCodeBuilder(),
                             },
                           ),

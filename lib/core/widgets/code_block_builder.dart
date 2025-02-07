@@ -3,6 +3,8 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:qubic_ai/core/utils/constants/colors.dart';
 
+import '../utils/helper/reg_exp_methods.dart';
+
 class PreBlockBuilder extends MarkdownElementBuilder {
   final void Function(String) onCopy;
 
@@ -11,93 +13,53 @@ class PreBlockBuilder extends MarkdownElementBuilder {
   @override
   Widget? visitElementAfter(md.Element element, TextStyle? preferredStyle) {
     final content = _extractCodeContent(element);
-    return _buildCodeBlock(content);
+    final language = _getCodeLanguage(element);
+    return _buildCodeBlock(content, language);
   }
 
   String _extractCodeContent(md.Element element) {
-    if (element.children?.isEmpty ?? false) return element.textContent;
-
-    final buffer = StringBuffer();
-    for (final child in element.children ?? []) {
-      if (child is md.Text) {
-        buffer.writeln(child.text);
-      } else if (child is md.Element && child.tag == 'code') {
-        buffer.writeln(child.textContent);
-      }
-    }
-    return buffer.toString().trim();
+    return element.children
+            ?.whereType<md.Element>()
+            .firstWhere((e) => e.tag == 'code')
+            .textContent ??
+        element.textContent;
   }
 
-  Widget _buildCodeBlock(String content) {
+  String _getCodeLanguage(md.Element element) {
+    return element.children
+            ?.whereType<md.Element>()
+            .firstWhere(
+              (e) => e.tag == 'code',
+              orElse: () => md.Element('', []),
+            )
+            .attributes['class']
+            ?.replaceAll('language-', '') ??
+        'dart';
+  }
+
+  Widget _buildCodeBlock(String content, String language) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        _buildCodeHeader(language, content),
         Container(
-          padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                width: 1.5,
-                color: ColorManager.codeBlockBg!,
-              ),
-              right: BorderSide(
-                width: 1.5,
-                color: ColorManager.codeBlockBg!,
-              ),
-              left: BorderSide(
-                width: 1.5,
-                color: ColorManager.codeBlockBg!,
-              ),
-            ),
-            color: ColorManager.dark,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(width: 10),
-              const Text(
-                'Code Block',
-                style: TextStyle(
-                  color: ColorManager.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ),
-              InkWell(
-                onTap: () => onCopy(content),
-                child: Container(
-                  padding: const EdgeInsets.all(3),
-                  decoration: BoxDecoration(
-                    color: ColorManager.codeBlockBg,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: const Icon(
-                    Icons.copy,
-                    color: ColorManager.white,
-                    size: 16,
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-        Container(
-          width: double.infinity,
           decoration: BoxDecoration(
             color: ColorManager.codeBlockBg,
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(4),
+              bottomRight: Radius.circular(4),
+            ),
           ),
-          padding: const EdgeInsets.all(5),
+          padding: const EdgeInsets.all(12),
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SelectableText(
-                content,
+            child: SelectableText.rich(
+              TextSpan(
+                children: _parseCode(content, language),
                 style: const TextStyle(
                   fontFamily: 'Consolas',
                   fontSize: 14,
-                  color: ColorManager.white,
+                  color: ColorManager.codeBaseText,
                 ),
               ),
             ),
@@ -106,21 +68,147 @@ class PreBlockBuilder extends MarkdownElementBuilder {
       ],
     );
   }
+
+  Widget _buildCodeHeader(String language, String content) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: const BoxDecoration(
+        color: ColorManager.codeHeaderBg,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(4),
+          topRight: Radius.circular(4),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            language.toUpperCase(),
+            style: const TextStyle(
+              color: ColorManager.codeHeaderText,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          InkWell(
+            onTap: () => onCopy(content),
+            child: const Icon(
+              Icons.copy,
+              color: ColorManager.codeHeaderIcon,
+              size: 16,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<TextSpan> _parseCode(String content, String language) {
+    final List<TextSpan> spans = [];
+
+    final matches = RegExpManager.syntaxPatterns.allMatches(content);
+    int lastIndex = 0;
+
+    for (final match in matches) {
+      if (match.start > lastIndex) {
+        spans.add(TextSpan(
+          text: content.substring(lastIndex, match.start),
+          style: const TextStyle(color: ColorManager.codeBaseText),
+        ));
+      }
+
+      final String? annotation = match.namedGroup('annotation');
+      final String? comment = match.namedGroup('comment');
+      final String? string = match.namedGroup('string');
+      final String? keyword = match.namedGroup('keyword');
+      final String? type = match.namedGroup('type');
+      final String? number = match.namedGroup('number');
+      final String? symbol = match.namedGroup('symbol');
+      final String? classGroup = match.namedGroup('class');
+      final String? function = match.namedGroup('function');
+      final String? variable = match.namedGroup('variable');
+
+      if (annotation != null) {
+        spans.add(TextSpan(
+          text: annotation,
+          style: const TextStyle(color: ColorManager.codeKeyword),
+        ));
+      } else if (comment != null) {
+        spans.add(TextSpan(
+          text: comment,
+          style: const TextStyle(color: ColorManager.codeComment),
+        ));
+      } else if (string != null) {
+        spans.add(TextSpan(
+          text: string,
+          style: const TextStyle(color: ColorManager.codeString),
+        ));
+      } else if (keyword != null) {
+        spans.add(TextSpan(
+          text: keyword,
+          style: const TextStyle(color: ColorManager.codeKeyword),
+        ));
+      } else if (type != null) {
+        spans.add(TextSpan(
+          text: type,
+          style: const TextStyle(color: ColorManager.codeType),
+        ));
+      } else if (number != null) {
+        spans.add(TextSpan(
+          text: number,
+          style: const TextStyle(color: ColorManager.codeNumber),
+        ));
+      } else if (symbol != null) {
+        spans.add(TextSpan(
+          text: symbol,
+          style: const TextStyle(color: ColorManager.codeSymbol),
+        ));
+      } else if (classGroup != null) {
+        spans.add(TextSpan(
+          text: classGroup,
+          style: const TextStyle(color: ColorManager.codeClass),
+        ));
+      } else if (function != null) {
+        spans.add(TextSpan(
+          text: function,
+          style: const TextStyle(color: ColorManager.codeFunction),
+        ));
+      } else if (variable != null) {
+        spans.add(TextSpan(
+          text: variable,
+          style: const TextStyle(color: ColorManager.codeVariable),
+        ));
+      }
+
+      lastIndex = match.end;
+    }
+
+    if (lastIndex < content.length) {
+      spans.add(TextSpan(
+        text: content.substring(lastIndex),
+        style: const TextStyle(color: ColorManager.codeBaseText),
+      ));
+    }
+
+    return spans;
+  }
 }
 
 class InlineCodeBuilder extends MarkdownElementBuilder {
   @override
   Widget? visitElementAfter(md.Element element, TextStyle? preferredStyle) {
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
       decoration: BoxDecoration(
-        color: ColorManager.codeInlineg,
+        color: ColorManager.inlineCodeBg,
+        borderRadius: BorderRadius.circular(4),
       ),
       child: SelectableText(
         element.textContent,
         style: const TextStyle(
           fontFamily: 'Consolas',
           fontSize: 14,
-          color: ColorManager.white,
+          color: ColorManager.inlineCodeText,
         ),
       ),
     );

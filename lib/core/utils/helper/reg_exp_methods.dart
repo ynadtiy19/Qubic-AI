@@ -7,4 +7,19 @@ class RegExpManager {
           caseSensitive: false,
         ));
   }
+
+  static RegExp syntaxPatterns = RegExp(
+    r'(?<annotation>@\w+|part\b)'
+            r'|(?<comment>//.*|/\*[\s\S]*?\*/)'
+            r'|(?<string>"[^"]*"|' +
+        r"'[^']*'" +
+        r')'
+            r'|(?<keyword>\b(var|final|const|void|class|async|await|static|extends|with|return|true|false|null|if|else|for|while|do|switch|case|break|continue|try|catch|throw|import|export|typedef|extension|on|set|get|dynamic|required|context|super)\b)'
+            r'|(?<type>\b(int|double|num|String|bool|List|Map|Set|Widget|BuildContext|State|StatefulWidget|StatelessWidget)\b)'
+            r'|(?<number>\b\d+\.?\d*\b)'
+            r'|(?<class>(\b_?[A-Z]\w*\b))'
+            r'|(?<function>\b\w+(?=\())'
+            r'|(?<variable>\b_?[A-Z]\w*\b)'
+            r'|(?<symbol><|>|=|\+|-|\*|/|%|!|\?|:|\$|&|\[|\]|\{|\}|\(|\))',
+  );
 }
