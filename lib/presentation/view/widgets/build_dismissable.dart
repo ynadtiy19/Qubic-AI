@@ -29,57 +29,61 @@ class BuildDismissibleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 4),
-      child: Dismissible(
-        key: ValueKey(session.chatId.toString()),
-        onDismissed: (_) {
-          _chatAIBloc.add(DeleteChatSessionEvent(session.chatId));
-          chatSessions.removeAt(index);
-        },
-        direction: DismissDirection.endToStart,
-        background: Container(
-          color: ColorManager.purple,
-          alignment: Alignment.centerRight,
-          padding: EdgeInsets.only(right: 20.w),
-          width: double.infinity,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.delete),
-              SizedBox(width: 2.w),
-              Text("Delete",
-                  style: context.textTheme.bodyMedium
-                      ?.copyWith(fontWeight: FontWeight.bold)),
-            ],
+    return ColoredBox(
+      color: ColorManager.dark,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 1),
+        child: Dismissible(
+          key: ValueKey(session.chatId.toString()),
+          onDismissed: (_) {
+            _chatAIBloc.add(DeleteChatSessionEvent(session.chatId));
+            chatSessions.removeAt(index);
+          },
+          direction: DismissDirection.endToStart,
+          background: Container(
+            color: ColorManager.purple,
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.only(right: 20.w),
+            width: double.infinity,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.delete),
+                SizedBox(width: 2.w),
+                Text("Delete",
+                    style: context.textTheme.bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.bold)),
+              ],
+            ),
           ),
-        ),
-        child: chatMessages.lastOrNull?.message != null
-            ? Card(
-                elevation: 0,
-                margin: EdgeInsets.zero,
-                surfaceTintColor: ColorManager.transparent,
-                shape: const BeveledRectangleBorder(),
-                child: ListTile(
-                  splashColor: ColorManager.purple,
-                  title: Text(
-                    chatMessages.last.message,
-                    maxLines: 2,
-                    textDirection: _validationCubit.getTextDirection(
+          child: chatMessages.lastOrNull?.message != null
+              ? Card(
+                  color: ColorManager.black,
+                  elevation: 0,
+                  margin: EdgeInsets.zero,
+                  surfaceTintColor: ColorManager.transparent,
+                  shape: const BeveledRectangleBorder(),
+                  child: ListTile(
+                    splashColor: ColorManager.purple,
+                    title: Text(
                       chatMessages.last.message,
+                      maxLines: 2,
+                      textDirection: _validationCubit.getTextDirection(
+                        chatMessages.last.message,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    overflow: TextOverflow.ellipsis,
+                    subtitle: Text(
+                        "Started on ${_validationCubit.formatDateTime(session.createdAt)}"),
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      RouteManager.chat,
+                      arguments: [session.chatId, _chatAIBloc],
+                    ),
                   ),
-                  subtitle: Text(
-                      "Started on ${_validationCubit.formatDateTime(session.createdAt)}"),
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    RouteManager.chat,
-                    arguments: [session.chatId, _chatAIBloc],
-                  ),
-                ),
-              )
-            : const SizedBox.shrink(),
+                )
+              : const SizedBox.shrink(),
+        ),
       ),
     );
   }
