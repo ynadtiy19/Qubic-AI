@@ -3,7 +3,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qubic_ai/core/utils/extension/extension.dart';
 
-import '../../../core/di/get_it.dart';
+import '../../../core/di/locator.dart';
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/helper/url_launcher.dart';
 import '../../../core/widgets/code_block_builder.dart';

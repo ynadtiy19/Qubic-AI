@@ -75,6 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
       listener: (context, state) {
         if (state is ChatAILoading) {
           _isLoading = true;
+          _isButtonVisible = false;
         }
         if (state is ChatAIFailure) {
           _isLoading = false;
@@ -85,10 +86,12 @@ class _ChatScreenState extends State<ChatScreen> {
           _isLoading = true;
           prompt += state.streamedText;
           _scrollToEnd(100);
+          _isButtonVisible = false;
         }
         if (state is ChatAISuccess) {
           _isLoading = false;
           prompt = "";
+          _isButtonVisible = false;
           _scrollToEnd(100);
         }
         if (state is NewChatSessionCreated) {

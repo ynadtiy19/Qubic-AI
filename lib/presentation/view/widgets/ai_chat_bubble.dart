@@ -3,7 +3,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qubic_ai/core/utils/helper/custom_toast.dart';
 
-import '../../../core/di/get_it.dart';
+import '../../../core/di/locator.dart';
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/extension/extension.dart';
 import '../../../core/utils/helper/clipboard.dart';
@@ -11,8 +11,8 @@ import '../../../core/utils/helper/url_launcher.dart';
 import '../../../core/widgets/code_block_builder.dart';
 import '../../../presentation/viewmodel/validation/validation_cubit.dart';
 
-class AiBubble extends StatefulWidget {
-  const AiBubble({
+class AIBubble extends StatefulWidget {
+  const AIBubble({
     super.key,
     required this.message,
     required this.time,
@@ -22,10 +22,10 @@ class AiBubble extends StatefulWidget {
   final String time;
 
   @override
-  State<AiBubble> createState() => _AiBubbleState();
+  State<AIBubble> createState() => _AIBubbleState();
 }
 
-class _AiBubbleState extends State<AiBubble> {
+class _AIBubbleState extends State<AIBubble> {
   bool _isShowDateTime = false;
   final _validationCubit = getIt<ValidationCubit>();
   bool _isCopyMessage = false;

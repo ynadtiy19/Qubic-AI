@@ -4,6 +4,7 @@ import '../../data/repositories/message_repository.dart';
 import '../../data/services/apis/generative_ai_web_service.dart';
 import '../../data/services/database/hive_service.dart';
 import '../../presentation/viewmodel/chat/chat_bloc.dart';
+import '../../presentation/viewmodel/search/search_bloc.dart';
 import '../../presentation/viewmodel/validation/validation_cubit.dart';
 
 final getIt = GetIt.instance;
@@ -21,4 +22,6 @@ void getItSetup() {
         getIt<GenerativeAIWebService>(),
         getIt<MessageRepository>(),
       ));
+  getIt
+      .registerLazySingleton<SearchBloc>(() => SearchBloc(getIt<ChatAIBloc>()));
 }

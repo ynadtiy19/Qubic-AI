@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-import '../../core/di/get_it.dart';
+import 'core/di/locator.dart';
 import 'app.dart';
 import 'core/service/local_notifications.dart';
 import 'core/service/permission.dart';

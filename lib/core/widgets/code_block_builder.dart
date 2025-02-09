@@ -5,7 +5,7 @@ import 'package:qubic_ai/core/utils/constants/colors.dart';
 import 'package:qubic_ai/core/utils/helper/custom_toast.dart';
 
 import '../utils/helper/clipboard.dart';
-import '../utils/helper/reg_exp_methods.dart';
+import '../utils/helper/regexp_methods.dart';
 
 class PreBlockBuilder extends MarkdownElementBuilder {
   final BuildContext? context;

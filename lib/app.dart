@@ -5,9 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/router/app_router.dart';
 import '../../core/utils/constants/routes.dart';
 import '../../core/utils/themes/app_theme.dart';
-import 'core/di/get_it.dart';
+import 'core/di/locator.dart';
 import 'presentation/viewmodel/chat/chat_bloc.dart';
-import 'presentation/viewmodel/validation/validation_cubit.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -17,15 +16,8 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_, child) => MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => getIt<ChatAIBloc>(),
-          ),
-          BlocProvider(
-            create: (context) => getIt<ValidationCubit>(),
-          ),
-        ],
+      builder: (_, child) => BlocProvider(
+         create: (context) => getIt<ChatAIBloc>(),
         child: MaterialApp(
           builder: (context, widget) {
             final mediaQueryData = MediaQuery.of(context);

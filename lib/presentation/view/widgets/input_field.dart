@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:qubic_ai/core/utils/extension/extension.dart';
 
-import '../../../core/di/get_it.dart';
+import '../../../core/di/locator.dart';
 import '../../../core/utils/constants/colors.dart';
 import '../../viewmodel/chat/chat_bloc.dart';
 import '../../viewmodel/validation/validation_cubit.dart';
