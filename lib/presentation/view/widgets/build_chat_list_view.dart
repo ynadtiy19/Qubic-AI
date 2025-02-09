@@ -30,7 +30,7 @@ class BuildChatListViewBuilder extends StatelessWidget {
       itemCount: messagesLength,
       itemBuilder: (context, index) {
         if (state is ChatAIStreaming && index == 0) {
-          return AiBubble(
+          return AIBubble(
             message: prompt.trim(),
             time: DateTime.now().toString(),
           );
@@ -45,7 +45,7 @@ class BuildChatListViewBuilder extends StatelessWidget {
                     message: message.message.trim(),
                     time: message.timestamp,
                   )
-                : AiBubble(
+                : AIBubble(
                     message: message.message.trim(),
                     time: message.timestamp,
                   ),

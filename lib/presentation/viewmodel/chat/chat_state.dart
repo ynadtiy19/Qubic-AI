@@ -49,3 +49,5 @@ class ChatSessionAIFailure extends ChatAIState {
   final String error;
   ChatSessionAIFailure(this.error);
 }
+
+class ChatListUpdated extends ChatAIState {}
