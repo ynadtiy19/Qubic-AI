@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:qubic_ai/core/di/locator.dart';
+import 'package:qubic_ai/core/utils/extension/extension.dart';
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/constants/routes.dart';
 import '../../../data/models/hive.dart';
@@ -65,10 +66,15 @@ class SlidableDismissCard extends StatelessWidget {
                       textDirection: getIt<ValidationCubit>().getTextDirection(
                         chatMessages.last.message,
                       ),
+                      style: context.textTheme.bodyMedium
+                          ?.copyWith(fontWeight: FontWeight.w500),
                       overflow: TextOverflow.ellipsis,
                     ),
                     subtitle: Text(
-                        "Started on ${getIt<ValidationCubit>().formatDateTime(session.createdAt)}"),
+                      "Started on ${getIt<ValidationCubit>().formatDateTime(session.createdAt)}",
+                      style: context.textTheme.bodySmall
+                          ?.copyWith(color: ColorManager.grey),
+                    ),
                     onTap: () => Navigator.pushNamed(
                       context,
                       RouteManager.chat,

@@ -74,9 +74,8 @@ class _SearchFieldState extends State<SearchField> {
 
   void _handleSearchChange(String value) {
     if (value.trim().isEmpty || value.trim().length <= 1) {
-      setState(() {
-        _isSearching = true;
-      });
+      _isSearching = value.trim().isNotEmpty;
+      setState(() {});
     }
     _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {

@@ -6,10 +6,8 @@ import 'package:qubic_ai/core/utils/extension/extension.dart';
 
 import '../../core/di/locator.dart';
 import '../../core/utils/constants/images.dart';
-import '../../data/models/hive.dart';
 import '../viewmodel/chat/chat_bloc.dart';
 import '../viewmodel/search/search_bloc.dart';
-import '../viewmodel/validation/validation_cubit.dart';
 import 'widgets/build_slidable_dismiss.dart';
 import 'widgets/empty_body.dart';
 import 'widgets/search_field.dart';
@@ -51,53 +49,53 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          SearchField(
-            searchController: _searchController,
-            searchBloc: _searchBloc,          ),
-          Expanded(
-            child: BlocBuilder<ChatAIBloc, ChatAIState>(
-              bloc: _chatAIBloc,
-              builder: (context, state) {
-                return BlocBuilder<SearchBloc, SearchState>(
-                  bloc: _searchBloc,
-                  builder: (context, searchState) {
-                    final filteredSessions = searchState is SearchResults
-                        ? searchState.filteredSessions
-                        : _chatAIBloc.getChatSessions();
-
-                    return _buildContent(filteredSessions);
-                  },
-                );
-              },
-            ),
-          ),
-        ],
+      body: BlocBuilder<ChatAIBloc, ChatAIState>(
+        bloc: _chatAIBloc,
+        builder: (context, chatState) {
+          return BlocBuilder<SearchBloc, SearchState>(
+            bloc: _searchBloc,
+            builder: (context, searchState) {
+              final filteredSessions = searchState is SearchResults
+                  ? searchState.filteredSessions
+                  : _chatAIBloc.getChatSessions();
+              return CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: SearchField(
+                      searchController: _searchController,
+                      searchBloc: _searchBloc,
+                    ),
+                  ),
+                  if (filteredSessions.length <= 1)
+                    SliverToBoxAdapter(
+                      child: const EmptyBodyCard(
+                        title: "No matching chats found",
+                        image: ImageManager.history,
+                      ).withOnlyPadding(bottom: 20.h),
+                    )
+                  else
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final session = filteredSessions[index];
+                          final chatMessages =
+                              _chatAIBloc.getMessages(session.chatId);
+                          return SlidableDismissCard(
+                            index: index,
+                            chatSessions: filteredSessions,
+                            chatAIBloc: _chatAIBloc,
+                            chatMessages: chatMessages,
+                          );
+                        },
+                        childCount: filteredSessions.length,
+                      ),
+                    ),
+                ],
+              );
+            },
+          );
+        },
       ),
-    );
-  }
-
-  Widget _buildContent(List<ChatSession> sessions) {
-    if (sessions.length <= 1) {
-      return const EmptyBodyCard(
-        title: "No matching chats found",
-        image: ImageManager.history,
-      ).withOnlyPadding(bottom: 20.h);
-    }
-
-    return ListView.builder(
-      itemCount: sessions.length,
-      itemBuilder: (context, index) {
-        final session = sessions[index];
-        final chatMessages = _chatAIBloc.getMessages(session.chatId);
-        return SlidableDismissCard(
-          index: index,
-          chatSessions: sessions,
-          chatAIBloc: _chatAIBloc,
-          chatMessages: chatMessages,
-        );
-      },
     );
   }
 }
