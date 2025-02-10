@@ -18,7 +18,7 @@ class ChatScreen extends StatefulWidget {
   const ChatScreen(
       {super.key,
       required this.chatId,
-      this.isChatHistory = false,
+      this.isChatHistory = false, 
       required this.chatAIBloc});
 
   @override

@@ -1,60 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qubic_ai/core/utils/extension/extension.dart';
-
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:qubic_ai/core/di/locator.dart';
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/constants/routes.dart';
 import '../../../data/models/hive.dart';
 import '../../viewmodel/chat/chat_bloc.dart';
 import '../../viewmodel/validation/validation_cubit.dart';
 
-class BuildDismissibleCard extends StatelessWidget {
-  const BuildDismissibleCard({
+class SlidableDismissCard extends StatelessWidget {
+  const SlidableDismissCard({
     super.key,
-    required this.session,
     required ChatAIBloc chatAIBloc,
     required this.chatMessages,
-    required ValidationCubit validationCubit,
     required this.index,
     required this.chatSessions,
-  })  : _chatAIBloc = chatAIBloc,
-        _validationCubit = validationCubit;
+  }) : _chatAIBloc = chatAIBloc;
 
-  final ChatSession session;
   final ChatAIBloc _chatAIBloc;
   final List<Message> chatMessages;
-  final ValidationCubit _validationCubit;
   final int index;
   final List<ChatSession> chatSessions;
 
   @override
   Widget build(BuildContext context) {
+    final session = chatSessions[index];
     return ColoredBox(
       color: ColorManager.dark,
       child: Padding(
         padding: const EdgeInsets.only(top: 1),
-        child: Dismissible(
+        child: Slidable(
           key: ValueKey(session.chatId.toString()),
-          onDismissed: (_) {
-            _chatAIBloc.add(DeleteChatSessionEvent(session.chatId));
-            chatSessions.removeAt(index);
-          },
-          direction: DismissDirection.endToStart,
-          background: Container(
-            color: ColorManager.purple,
-            alignment: Alignment.centerRight,
-            padding: EdgeInsets.only(right: 20.w),
-            width: double.infinity,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.delete),
-                SizedBox(width: 2.w),
-                Text("Delete",
-                    style: context.textTheme.bodyMedium
-                        ?.copyWith(fontWeight: FontWeight.bold)),
-              ],
-            ),
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            extentRatio: 0.33,
+            children: [
+              SlidableAction(
+                onPressed: (_) {
+                  _chatAIBloc.add(DeleteChatSessionEvent(session.chatId));
+                  chatSessions.removeAt(index);
+                },
+                backgroundColor: ColorManager.purple,
+                autoClose: true,
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                ),
+                foregroundColor: ColorManager.white,
+                icon: Icons.delete,
+                label: 'Delete',
+              ),
+            ],
           ),
           child: chatMessages.lastOrNull?.message != null
               ? Card(
@@ -67,14 +62,13 @@ class BuildDismissibleCard extends StatelessWidget {
                     splashColor: ColorManager.purple,
                     title: Text(
                       chatMessages.last.message,
-                      maxLines: 2,
-                      textDirection: _validationCubit.getTextDirection(
+                      textDirection: getIt<ValidationCubit>().getTextDirection(
                         chatMessages.last.message,
                       ),
                       overflow: TextOverflow.ellipsis,
                     ),
                     subtitle: Text(
-                        "Started on ${_validationCubit.formatDateTime(session.createdAt)}"),
+                        "Started on ${getIt<ValidationCubit>().formatDateTime(session.createdAt)}"),
                     onTap: () => Navigator.pushNamed(
                       context,
                       RouteManager.chat,

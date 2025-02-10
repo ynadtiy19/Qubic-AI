@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qubic_ai/core/utils/extension/extension.dart';
 
 import '../../core/di/locator.dart';
 import '../../core/utils/constants/images.dart';
@@ -8,7 +10,7 @@ import '../../data/models/hive.dart';
 import '../viewmodel/chat/chat_bloc.dart';
 import '../viewmodel/search/search_bloc.dart';
 import '../viewmodel/validation/validation_cubit.dart';
-import 'widgets/build_dismissable.dart';
+import 'widgets/build_slidable_dismiss.dart';
 import 'widgets/empty_body.dart';
 import 'widgets/search_field.dart';
 
@@ -23,7 +25,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
   late final TextEditingController _searchController;
   late final ChatAIBloc _chatAIBloc;
   late final SearchBloc _searchBloc;
-  late final ValidationCubit _validationCubit;
   StreamSubscription? _chatSubscription;
 
   @override
@@ -32,7 +33,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     _searchController = TextEditingController();
     _chatAIBloc = getIt<ChatAIBloc>();
     _searchBloc = getIt<SearchBloc>();
-    _validationCubit = getIt<ValidationCubit>();
 
     _chatSubscription = _chatAIBloc.stream.listen((state) {
       if (state is ChatListUpdated) {
@@ -55,9 +55,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         children: [
           SearchField(
             searchController: _searchController,
-            searchBloc: _searchBloc,
-            validationCubit: _validationCubit,
-          ),
+            searchBloc: _searchBloc,          ),
           Expanded(
             child: BlocBuilder<ChatAIBloc, ChatAIState>(
               bloc: _chatAIBloc,
@@ -81,11 +79,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Widget _buildContent(List<ChatSession> sessions) {
-    if (sessions.isEmpty) {
+    if (sessions.length <= 1) {
       return const EmptyBodyCard(
         title: "No matching chats found",
         image: ImageManager.history,
-      );
+      ).withOnlyPadding(bottom: 20.h);
     }
 
     return ListView.builder(
@@ -93,13 +91,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
       itemBuilder: (context, index) {
         final session = sessions[index];
         final chatMessages = _chatAIBloc.getMessages(session.chatId);
-        return BuildDismissibleCard(
+        return SlidableDismissCard(
           index: index,
           chatSessions: sessions,
-          session: session,
           chatAIBloc: _chatAIBloc,
           chatMessages: chatMessages,
-          validationCubit: _validationCubit,
         );
       },
     );
