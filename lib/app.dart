@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/router/app_router.dart';
 import '../../core/utils/constants/routes.dart';
 import '../../core/utils/themes/app_theme.dart';
-import 'core/di/locator.dart';
-import 'presentation/viewmodel/chat/chat_bloc.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -16,25 +13,22 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (_, child) => BlocProvider(
-         create: (context) => getIt<ChatAIBloc>(),
-        child: MaterialApp(
-          builder: (context, widget) {
-            final mediaQueryData = MediaQuery.of(context);
-            final scaledMediaQueryData = mediaQueryData.copyWith(
-              textScaler: TextScaler.noScaling,
-            );
-            return MediaQuery(
-              data: scaledMediaQueryData,
-              child: widget!,
-            );
-          },
-          debugShowCheckedModeBanner: false,
-          title: 'Qubic AI',
-          initialRoute: RouteManager.initialRoute,
-          onGenerateRoute: AppRouter.onGenerateRoute,
-          theme: AppTheme.darkTheme,
-        ),
+      builder: (_, child) => MaterialApp(
+        builder: (context, widget) {
+          final mediaQueryData = MediaQuery.of(context);
+          final scaledMediaQueryData = mediaQueryData.copyWith(
+            textScaler: TextScaler.noScaling,
+          );
+          return MediaQuery(
+            data: scaledMediaQueryData,
+            child: widget!,
+          );
+        },
+        debugShowCheckedModeBanner: false,
+        title: 'Qubic AI',
+        initialRoute: RouteManager.initialRoute,
+        onGenerateRoute: AppRouter.onGenerateRoute,
+        theme: AppTheme.darkTheme,
       ),
     );
   }

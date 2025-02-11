@@ -3,11 +3,10 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qubic_ai/core/utils/extension/extension.dart';
 
-import '../../../core/di/locator.dart';
 import '../../../core/utils/constants/colors.dart';
+import '../../../core/utils/helper/regexp_methods.dart';
 import '../../../core/utils/helper/url_launcher.dart';
 import '../../../core/widgets/code_block_builder.dart';
-import '../../viewmodel/validation/validation_cubit.dart';
 
 class UserBubble extends StatefulWidget {
   const UserBubble({
@@ -25,7 +24,6 @@ class UserBubble extends StatefulWidget {
 
 class _UserBubbleState extends State<UserBubble> {
   bool _isShowDateTime = false;
-  final _validationCubit = getIt<ValidationCubit>();
 
   void _showDate() {
     _isShowDateTime = !_isShowDateTime;
@@ -114,7 +112,7 @@ class _UserBubbleState extends State<UserBubble> {
                     height: _isShowDateTime ? 18.h : 0.0,
                     padding: EdgeInsets.only(right: 16.w),
                     child: Text(
-                      _validationCubit.formatDateTime(widget.time),
+                      RegExpManager.formatDateTime(widget.time),
                       style: context.textTheme.bodySmall,
                     ),
                   ),

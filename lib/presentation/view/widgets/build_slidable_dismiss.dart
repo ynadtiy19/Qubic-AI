@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:qubic_ai/core/di/locator.dart';
 import 'package:qubic_ai/core/utils/extension/extension.dart';
 import 'package:qubic_ai/core/utils/helper/custom_toast.dart';
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/constants/routes.dart';
+import '../../../core/utils/helper/regexp_methods.dart';
 import '../../../data/models/hive.dart';
 import '../../viewmodel/chat/chat_bloc.dart';
-import '../../viewmodel/validation/validation_cubit.dart';
 
 class SlidableDismissCard extends StatelessWidget {
   const SlidableDismissCard({
@@ -69,7 +68,7 @@ class SlidableDismissCard extends StatelessWidget {
                     splashColor: ColorManager.purple,
                     title: Text(
                       chatMessages.last.message,
-                      textDirection: getIt<ValidationCubit>().getTextDirection(
+                      textDirection: RegExpManager.getTextDirection(
                         chatMessages.last.message,
                       ),
                       style: context.textTheme.bodyMedium
@@ -77,7 +76,7 @@ class SlidableDismissCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     subtitle: Text(
-                      "Started on ${getIt<ValidationCubit>().formatDateTime(session.createdAt)}",
+                      "Started on ${RegExpManager.formatDateTime(session.createdAt)}",
                       style: context.textTheme.bodySmall
                           ?.copyWith(color: ColorManager.grey),
                     ),

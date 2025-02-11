@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qubic_ai/core/utils/helper/custom_toast.dart';
+import 'package:qubic_ai/core/utils/helper/regexp_methods.dart';
 
-import '../../../core/di/locator.dart';
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/extension/extension.dart';
 import '../../../core/utils/helper/clipboard.dart';
 import '../../../core/utils/helper/url_launcher.dart';
 import '../../../core/widgets/code_block_builder.dart';
-import '../../../presentation/viewmodel/validation/validation_cubit.dart';
 
 class AIBubble extends StatefulWidget {
   const AIBubble({
@@ -27,7 +26,6 @@ class AIBubble extends StatefulWidget {
 
 class _AIBubbleState extends State<AIBubble> {
   bool _isShowDateTime = false;
-  final _validationCubit = getIt<ValidationCubit>();
   bool _isCopyMessage = false;
 
   void _showDate() {
@@ -136,7 +134,7 @@ class _AIBubbleState extends State<AIBubble> {
                             child: Row(
                               children: [
                                 Text(
-                                  _validationCubit.formatDateTime(widget.time),
+                                  RegExpManager.formatDateTime(widget.time),
                                   style: context.textTheme.bodySmall,
                                 ),
                                 SizedBox(width: 15.w),

@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qubic_ai/core/di/locator.dart';
 import 'package:qubic_ai/core/utils/constants/colors.dart';
 import 'package:qubic_ai/core/utils/extension/extension.dart';
 
+import '../../../core/utils/helper/regexp_methods.dart';
 import '../../viewmodel/search/search_bloc.dart';
-import '../../viewmodel/validation/validation_cubit.dart';
 
 class SearchField extends StatefulWidget {
   const SearchField({
@@ -46,8 +45,8 @@ class _SearchFieldState extends State<SearchField> {
                 textAlignVertical: TextAlignVertical.center,
                 controller: widget.searchController,
                 style: context.textTheme.bodyMedium,
-                textDirection: getIt<ValidationCubit>()
-                    .getTextDirection(widget.searchController.text),
+                textDirection: RegExpManager.getTextDirection(
+                    widget.searchController.text),
                 decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),

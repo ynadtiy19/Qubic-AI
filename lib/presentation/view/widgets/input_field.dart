@@ -3,10 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:qubic_ai/core/utils/extension/extension.dart';
 
-import '../../../core/di/locator.dart';
 import '../../../core/utils/constants/colors.dart';
+import '../../../core/utils/helper/regexp_methods.dart';
 import '../../viewmodel/chat/chat_bloc.dart';
-import '../../viewmodel/validation/validation_cubit.dart';
 
 class BuildInputField extends StatefulWidget {
   const BuildInputField(
@@ -61,7 +60,6 @@ class _BuildInputFieldState extends State<BuildInputField> {
     setState(() {});
   }
 
-  final _validationCubit = getIt<ValidationCubit>();
   bool _isFieldEmpty = true;
 
   @override
@@ -99,8 +97,8 @@ class _BuildInputFieldState extends State<BuildInputField> {
               onChanged: _onChanged,
               style: context.textTheme.bodyMedium,
               controller: _textInputFieldController,
-              textDirection: _validationCubit
-                  .getFieldDirection(_textInputFieldController.text),
+              textDirection: RegExpManager.getFieldDirection(
+                  _textInputFieldController.text),
               onSubmitted: (_) => !widget.isLoading ? _sendMessage() : null,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(
