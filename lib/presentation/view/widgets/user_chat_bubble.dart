@@ -76,6 +76,16 @@ class _UserBubbleState extends State<UserBubble> {
                         backgroundColor: Colors.grey[800],
                         color: ColorManager.white,
                       ),
+                      tableBody: context.textTheme.bodySmall?.copyWith(
+                        color: ColorManager.white,
+                      ),
+                      tableHead: context.textTheme.bodySmall?.copyWith(
+                        color: ColorManager.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      tablePadding: EdgeInsets.zero,
+                      tableCellsPadding: const EdgeInsets.symmetric(
+                          vertical: 4, horizontal: 6),
                     ),
                     onTapLink: (text, href, title) {
                       if (href != null) {
@@ -95,7 +105,7 @@ class _UserBubbleState extends State<UserBubble> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 AnimatedOpacity(
-                  duration: const Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 10),
                   curve: Curves.ease,
                   opacity: _isShowDateTime ? 1 : 0,
                   child: AnimatedContainer(

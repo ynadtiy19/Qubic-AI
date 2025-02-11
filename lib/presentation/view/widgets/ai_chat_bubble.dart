@@ -93,6 +93,16 @@ class _AIBubbleState extends State<AIBubble> {
                               code: context.textTheme.bodySmall?.copyWith(
                                 color: ColorManager.white,
                               ),
+                              tableBody: context.textTheme.bodySmall?.copyWith(
+                                color: ColorManager.white,
+                              ),
+                              tableHead: context.textTheme.bodySmall?.copyWith(
+                                color: ColorManager.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              tablePadding: EdgeInsets.zero,
+                              tableCellsPadding: const EdgeInsets.symmetric(
+                                  vertical: 4, horizontal: 6),
                             ),
                             onTapLink: (text, href, title) {
                               if (href != null) {
@@ -135,7 +145,7 @@ class _AIBubbleState extends State<AIBubble> {
                                       _isCopyMessage ? null : _copyToClipboard,
                                   child: Icon(
                                     _isCopyMessage
-                                        ? Icons.file_download_done_rounded
+                                        ? Icons.done_rounded
                                         : Icons.copy_all_rounded,
                                     size: 16,
                                     color: ColorManager.white,

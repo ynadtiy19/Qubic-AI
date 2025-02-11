@@ -75,7 +75,7 @@ class PreBlockBuilder extends MarkdownElementBuilder {
 
   Widget _buildCodeHeader(String language, String content) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: const EdgeInsets.only(left: 12, top: 8, bottom: 8),
       decoration: const BoxDecoration(
         color: ColorManager.codeHeaderBg,
         borderRadius: BorderRadius.only(
@@ -102,10 +102,13 @@ class PreBlockBuilder extends MarkdownElementBuilder {
                       message: 'Code copied to clipboard')
                   : null;
             },
-            child: const Icon(
-              Icons.copy,
-              color: ColorManager.codeHeaderIcon,
-              size: 16,
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: Icon(
+                Icons.copy,
+                color: ColorManager.codeHeaderIcon,
+                size: 16,
+              ),
             ),
           ),
         ],

@@ -20,6 +20,6 @@ class RegExpManager {
     r'|(?<class>(\b_?[A-Z]\w*\b))'
     r'|(?<function>\b[a-z][a-zA-Z0-9]*(?=\())' // Function pattern (camelCase + parentheses)
     r'|(?<variable>\b_?[a-z][a-zA-Z0-9]*\b)' // Variable pattern (camelCase without parentheses)
-    r'|(?<symbol><|>|=|\+|-|\*|/|%|!|\?|:|\$|&|\[|\]|\{|\}|\(|\))',
+    r'|(?<symbol><|>|=|\+|-|\*|/|%|!|\?|\$|&|\[|\]|\{|\}|\(|\))',
   );
 }
