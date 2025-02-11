@@ -18,7 +18,7 @@ class ChatScreen extends StatefulWidget {
   const ChatScreen(
       {super.key,
       required this.chatId,
-      this.isChatHistory = false, 
+      this.isChatHistory = false,
       required this.chatAIBloc});
 
   @override
@@ -119,18 +119,19 @@ class _ChatScreenState extends State<ChatScreen> {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           body: Padding(
-              padding: const EdgeInsets.all(5),
-              child: messages.isEmpty
-                  ? const EmptyBodyCard(
-                      image: ImageManager.chat,
-                      title: "Start Chatting with Qubic AI.",
-                    )
-                  : BuildChatListViewBuilder(
-                      state: state,
-                      scrollController: _scrollController,
-                      messagesLength: messagesLength,
-                      prompt: prompt,
-                      messages: messages)),
+            padding: const EdgeInsets.all(5),
+            child: messages.isEmpty
+                ? const EmptyBodyCard(
+                    image: ImageManager.chat,
+                    title: "Start Chatting with Qubic AI.",
+                  )
+                : BuildChatListViewBuilder(
+                    state: state,
+                    scrollController: _scrollController,
+                    messagesLength: messagesLength,
+                    prompt: prompt,
+                    messages: messages),
+          ),
           bottomNavigationBar: BuildInputField(
             generativeAIBloc: _chatAIBloc,
             chatId: widget.chatId,

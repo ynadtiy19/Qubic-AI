@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -64,84 +65,88 @@ class _BuildInputFieldState extends State<BuildInputField> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(
-          right: 9.w,
-          left: 9.w,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 8.h),
-      decoration: BoxDecoration(
-        color: ColorManager.grey.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 5.w, top: 5.w, bottom: 5.w),
-            child: !widget.isChatHistory
-                ? IconButton(
-                    onPressed: () => widget.generativeAIBloc
-                        .add(CreateNewChatSessionEvent()),
-                    icon: Icon(
-                      Icons.add,
-                      color: ColorManager.white,
-                      size: 25.w,
-                    ),
-                  )
-                : null,
-          ),
-          Expanded(
-            child: TextField(
-              minLines: 1,
-              maxLines: 5,
-              onChanged: _onChanged,
-              style: context.textTheme.bodyMedium,
-              controller: _textInputFieldController,
-              textDirection: RegExpManager.getFieldDirection(
-                  _textInputFieldController.text),
-              onSubmitted: (_) => !widget.isLoading ? _sendMessage() : null,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(
-                    left: !widget.isChatHistory ? 0 : 15,
-                    right: 10,
-                    top: 13.h,
-                    bottom: 13.h),
-                hintText: 'Message Qubic AI',
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(5.w),
-            child: IconButton(
-              style: IconButton.styleFrom(
-                enableFeedback:
-                    _textInputFieldController.text.trim().isNotEmpty,
-                overlayColor: _textInputFieldController.text.trim().isEmpty
-                    ? Colors.transparent
-                    : null,
-                backgroundColor: widget.isLoading
-                    ? ColorManager.white
-                    : _textInputFieldController.text.trim().isEmpty
-                        ? ColorManager.grey
-                        : ColorManager.white,
-              ),
-              onPressed: () => !widget.isLoading ? _sendMessage() : null,
-              icon: widget.isLoading
-                  ? SizedBox(
-                      height: 25.w,
-                      width: 25.w,
-                      child: const LoadingIndicator(
-                        indicatorType: Indicator.lineSpinFadeLoader,
+    return FadeInUp(
+      curve: Curves.easeInOut,
+      duration: const Duration(milliseconds: 300),
+      child: Container(
+        margin: EdgeInsets.only(
+            right: 9.w,
+            left: 9.w,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 8.h),
+        decoration: BoxDecoration(
+          color: ColorManager.grey.withValues(alpha: 0.12),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 5.w, top: 5.w, bottom: 5.w),
+              child: !widget.isChatHistory
+                  ? IconButton(
+                      onPressed: () => widget.generativeAIBloc
+                          .add(CreateNewChatSessionEvent()),
+                      icon: Icon(
+                        Icons.add,
+                        color: ColorManager.white,
+                        size: 25.w,
                       ),
                     )
-                  : Icon(
-                      Icons.arrow_upward_rounded,
-                      color: ColorManager.dark,
-                      size: 25.w,
-                    ),
+                  : null,
             ),
-          ),
-        ],
+            Expanded(
+              child: TextField(
+                minLines: 1,
+                maxLines: 5,
+                onChanged: _onChanged,
+                style: context.textTheme.bodyMedium,
+                controller: _textInputFieldController,
+                textDirection: RegExpManager.getFieldDirection(
+                    _textInputFieldController.text),
+                onSubmitted: (_) => !widget.isLoading ? _sendMessage() : null,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(
+                      left: !widget.isChatHistory ? 0 : 15,
+                      right: 10,
+                      top: 13.h,
+                      bottom: 13.h),
+                  hintText: 'Message Qubic AI',
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(5.w),
+              child: IconButton(
+                style: IconButton.styleFrom(
+                  enableFeedback:
+                      _textInputFieldController.text.trim().isNotEmpty,
+                  overlayColor: _textInputFieldController.text.trim().isEmpty
+                      ? Colors.transparent
+                      : null,
+                  backgroundColor: widget.isLoading
+                      ? ColorManager.white
+                      : _textInputFieldController.text.trim().isEmpty
+                          ? ColorManager.grey
+                          : ColorManager.white,
+                ),
+                onPressed: () => !widget.isLoading ? _sendMessage() : null,
+                icon: widget.isLoading
+                    ? SizedBox(
+                        height: 25.w,
+                        width: 25.w,
+                        child: const LoadingIndicator(
+                          indicatorType: Indicator.lineSpinFadeLoader,
+                        ),
+                      )
+                    : Icon(
+                        Icons.arrow_upward_rounded,
+                        color: ColorManager.dark,
+                        size: 25.w,
+                      ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

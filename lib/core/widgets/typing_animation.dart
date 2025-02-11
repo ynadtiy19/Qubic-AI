@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:formatted_text/formatted_text.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:qubic_ai/core/utils/extension/extension.dart';
 
 class TypewriterAnimatedText extends StatefulWidget {
@@ -69,10 +68,8 @@ class _TypewriterAnimatedTextState extends State<TypewriterAnimatedText>
         return TextSelectionTheme(
           data: context.theme.textSelectionTheme,
           child: SelectionArea(
-            child: FormattedText(
-              visibleString + (showCursor ? widget.cursor : ''),
-              style: widget.textStyle,
-              textAlign: widget.textAlign,
+            child: Markdown(
+              data: visibleString + (showCursor ? widget.cursor : ''),
             ),
           ),
         );

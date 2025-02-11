@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qubic_ai/core/utils/constants/colors.dart';
@@ -32,40 +33,42 @@ class _SearchFieldState extends State<SearchField> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(4.w),
-      child: ColoredBox(
-        color: ColorManager.dark,
-        child: Row(
-          children: [
-            Expanded(
-              child: TextField(
-                autocorrect: true,
-                textInputAction: TextInputAction.search,
-                textAlignVertical: TextAlignVertical.center,
-                controller: widget.searchController,
-                style: context.textTheme.bodyMedium,
-                textDirection: RegExpManager.getTextDirection(
-                    widget.searchController.text),
-                decoration: InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                  hintText: 'Search chat history',
+    return BounceIn(
+      child: Padding(
+        padding: EdgeInsets.all(4.w),
+        child: ColoredBox(
+          color: ColorManager.dark,
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  autocorrect: true,
+                  textInputAction: TextInputAction.search,
+                  textAlignVertical: TextAlignVertical.center,
+                  controller: widget.searchController,
+                  style: context.textTheme.bodyMedium,
+                  textDirection: RegExpManager.getTextDirection(
+                      widget.searchController.text),
+                  decoration: InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                    hintText: 'Search chat history',
+                  ),
+                  onChanged: _handleSearchChange,
                 ),
-                onChanged: _handleSearchChange,
               ),
-            ),
-            IconButton(
-              icon: Icon(!_isSearching ? Icons.search : Icons.close),
-              color: ColorManager.grey,
-              onPressed: () {
-                _isSearching = false;
-                widget.searchController.clear();
-                widget.searchBloc.add(SearchQueryChanged(''));
-                setState(() {});
-              },
-            ),
-          ],
+              IconButton(
+                icon: Icon(!_isSearching ? Icons.search : Icons.close),
+                color: ColorManager.grey,
+                onPressed: () {
+                  _isSearching = false;
+                  widget.searchController.clear();
+                  widget.searchBloc.add(SearchQueryChanged(''));
+                  setState(() {});
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
