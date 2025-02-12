@@ -17,7 +17,7 @@ class RegExpManager {
     r'|(?<string>"[^"]*"|'
     r"'[^']*'"
     r')'
-    r'|(?<keyword>\b(var|final|const|void|class|async|await|static|extends|with|return|true|false|null|if|else|for|while|do|switch|case|break|continue|try|catch|throw|import|export|typedef|extension|on|set|get|dynamic|required|super|factory|this)\b)'
+    r'|(?<keyword>\b(var|final|const|void|class|async|await|static|extends|with|return|true|false|null|if|else|for|while|do|switch|case|break|continue|try|catch|throw|import|export|typedef|extension|on|set|get|dynamic|required|super|as|factory|late|this)\b)'
     r'|(?<type>\b(int|double|num|String|bool|List|Map|Set|Widget|BuildContext|State|StatefulWidget|StatelessWidget)\b)'
     r'|(?<number>\b\d+\.?\d*\b)'
     r'|(?<class>(\b_?[A-Z]\w*\b))'

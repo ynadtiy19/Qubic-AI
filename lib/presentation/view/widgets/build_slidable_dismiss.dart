@@ -71,8 +71,10 @@ class SlidableDismissCard extends StatelessWidget {
                       textDirection: RegExpManager.getTextDirection(
                         chatMessages.last.message,
                       ),
-                      style: context.textTheme.bodyMedium
-                          ?.copyWith(fontWeight: FontWeight.w500),
+                      maxLines: 1,
+                      style: context.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
                     subtitle: Text(

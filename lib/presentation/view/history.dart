@@ -67,11 +67,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     ),
                   ),
                   if (filteredSessions.length <= 1)
-                    SliverToBoxAdapter(
-                      child: const EmptyBodyCard(
-                        title: "No matching chats found",
-                        image: ImageManager.history,
-                      ).withOnlyPadding(bottom: 20.h),
+                    SliverFillRemaining(
+                      child: Center(
+                        child: const EmptyBodyCard(
+                          title: "No matching chats found",
+                          image: ImageManager.history,
+                        ).withOnlyPadding(bottom: 10.h),
+                      ),
                     )
                   else
                     SliverList(
