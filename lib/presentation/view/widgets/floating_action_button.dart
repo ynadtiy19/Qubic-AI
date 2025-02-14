@@ -1,11 +1,11 @@
-
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/constants/colors.dart';
 
 class BuildFloatingActionButton extends StatelessWidget {
-  const BuildFloatingActionButton({super.key, this.onPressed});
+  const BuildFloatingActionButton({super.key, this.onPressed, this.iconData});
   final void Function()? onPressed;
+  final IconData? iconData;
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +17,8 @@ class BuildFloatingActionButton extends StatelessWidget {
         elevation: 2,
         onPressed: onPressed,
         backgroundColor: ColorManager.purple,
-        child: const Icon(
-          Icons.arrow_downward,
+        child: Icon(
+          iconData ?? Icons.arrow_downward,
           color: ColorManager.white,
         ),
       ),

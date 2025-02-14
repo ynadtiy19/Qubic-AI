@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,10 +16,12 @@ class UserBubble extends StatefulWidget {
     super.key,
     required this.message,
     required this.time,
+    this.image,
   });
 
   final String message;
   final String time;
+  final String? image;
 
   @override
   State<UserBubble> createState() => _UserBubbleState();
@@ -30,8 +35,21 @@ class _UserBubbleState extends State<UserBubble> {
     setState(() {});
   }
 
+  void _showImage() async => await showDialog(
+        context: context,
+        builder: (_) => Dialog(
+          child: InteractiveViewer(
+            child: Image.file(
+              File(widget.image!),
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
+    log(widget.image ?? "No image");
     return GestureDetector(
       onTap: _showDate,
       onDoubleTap: _showDate,
@@ -52,50 +70,73 @@ class _UserBubbleState extends State<UserBubble> {
                 ),
                 color: ColorManager.dark,
               ),
-              child: TextSelectionTheme(
-                data: context.theme.textSelectionTheme,
-                child: SelectionArea(
-                  child: MarkdownBody(
-                    data: widget.message,
-                    styleSheet:
-                        MarkdownStyleSheet.fromTheme(context.theme).copyWith(
-                      p: context.textTheme.bodySmall?.copyWith(
-                        color: ColorManager.white,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (widget.image != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.file(
+                        File(widget.image!),
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.cover,
                       ),
-                      strong: context.textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: ColorManager.white,
+                    )
+                        .withWidth(double.infinity)
+                        .centered()
+                        .onTapAndLongPress(
+                          onTap: _showImage,
+                          onLongPress: _showImage,
+                        )
+                        .withOnlyPadding(bottom: 8),
+                  TextSelectionTheme(
+                    data: context.theme.textSelectionTheme,
+                    child: SelectionArea(
+                      child: MarkdownBody(
+                        data: widget.message,
+                        styleSheet: MarkdownStyleSheet.fromTheme(context.theme)
+                            .copyWith(
+                          p: context.textTheme.bodySmall?.copyWith(
+                            color: ColorManager.white,
+                          ),
+                          strong: context.textTheme.bodySmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: ColorManager.white,
+                          ),
+                          em: context.textTheme.bodySmall?.copyWith(
+                            fontStyle: FontStyle.italic,
+                            color: ColorManager.white,
+                          ),
+                          code: context.textTheme.bodySmall?.copyWith(
+                            backgroundColor: Colors.grey[800],
+                            color: ColorManager.white,
+                          ),
+                          tableBody: context.textTheme.bodySmall?.copyWith(
+                            color: ColorManager.white,
+                          ),
+                          tableHead: context.textTheme.bodySmall?.copyWith(
+                            color: ColorManager.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          tablePadding: EdgeInsets.zero,
+                          tableCellsPadding: const EdgeInsets.symmetric(
+                              vertical: 4, horizontal: 6),
+                        ),
+                        onTapLink: (text, href, title) {
+                          if (href != null) {
+                            UrlManager.launch(href);
+                          }
+                        },
+                        builders: {
+                          'pre': PreBlockBuilder(),
+                          'code': InlineCodeBuilder(),
+                        },
                       ),
-                      em: context.textTheme.bodySmall?.copyWith(
-                        fontStyle: FontStyle.italic,
-                        color: ColorManager.white,
-                      ),
-                      code: context.textTheme.bodySmall?.copyWith(
-                        backgroundColor: Colors.grey[800],
-                        color: ColorManager.white,
-                      ),
-                      tableBody: context.textTheme.bodySmall?.copyWith(
-                        color: ColorManager.white,
-                      ),
-                      tableHead: context.textTheme.bodySmall?.copyWith(
-                        color: ColorManager.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      tablePadding: EdgeInsets.zero,
-                      tableCellsPadding: const EdgeInsets.symmetric(
-                          vertical: 4, horizontal: 6),
                     ),
-                    onTapLink: (text, href, title) {
-                      if (href != null) {
-                        UrlManager.launch(href);
-                      }
-                    },
-                    builders: {
-                      'pre': PreBlockBuilder(),
-                      'code': InlineCodeBuilder(),
-                    },
                   ),
-                ),
+                ],
               ),
             ),
             SizedBox(height: 5.h),
