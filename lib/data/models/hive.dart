@@ -12,12 +12,17 @@ class Message extends HiveObject {
   final String message;
   @HiveField(3)
   final String timestamp;
-
+  @HiveField(4)
+  final String? image;
+  @HiveField(5)
+  final String? recognizedText;
   Message({
     required this.chatId,
     required this.isUser,
     required this.message,
     required this.timestamp,
+    this.image,
+    this.recognizedText,
   });
 }
 

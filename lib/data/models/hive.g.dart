@@ -21,13 +21,15 @@ class MessageAdapter extends TypeAdapter<Message> {
       isUser: fields[1] as bool,
       message: fields[2] as String,
       timestamp: fields[3] as String,
+      image: fields[4] as String?,
+      recognizedText: fields[5] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Message obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.chatId)
       ..writeByte(1)
@@ -35,7 +37,11 @@ class MessageAdapter extends TypeAdapter<Message> {
       ..writeByte(2)
       ..write(obj.message)
       ..writeByte(3)
-      ..write(obj.timestamp);
+      ..write(obj.timestamp)
+      ..writeByte(4)
+      ..write(obj.image)
+      ..writeByte(5)
+      ..write(obj.recognizedText);
   }
 
   @override

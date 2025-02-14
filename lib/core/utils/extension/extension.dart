@@ -454,7 +454,7 @@ extension SizedBoxExtensions on Widget {
       );
 
   // Add both fixed width and height to a widget
-  Widget withSize({required double width, required double height}) => SizedBox(
+  Widget withSize({ double? width ,  double? height}) => SizedBox(
         width: width,
         height: height,
         child: this,

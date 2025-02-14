@@ -20,13 +20,17 @@ class MessageRepository {
     required bool isUser,
     required String message,
     required String timestamp,
+    String? image,
+    String? recognizedText,
   }) async {
     try {
       final newMessage = Message(
         chatId: chatId,
         isUser: isUser,
         message: message,
+        image: image,
         timestamp: timestamp,
+        recognizedText: recognizedText,
       );
       await _messageBox.add(newMessage);
 

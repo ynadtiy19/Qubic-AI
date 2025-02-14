@@ -13,7 +13,7 @@ class ImagePickerService {
     return null;
   }
 
-  static ImageSource get useCamera => ImageSource.camera;
+  ImageSource get useCamera => ImageSource.camera;
 
-  static ImageSource get useGallery => ImageSource.gallery;
+  ImageSource get useGallery => ImageSource.gallery;
 }
