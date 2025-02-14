@@ -36,8 +36,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     if (query.isEmpty) return chatSessions;
     final lowerQuery = query.toLowerCase();
     return chatSessions.where((session) {
-      return session.messages.any((message) =>
-          message.message.toLowerCase().contains(lowerQuery));
+      final messages =
+          chatAIBloc.getMessages(session.chatId); // Get actual messages
+      return messages
+          .any((message) => message.message.toLowerCase().contains(lowerQuery));
     }).toList();
   }
 }
