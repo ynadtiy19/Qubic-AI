@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/models/hive.dart';
-import '../../viewmodel/chat/chat_bloc.dart';
+import '../../bloc/chat/chat_bloc.dart';
 import 'ai_chat_bubble.dart';
 import 'user_chat_bubble.dart';
 
@@ -19,7 +19,7 @@ class BuildChatListViewBuilder extends StatelessWidget {
   final int messagesLength;
   final String prompt;
   final List<Message> messages;
-  final ChatAIState state;
+  final ChatState state;
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +29,13 @@ class BuildChatListViewBuilder extends StatelessWidget {
       reverse: true,
       itemCount: messagesLength,
       itemBuilder: (context, index) {
-        if (state is ChatAIStreaming && index == 0) {
+        if (state is ChatStreaming && index == 0) {
           return AIBubble(
             message: prompt.trim(),
             time: DateTime.now().toString(),
           );
         } else {
-          final adjustedIndex = state is ChatAIStreaming ? index - 1 : index;
+          final adjustedIndex = state is ChatStreaming ? index - 1 : index;
           final message = messages[adjustedIndex];
 
           return Padding(
@@ -44,6 +44,7 @@ class BuildChatListViewBuilder extends StatelessWidget {
                 ? UserBubble(
                     message: message.message.trim(),
                     time: message.timestamp,
+                    image: message.image,
                   )
                 : AIBubble(
                     message: message.message.trim(),

@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/utils/constants/colors.dart';
 import '../../core/utils/constants/images.dart';
 import '../../core/utils/helper/custom_toast.dart';
-import '../viewmodel/chat/chat_bloc.dart';
+import '../bloc/chat/chat_bloc.dart';
+import '../viewmodel/chat_viewmodel.dart';
 import 'widgets/build_chat_list_view.dart';
 import 'widgets/empty_body.dart';
 import 'widgets/floating_action_button.dart';
@@ -13,47 +14,48 @@ import 'widgets/input_field.dart';
 class ChatScreen extends StatefulWidget {
   final int chatId;
   final bool isChatHistory;
-  final ChatAIBloc chatAIBloc;
+  final ChatBloc chatBloc;
 
-  const ChatScreen(
-      {super.key,
-      required this.chatId,
-      this.isChatHistory = false,
-      required this.chatAIBloc});
+  const ChatScreen({
+    super.key,
+    required this.chatId,
+    this.isChatHistory = false,
+    required this.chatBloc,
+  });
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  late ScrollController _scrollController;
-
-  bool _isButtonVisible = false;
-  bool _isLoading = false;
-  String prompt = '';
+  late ChatViewModel _viewModel;
+  late  ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
-    _chatAIBloc = widget.chatAIBloc;
+    _viewModel = ChatViewModel(
+      chatBloc: widget.chatBloc,
+    );
     _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+  }
 
-    _scrollController.addListener(() {
-      bool isAtBottom = _scrollController.position.pixels <= 100;
-      if (!isAtBottom) {
-        if (!_isButtonVisible) {
-          setState(() {
-            _isButtonVisible = true;
-          });
-        }
-      } else {
-        if (_isButtonVisible) {
-          setState(() {
-            _isButtonVisible = false;
-          });
-        }
-      }
-    });
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  bool _isButtonVisible = false;
+
+  void _scrollListener() {
+    final isAtBottom = _scrollController.position.pixels <= 150;
+    if (!isAtBottom && !_isButtonVisible) {
+      setState(() => _isButtonVisible = true);
+    } else if (isAtBottom && _isButtonVisible) {
+      setState(() => _isButtonVisible = false);
+    }
   }
 
   void _scrollToEnd([int? duration]) {
@@ -66,44 +68,42 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  late ChatAIBloc _chatAIBloc;
-
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ChatAIBloc, ChatAIState>(
-      bloc: _chatAIBloc,
+    return BlocConsumer<ChatBloc, ChatState>(
+      bloc: widget.chatBloc,
       listener: (context, state) {
-        if (state is ChatAILoading) {
-          _isLoading = true;
+        if (state is ChatLoading) {
+          _viewModel.isLoading = true;
           _isButtonVisible = false;
         }
-        if (state is ChatAIFailure) {
-          _isLoading = false;
+        if (state is ChatFailure) {
+          _viewModel.isLoading = false;
           showCustomToast(context,
               message: state.error, color: ColorManager.error);
         }
-        if (state is ChatAIStreaming) {
-          _isLoading = true;
-          prompt += state.streamedText;
+        if (state is ChatStreaming) {
+          _viewModel.isLoading = true;
+          _viewModel.prompt += state.streamedText;
           _scrollToEnd(100);
           _isButtonVisible = false;
         }
-        if (state is ChatAISuccess) {
-          _isLoading = false;
-          prompt = "";
+        if (state is ChatSuccess) {
+          _viewModel.isLoading = false;
+          _viewModel.prompt = "";
           _isButtonVisible = false;
           _scrollToEnd(100);
         }
         if (state is NewChatSessionCreated) {
           _isButtonVisible = false;
-          _isLoading = false;
+          _viewModel.isLoading = false;
           showCustomToast(context, message: "New Chat Created Successfully!");
         }
       },
       builder: (context, state) {
-        final messages = _chatAIBloc.getMessages(widget.chatId);
+        final messages = widget.chatBloc.getMessages(widget.chatId);
         final messagesLength =
-            state is ChatAIStreaming ? messages.length + 1 : messages.length;
+            state is ChatStreaming ? messages.length + 1 : messages.length;
         return Scaffold(
           appBar: widget.isChatHistory
               ? AppBar(
@@ -113,8 +113,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 )
               : null,
           resizeToAvoidBottomInset: false,
-          floatingActionButton: _isButtonVisible
-              ? BuildFloatingActionButton(onPressed: _scrollToEnd)
+          floatingActionButton:  _isButtonVisible
+              ? BuildFloatingActionButton(onPressed:  _scrollToEnd)
               : null,
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
@@ -127,25 +127,21 @@ class _ChatScreenState extends State<ChatScreen> {
                   )
                 : BuildChatListViewBuilder(
                     state: state,
-                    scrollController: _scrollController,
+                    scrollController:  _scrollController,
                     messagesLength: messagesLength,
-                    prompt: prompt,
-                    messages: messages),
+                    prompt: _viewModel.prompt,
+                    messages: messages,
+                  ),
           ),
           bottomNavigationBar: BuildInputField(
-            generativeAIBloc: _chatAIBloc,
+            chatBloc: widget.chatBloc,
             chatId: widget.chatId,
             isChatHistory: widget.isChatHistory,
-            isLoading: _isLoading,
+            isLoading: _viewModel.isLoading,
           ),
         );
       },
     );
   }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
 }
+

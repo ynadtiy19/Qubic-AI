@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,10 +5,12 @@ import 'package:qubic_ai/core/utils/extension/extension.dart';
 
 import '../../core/di/locator.dart';
 import '../../core/utils/constants/images.dart';
-import '../viewmodel/chat/chat_bloc.dart';
-import '../viewmodel/search/search_bloc.dart';
+import '../bloc/chat/chat_bloc.dart';
+import '../bloc/search/search_bloc.dart';
+import '../viewmodel/search_viewmodel.dart';
 import 'widgets/build_slidable_dismiss.dart';
 import 'widgets/empty_body.dart';
+import 'widgets/floating_action_button.dart';
 import 'widgets/search_field.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -20,53 +21,81 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  late final TextEditingController _searchController;
-  late final ChatAIBloc _chatAIBloc;
-  late final SearchBloc _searchBloc;
-  StreamSubscription? _chatSubscription;
+  late SearchViewModel _viewModel;
+  late ChatBloc _chatBloc;
+  late SearchBloc _searchBloc;
+  late ScrollController _scrollController;
+  bool _showScrollButton = false;
 
   @override
   void initState() {
     super.initState();
-    _searchController = TextEditingController();
-    _chatAIBloc = getIt<ChatAIBloc>();
+    _chatBloc = getIt<ChatBloc>();
     _searchBloc = getIt<SearchBloc>();
+    _viewModel = SearchViewModel(
+      searchController: TextEditingController(),
+      searchBloc: _searchBloc,
+      chatAIBloc: _chatBloc,
+    );
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+  }
 
-    _chatSubscription = _chatAIBloc.stream.listen((state) {
-      if (state is ChatListUpdated) {
-        _searchBloc.add(SearchQueryChanged(_searchController.text));
-      }
-    });
+  void _scrollListener() {
+    final isAtBottom = _scrollController.position.pixels <= 150;
+    if (!isAtBottom && !_showScrollButton) {
+      setState(() => _showScrollButton = true);
+    } else if (isAtBottom && _showScrollButton) {
+      setState(() => _showScrollButton = false);
+    }
+  }
+
+  void _scrollToTop() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.minScrollExtent,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.fastOutSlowIn,
+      );
+    }
   }
 
   @override
   void dispose() {
-    _searchController.dispose();
-    _chatSubscription?.cancel();
+    _viewModel.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<ChatAIBloc, ChatAIState>(
-        bloc: _chatAIBloc,
+      floatingActionButton: _showScrollButton
+          ? BuildFloatingActionButton(
+              onPressed: _scrollToTop,
+              iconData: Icons.arrow_upward,
+            )
+          : null,
+      body: BlocBuilder<ChatBloc, ChatState>(
+        bloc: _chatBloc,
         builder: (context, chatState) {
           return BlocBuilder<SearchBloc, SearchState>(
             bloc: _searchBloc,
             builder: (context, searchState) {
               final filteredSessions = searchState is SearchResults
                   ? searchState.filteredSessions
-                  : _chatAIBloc.getChatSessions();
+                  : _chatBloc.getChatSessions();
               return CustomScrollView(
+                controller: _scrollController,
                 slivers: [
                   SliverToBoxAdapter(
                     child: SearchField(
-                      searchController: _searchController,
-                      searchBloc: _searchBloc,
+                      searchController: _viewModel.searchController,
+                      onChanged: _viewModel.handleSearchChange,
+                      onClear: _viewModel.clearSearch,
                     ),
                   ),
-                  if (filteredSessions.length <= 1)
+                  if (filteredSessions.isEmpty)
                     SliverFillRemaining(
                       child: Center(
                         child: const EmptyBodyCard(
@@ -81,11 +110,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         (context, index) {
                           final session = filteredSessions[index];
                           final chatMessages =
-                              _chatAIBloc.getMessages(session.chatId);
+                              _chatBloc.getMessages(session.chatId);
                           return SlidableDismissCard(
                             index: index,
                             chatSessions: filteredSessions,
-                            chatAIBloc: _chatAIBloc,
+                            chatBloc: _chatBloc,
                             chatMessages: chatMessages,
                           );
                         },

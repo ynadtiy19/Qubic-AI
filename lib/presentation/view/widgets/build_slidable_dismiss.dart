@@ -6,18 +6,18 @@ import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/constants/routes.dart';
 import '../../../core/utils/helper/regexp_methods.dart';
 import '../../../data/models/hive.dart';
-import '../../viewmodel/chat/chat_bloc.dart';
+import '../../bloc/chat/chat_bloc.dart';
 
 class SlidableDismissCard extends StatelessWidget {
   const SlidableDismissCard({
     super.key,
-    required ChatAIBloc chatAIBloc,
+    required ChatBloc chatBloc,
     required this.chatMessages,
     required this.index,
     required this.chatSessions,
-  }) : _chatAIBloc = chatAIBloc;
+  }) : _chatBloc = chatBloc;
 
-  final ChatAIBloc _chatAIBloc;
+  final ChatBloc _chatBloc;
   final List<Message> chatMessages;
   final int index;
   final List<ChatSession> chatSessions;
@@ -37,7 +37,7 @@ class SlidableDismissCard extends StatelessWidget {
             children: [
               SlidableAction(
                 onPressed: (_) {
-                  _chatAIBloc.add(DeleteChatSessionEvent(session.chatId));
+                  _chatBloc.add(DeleteChatSessionEvent(session.chatId));
                   chatSessions.removeAt(index);
                   showCustomToast(
                     context,
@@ -85,7 +85,7 @@ class SlidableDismissCard extends StatelessWidget {
                     onTap: () => Navigator.pushNamed(
                       context,
                       RouteManager.chat,
-                      arguments: [session.chatId, _chatAIBloc],
+                      arguments: [session.chatId, _chatBloc],
                     ),
                   ),
                 )

@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qubic_ai/core/di/locator.dart';
 import 'package:qubic_ai/core/utils/extension/extension.dart';
 import 'package:qubic_ai/core/utils/helper/network_status.dart';
-import 'package:qubic_ai/presentation/viewmodel/chat/chat_bloc.dart';
+import 'package:qubic_ai/presentation/bloc/chat/chat_bloc.dart';
 
 import '../../core/utils/constants/colors.dart';
 import '../../core/utils/constants/images.dart';
 import '../../core/utils/helper/custom_toast.dart';
-import '../viewmodel/search/search_bloc.dart';
+import '../bloc/search/search_bloc.dart';
 import 'chat.dart';
 import 'history.dart';
 
@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen>
     super.dispose();
   }
 
-  final _chatAIBloc = getIt<ChatAIBloc>();
+  final _chatBloc = getIt<ChatBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -78,15 +78,15 @@ class _HomeScreenState extends State<HomeScreen>
             ],
           ),
         ),
-        body: BlocBuilder<ChatAIBloc, ChatAIState>(
-          bloc: _chatAIBloc,
+        body: BlocBuilder<ChatBloc, ChatState>(
+          bloc: _chatBloc,
           builder: (context, state) {
             return TabBarView(
               controller: _tabController,
               children: [
                 ChatScreen(
-                  chatId: _chatAIBloc.getSessionId(),
-                  chatAIBloc: _chatAIBloc,
+                  chatId: _chatBloc.getSessionId(),
+                  chatBloc: _chatBloc,
                 ),
                 BlocProvider(
                   create: (_) => getIt<SearchBloc>(),
