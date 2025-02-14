@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -63,7 +62,38 @@ class _BuildInputFieldState extends State<BuildInputField> {
     super.dispose();
   }
 
-  void showMessageBox() {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<InputFieldBloc, InputFieldState>(
+      bloc: _inputFieldBloc,
+      builder: (context, state) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (state.selectedImage != null) _buildImageCard(state),
+            Container(
+              margin: EdgeInsets.only(
+                  right: 9, left: 9, bottom: context.viewInsetsBottom + 8),
+              decoration: BoxDecoration(
+                color: ColorManager.grey.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  _buildMenuButton(),
+                  _buildTextField(),
+                  _buildSendMessageButton(state),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showMenuBox() {
     final menuItems = [
       _buildMenuItem("Camera", Icons.camera_alt_rounded),
       _buildMenuItem("Gallery", Icons.photo_library_rounded),
@@ -108,125 +138,92 @@ class _BuildInputFieldState extends State<BuildInputField> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<InputFieldBloc, InputFieldState>(
-      bloc: _inputFieldBloc,
-      builder: (context, state) {
-        return FadeInUp(
-          curve: Curves.easeInOut,
-          duration: const Duration(milliseconds: 300),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (state.selectedImage != null)
-                Stack(
-                  children: [
-                    Image.file(
-                      File(state.selectedImage!),
-                      fit: BoxFit.cover,
-                      width: 150,
-                      height: 100,
-                    ).circular(12),
-                    Positioned(
-                      top: 0,
-                      right: 0,
-                      child: IconButton(
-                        style: IconButton.styleFrom(
-                          backgroundColor:
-                              ColorManager.black.withValues(alpha: 0.4),
-                        ),
-                        icon: const Icon(
-                          Icons.close,
-                          color: ColorManager.white,
-                          size: 20,
-                        ),
-                        onPressed: () => _inputFieldBloc.add(UpdateImageEvent(
-                            selectedImage: null, recognizedText: null)),
-                      ),
-                    ),
-                  ],
-                ).withOnlyPadding(bottom: 8),
-              Container(
-                margin: EdgeInsets.only(
-                    right: 9, left: 9, bottom: context.viewInsetsBottom + 8),
-                decoration: BoxDecoration(
-                  color: ColorManager.grey.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      key: _popupMenuKey,
-                      onPressed: showMessageBox,
-                      icon: const Icon(
-                        Icons.add,
-                        color: ColorManager.white,
-                        size: 25,
-                      ),
-                    ).withOnlyPadding(left: 5, top: 5, bottom: 5),
-                    Expanded(
-                      child: TextField(
-                        minLines: 1,
-                        maxLines: 5,
-                        style: context.textTheme.bodyMedium
-                            ?.copyWith(fontSize: 15.spMin),
-                        controller: _viewModel.textController,
-                        textDirection: RegExpManager.getFieldDirection(
-                            _viewModel.textController.text),
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.only(
-                              left: 10, right: 10, top: 18, bottom: 18),
-                          hintText: 'Message Qubic AI',
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      style: IconButton.styleFrom(
-                        enableFeedback: _viewModel.textController.text
-                                .trim()
-                                .isNotEmpty ||
-                            state.selectedImage != null,
-                        overlayColor:
-                            _viewModel.textController.text.trim().isEmpty &&
-                                    state.selectedImage == null
-                                ? Colors.transparent
-                                : null,
-                        backgroundColor: widget.isLoading
-                            ? ColorManager.white
-                            : _viewModel.textController.text.trim().isEmpty &&
-                                    state.selectedImage == null
-                                ? ColorManager.grey
-                                : ColorManager.white,
-                      ),
-                      onPressed: () => !widget.isLoading
-                          ? _viewModel.sendMessage(
-                              chatId: widget.chatId,
-                              isChatHistory: widget.isChatHistory,
-                            )
-                          : null,
-                      icon: widget.isLoading
-                          ? const SizedBox(
-                              height: 25,
-                              width: 25,
-                              child: LoadingIndicator(
-                                indicatorType: Indicator.lineSpinFadeLoader,
-                              ),
-                            )
-                          : Icon(
-                              Icons.arrow_upward_rounded,
-                              color: ColorManager.dark,
-                              size: 25,
-                            ),
-                    ).withAllPadding(5),
-                  ],
-                ),
-              ),
-            ],
+  Widget _buildTextField() => Expanded(
+        child: TextField(
+          minLines: 1,
+          maxLines: 5,
+          style: context.textTheme.bodyMedium?.copyWith(fontSize: 15.spMin),
+          controller: _viewModel.textController,
+          textDirection:
+              RegExpManager.getFieldDirection(_viewModel.textController.text),
+          decoration: const InputDecoration(
+            contentPadding:
+                EdgeInsets.only(left: 10, right: 10, top: 18, bottom: 18),
+            hintText: 'Message Qubic AI',
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+
+  Widget _buildMenuButton() => IconButton(
+        key: _popupMenuKey,
+        onPressed: _showMenuBox,
+        icon: const Icon(
+          Icons.add,
+          color: ColorManager.white,
+          size: 25,
+        ),
+      ).withOnlyPadding(left: 5, top: 5, bottom: 5);
+
+  Widget _buildSendMessageButton(InputFieldState state) => IconButton(
+        style: IconButton.styleFrom(
+          enableFeedback: _viewModel.textController.text.trim().isNotEmpty ||
+              state.selectedImage != null,
+          overlayColor: _viewModel.textController.text.trim().isEmpty &&
+                  state.selectedImage == null
+              ? Colors.transparent
+              : null,
+          backgroundColor: widget.isLoading
+              ? ColorManager.white
+              : _viewModel.textController.text.trim().isEmpty &&
+                      state.selectedImage == null
+                  ? ColorManager.grey
+                  : ColorManager.white,
+        ),
+        onPressed: () => !widget.isLoading
+            ? _viewModel.sendMessage(
+                chatId: widget.chatId,
+                isChatHistory: widget.isChatHistory,
+              )
+            : null,
+        icon: widget.isLoading
+            ? const SizedBox(
+                height: 25,
+                width: 25,
+                child: LoadingIndicator(
+                  indicatorType: Indicator.lineSpinFadeLoader,
+                ),
+              )
+            : Icon(
+                Icons.arrow_upward_rounded,
+                color: ColorManager.dark,
+                size: 25,
+              ),
+      ).withAllPadding(5);
+
+  Widget _buildImageCard(InputFieldState state) => Stack(
+        children: [
+          Image.file(
+            File(state.selectedImage!),
+            fit: BoxFit.cover,
+            width: 150,
+            height: 100,
+          ).circular(12),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: IconButton(
+              style: IconButton.styleFrom(
+                backgroundColor: ColorManager.black.withValues(alpha: 0.4),
+              ),
+              icon: const Icon(
+                Icons.close,
+                color: ColorManager.white,
+                size: 20,
+              ),
+              onPressed: () => _inputFieldBloc.add(
+                  UpdateImageEvent(selectedImage: null, recognizedText: null)),
+            ),
+          ),
+        ],
+      ).withOnlyPadding(bottom: 8);
 }
