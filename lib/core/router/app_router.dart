@@ -15,9 +15,9 @@ class AppRouter {
         return PageTransitionManager.fadeTransition(const HomeScreen());
       case RouteManager.chat:
         final sessionId = settings.arguments as List;
-        final chatAIBloc = settings.arguments as List;
+        final chatBloc = settings.arguments as List;
         return PageTransitionManager.slideTransition(ChatScreen(
-          chatAIBloc: chatAIBloc[1],
+          chatBloc: chatBloc[1],
           chatId: sessionId[0],
           isChatHistory: true,
         ));

@@ -7,7 +7,7 @@ part 'search_event.dart';
 part 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  final ChatAIBloc chatAIBloc;
+  final ChatBloc chatAIBloc;
   SearchBloc(this.chatAIBloc) : super(SearchInitial()) {
     on<SearchQueryChanged>(_onSearchQueryChanged);
     on<HideSearch>(_onHideSearch);

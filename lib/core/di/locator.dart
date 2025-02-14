@@ -18,12 +18,12 @@ void getItSetup() {
 
   getIt.registerLazySingleton<MessageRepository>(() => MessageRepository());
 
-  getIt.registerFactory<ChatAIBloc>(() => ChatAIBloc(
+  getIt.registerFactory<ChatBloc>(() => ChatBloc(
         getIt<GenerativeAIWebService>(),
         getIt<MessageRepository>(),
       ));
   getIt
-      .registerLazySingleton<SearchBloc>(() => SearchBloc(getIt<ChatAIBloc>()));
+      .registerLazySingleton<SearchBloc>(() => SearchBloc(getIt<ChatBloc>()));
 
   getIt.registerLazySingleton<ImagePickerService>(() => ImagePickerService());
   getIt.registerLazySingleton<TextRecognitionService>(
