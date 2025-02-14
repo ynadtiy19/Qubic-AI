@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:qubic_ai/core/utils/constants/colors.dart';
+import 'package:qubic_ai/core/utils/extensions/extensions.dart';
 import 'package:qubic_ai/core/utils/helper/custom_toast.dart';
 
 import '../utils/helper/clipboard.dart';
@@ -54,19 +55,16 @@ class PreBlockBuilder extends MarkdownElementBuilder {
           ),
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: SelectableText.rich(
-                TextSpan(
-                  children: _parseCode(content, language),
-                  style: const TextStyle(
-                    fontFamily: 'Consolas',
-                    fontSize: 14,
-                    color: ColorManager.codeBaseText,
-                  ),
+            child: SelectableText.rich(
+              TextSpan(
+                children: _parseCode(content, language),
+                style: const TextStyle(
+                  fontFamily: 'Consolas',
+                  fontSize: 14,
+                  color: ColorManager.codeBaseText,
                 ),
               ),
-            ),
+            ).withAllPadding(12),
           ),
         ),
       ],
@@ -102,14 +100,11 @@ class PreBlockBuilder extends MarkdownElementBuilder {
                       message: 'Code copied to clipboard')
                   : null;
             },
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Icon(
-                Icons.copy,
-                color: ColorManager.codeHeaderIcon,
-                size: 16,
-              ),
-            ),
+            child: const Icon(
+              Icons.copy,
+              color: ColorManager.codeHeaderIcon,
+              size: 16,
+            ).withSymmetricPadding(horizontal: 12),
           ),
         ],
       ),

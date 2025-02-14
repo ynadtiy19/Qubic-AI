@@ -27,71 +27,68 @@ class SlidableDismissCard extends StatelessWidget {
     final session = chatSessions[index];
     return ColoredBox(
       color: ColorManager.dark,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 1),
-        child: Slidable(
-          key: ValueKey(session.chatId.toString()),
-          endActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            extentRatio: 0.33,
-            children: [
-              SlidableAction(
-                onPressed: (_) {
-                  _chatBloc.add(DeleteChatSessionEvent(session.chatId));
-                  chatSessions.removeAt(index);
-                  showCustomToast(
-                    context,
-                    message: 'Chat deleted',
-                    durationInMilliseconds: 1500,
-                  );
-                },
-                backgroundColor: ColorManager.purple,
-                autoClose: true,
-                borderRadius: const BorderRadius.only(
-                  topRight: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
-                ),
-                foregroundColor: ColorManager.white,
-                icon: Icons.delete,
-                label: 'Delete',
+      child: Slidable(
+        key: ValueKey(session.chatId.toString()),
+        endActionPane: ActionPane(
+          motion: const ScrollMotion(),
+          extentRatio: 0.33,
+          children: [
+            SlidableAction(
+              onPressed: (_) {
+                _chatBloc.add(DeleteChatSessionEvent(session.chatId));
+                chatSessions.removeAt(index);
+                showCustomToast(
+                  context,
+                  message: 'Chat deleted',
+                  durationInMilliseconds: 1500,
+                );
+              },
+              backgroundColor: ColorManager.purple,
+              autoClose: true,
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(10),
+                bottomRight: Radius.circular(10),
               ),
-            ],
-          ),
-          child: chatMessages.lastOrNull?.message != null
-              ? Card(
-                  color: ColorManager.black,
-                  elevation: 0,
-                  margin: EdgeInsets.zero,
-                  surfaceTintColor: ColorManager.transparent,
-                  shape: const BeveledRectangleBorder(),
-                  child: ListTile(
-                    splashColor: ColorManager.purple,
-                    title: Text(
-                      chatMessages.last.message,
-                      textDirection: RegExpManager.getTextDirection(
-                        chatMessages.last.message,
-                      ),
-                      maxLines: 1,
-                      style: context.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    subtitle: Text(
-                      "Started on ${RegExpManager.formatDateTime(session.createdAt)}",
-                      style: context.textTheme.bodySmall
-                          ?.copyWith(color: ColorManager.grey),
-                    ),
-                    onTap: () => Navigator.pushNamed(
-                      context,
-                      RouteManager.chat,
-                      arguments: [session.chatId, _chatBloc],
-                    ),
-                  ),
-                )
-              : const SizedBox.shrink(),
+              foregroundColor: ColorManager.white,
+              icon: Icons.delete,
+              label: 'Delete',
+            ),
+          ],
         ),
-      ),
+        child: chatMessages.lastOrNull?.message != null
+            ? Card(
+                color: ColorManager.black,
+                elevation: 0,
+                margin: EdgeInsets.zero,
+                surfaceTintColor: ColorManager.transparent,
+                shape: const BeveledRectangleBorder(),
+                child: ListTile(
+                  splashColor: ColorManager.purple,
+                  title: Text(
+                    chatMessages.last.message,
+                    textDirection: RegExpManager.getTextDirection(
+                      chatMessages.last.message,
+                    ),
+                    maxLines: 1,
+                    style: context.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    "Started on ${RegExpManager.formatDateTime(session.createdAt)}",
+                    style: context.textTheme.bodySmall
+                        ?.copyWith(color: ColorManager.grey),
+                  ),
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    RouteManager.chat,
+                    arguments: [session.chatId, _chatBloc],
+                  ),
+                ),
+              )
+            : const SizedBox.shrink(),
+      ).withOnlyPadding(top: 1),
     );
   }
 }

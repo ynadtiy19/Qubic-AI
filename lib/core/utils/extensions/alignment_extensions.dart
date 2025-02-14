@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 extension AlignmentExtensions on Widget {
   // Center a widget
-  Widget centered() => Center(child: this);
+  Widget center() => Center(child: this);
 
   // Align a widget to a specific alignment
   Widget aligned(Alignment alignment) => Align(

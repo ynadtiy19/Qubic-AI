@@ -12,22 +12,20 @@ class EmptyBodyCard extends StatelessWidget {
   final String image;
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(
-            image,
-            height: 120.w,
-            width: 120.w,
-          ),
-          const SizedBox(height: 10),
-          Text(
-            title,
-            style: context.textTheme.bodyLarge?.copyWith(fontSize: 17.sp),
-          ),
-        ],
-      ),
-    );
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          image,
+          height: 120.w,
+          width: 120.w,
+        ),
+        const SizedBox(height: 10),
+        Text(
+          title,
+          style: context.textTheme.bodyLarge?.copyWith(fontSize: 17.sp),
+        ),
+      ],
+    ).center();
   }
 }

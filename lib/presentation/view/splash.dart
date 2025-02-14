@@ -29,30 +29,29 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(toolbarHeight: 0),
-      body: SizedBox(
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          Image.asset(
+            ImageManager.logo,
+            width: 100.w,
+            height: 100.w,
+          ),
+          Positioned(
+            bottom: 50.h,
+            child: ColorizeAnimatedText(
+              "Qubic AI",
+              speed: const Duration(milliseconds: 500),
+              textStyle: context.textTheme.bodyLarge!.copyWith(
+                fontSize: 30.0.sp,
+              ),
+              colors: ColorManager.colorizeColors,
+            ),
+          ),
+        ],
+      ).withSize(
         width: double.infinity,
         height: double.infinity,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Image.asset(
-              ImageManager.logo,
-              width: 100.w,
-              height: 100.w,
-            ),
-            Positioned(
-              bottom: 50.h,
-              child: ColorizeAnimatedText(
-                "Qubic AI",
-                speed: const Duration(milliseconds: 500),
-                textStyle: context.textTheme.bodyLarge!.copyWith(
-                  fontSize: 30.0.sp,
-                ),
-                colors: ColorManager.colorizeColors,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

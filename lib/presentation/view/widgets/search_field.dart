@@ -21,40 +21,37 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BounceIn(
-      child: Padding(
-        padding: EdgeInsets.all(4.w),
-        child: ColoredBox(
-          color: ColorManager.dark,
-          child: Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  autocorrect: true,
-                  textInputAction: TextInputAction.search,
-                  textAlignVertical: TextAlignVertical.center,
-                  controller: searchController,
-                  style: context.textTheme.bodyMedium
-                      ?.copyWith(fontSize: 15.spMin),
-                  textDirection:
-                      RegExpManager.getTextDirection(searchController.text),
-                  decoration: const InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-                    hintText: 'Search chat history',
-                  ),
-                  onChanged: onChanged,
+      child: ColoredBox(
+        color: ColorManager.dark,
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                autocorrect: true,
+                textInputAction: TextInputAction.search,
+                textAlignVertical: TextAlignVertical.center,
+                controller: searchController,
+                style: context.textTheme.bodyMedium
+                    ?.copyWith(fontSize: 15.spMin),
+                textDirection:
+                    RegExpManager.getTextDirection(searchController.text),
+                decoration: const InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                  hintText: 'Search chat history',
                 ),
+                onChanged: onChanged,
               ),
-              IconButton(
-                icon: Icon(
-                    searchController.text.isEmpty ? Icons.search : Icons.close),
-                color: ColorManager.grey,
-                onPressed: onClear,
-              ),
-            ],
-          ),
+            ),
+            IconButton(
+              icon: Icon(
+                  searchController.text.isEmpty ? Icons.search : Icons.close),
+              color: ColorManager.grey,
+              onPressed: onClear,
+            ),
+          ],
         ),
-      ),
+      ).withAllPadding(4),
     );
   }
 }

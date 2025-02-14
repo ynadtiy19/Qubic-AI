@@ -39,8 +39,8 @@ class BuildInputField extends StatefulWidget {
 }
 
 class _BuildInputFieldState extends State<BuildInputField> {
-  late final InputFieldBloc _inputFieldBloc;
-  late final InputFieldViewModel _viewModel;
+  late InputFieldBloc _inputFieldBloc;
+  late InputFieldViewModel _viewModel;
   late GlobalKey _popupMenuKey;
 
   @override
@@ -49,7 +49,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
     _inputFieldBloc = InputFieldBloc();
     _viewModel = InputFieldViewModel(
       inputFieldBloc: _inputFieldBloc,
-      generativeAIBloc: widget.chatBloc,
+      chatBloc: widget.chatBloc,
       imagePickerService: getIt<ImagePickerService>(),
       textRecognitionService: getIt<TextRecognitionService>(),
     );
@@ -120,39 +120,33 @@ class _BuildInputFieldState extends State<BuildInputField> {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (state.selectedImage != null)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Stack(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: Image.file(
-                          File(state.selectedImage!),
-                          fit: BoxFit.cover,
-                          width: 150,
-                          height: 100,
+                Stack(
+                  children: [
+                    Image.file(
+                      File(state.selectedImage!),
+                      fit: BoxFit.cover,
+                      width: 150,
+                      height: 100,
+                    ).circular(12),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: IconButton(
+                        style: IconButton.styleFrom(
+                          backgroundColor:
+                              ColorManager.black.withValues(alpha: 0.4),
                         ),
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: IconButton(
-                          style: IconButton.styleFrom(
-                            backgroundColor:
-                                ColorManager.black.withValues(alpha: 0.4),
-                          ),
-                          icon: const Icon(
-                            Icons.close,
-                            color: ColorManager.white,
-                            size: 20,
-                          ),
-                          onPressed: () => _inputFieldBloc.add(UpdateImageEvent(
-                              selectedImage: null, recognizedText: null)),
+                        icon: const Icon(
+                          Icons.close,
+                          color: ColorManager.white,
+                          size: 20,
                         ),
+                        onPressed: () => _inputFieldBloc.add(UpdateImageEvent(
+                            selectedImage: null, recognizedText: null)),
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                  ],
+                ).withOnlyPadding(bottom: 8),
               Container(
                 margin: EdgeInsets.only(
                     right: 9, left: 9, bottom: context.viewInsetsBottom + 8),
@@ -163,19 +157,15 @@ class _BuildInputFieldState extends State<BuildInputField> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 5, top: 5, bottom: 5),
-                      child: IconButton(
-                        key: _popupMenuKey,
-                        onPressed: showMessageBox,
-                        icon: const Icon(
-                          Icons.add,
-                          color: ColorManager.white,
-                          size: 25,
-                        ),
+                    IconButton(
+                      key: _popupMenuKey,
+                      onPressed: showMessageBox,
+                      icon: const Icon(
+                        Icons.add,
+                        color: ColorManager.white,
+                        size: 25,
                       ),
-                    ),
+                    ).withOnlyPadding(left: 5, top: 5, bottom: 5),
                     Expanded(
                       child: TextField(
                         minLines: 1,
@@ -192,47 +182,44 @@ class _BuildInputFieldState extends State<BuildInputField> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: IconButton(
-                        style: IconButton.styleFrom(
-                          enableFeedback: _viewModel.textController.text
-                                  .trim()
-                                  .isNotEmpty ||
-                              state.selectedImage != null,
-                          overlayColor:
-                              _viewModel.textController.text.trim().isEmpty &&
-                                      state.selectedImage == null
-                                  ? Colors.transparent
-                                  : null,
-                          backgroundColor: widget.isLoading
-                              ? ColorManager.white
-                              : _viewModel.textController.text.trim().isEmpty &&
-                                      state.selectedImage == null
-                                  ? ColorManager.grey
-                                  : ColorManager.white,
-                        ),
-                        onPressed: () => !widget.isLoading
-                            ? _viewModel.sendMessage(
-                                chatId: widget.chatId,
-                                isChatHistory: widget.isChatHistory,
-                              )
-                            : null,
-                        icon: widget.isLoading
-                            ? const SizedBox(
-                                height: 25,
-                                width: 25,
-                                child: LoadingIndicator(
-                                  indicatorType: Indicator.lineSpinFadeLoader,
-                                ),
-                              )
-                            : Icon(
-                                Icons.arrow_upward_rounded,
-                                color: ColorManager.dark,
-                                size: 25,
-                              ),
+                    IconButton(
+                      style: IconButton.styleFrom(
+                        enableFeedback: _viewModel.textController.text
+                                .trim()
+                                .isNotEmpty ||
+                            state.selectedImage != null,
+                        overlayColor:
+                            _viewModel.textController.text.trim().isEmpty &&
+                                    state.selectedImage == null
+                                ? Colors.transparent
+                                : null,
+                        backgroundColor: widget.isLoading
+                            ? ColorManager.white
+                            : _viewModel.textController.text.trim().isEmpty &&
+                                    state.selectedImage == null
+                                ? ColorManager.grey
+                                : ColorManager.white,
                       ),
-                    ),
+                      onPressed: () => !widget.isLoading
+                          ? _viewModel.sendMessage(
+                              chatId: widget.chatId,
+                              isChatHistory: widget.isChatHistory,
+                            )
+                          : null,
+                      icon: widget.isLoading
+                          ? const SizedBox(
+                              height: 25,
+                              width: 25,
+                              child: LoadingIndicator(
+                                indicatorType: Indicator.lineSpinFadeLoader,
+                              ),
+                            )
+                          : Icon(
+                              Icons.arrow_upward_rounded,
+                              color: ColorManager.dark,
+                              size: 25,
+                            ),
+                    ).withAllPadding(5),
                   ],
                 ),
               ),

@@ -51,113 +51,110 @@ class _AIBubbleState extends State<AIBubble> {
           ? GestureDetector(
               onTap: _showDate,
               onDoubleTap: _showDate,
-              child: Padding(
-                padding: EdgeInsets.only(left: 12.w, top: 7.h, bottom: 7.h),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      constraints:
-                          BoxConstraints(maxWidth: context.width / 1.2),
-                      padding: EdgeInsets.all(12.w),
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          topRight: Radius.circular(16),
-                          bottomRight: Radius.circular(16),
-                          topLeft: Radius.circular(16),
-                        ),
-                        color: ColorManager.dark,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    constraints:
+                        BoxConstraints(maxWidth: context.width / 1.2),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(16),
+                        bottomRight: Radius.circular(16),
+                        topLeft: Radius.circular(16),
                       ),
-                      child: TextSelectionTheme(
-                        data: context.theme.textSelectionTheme,
-                        child: SelectionArea(
-                          child: MarkdownBody(
-                            data: widget.message,
-                            styleSheet:
-                                MarkdownStyleSheet.fromTheme(context.theme)
-                                    .copyWith(
-                              p: context.textTheme.bodySmall?.copyWith(
-                                color: ColorManager.white,
-                              ),
-                              strong: context.textTheme.bodySmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: ColorManager.white,
-                              ),
-                              em: context.textTheme.bodySmall?.copyWith(
-                                fontStyle: FontStyle.italic,
-                                color: ColorManager.white,
-                              ),
-                              code: context.textTheme.bodySmall?.copyWith(
-                                color: ColorManager.white,
-                              ),
-                              tableBody: context.textTheme.bodySmall?.copyWith(
-                                color: ColorManager.white,
-                              ),
-                              tableHead: context.textTheme.bodySmall?.copyWith(
-                                color: ColorManager.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              tablePadding: EdgeInsets.zero,
-                              tableCellsPadding: const EdgeInsets.symmetric(
-                                  vertical: 4, horizontal: 6),
+                      color: ColorManager.dark,
+                    ),
+                    child: TextSelectionTheme(
+                      data: context.theme.textSelectionTheme,
+                      child: SelectionArea(
+                        child: MarkdownBody(
+                          data: widget.message,
+                          styleSheet:
+                              MarkdownStyleSheet.fromTheme(context.theme)
+                                  .copyWith(
+                            p: context.textTheme.bodySmall?.copyWith(
+                              color: ColorManager.white,
                             ),
-                            onTapLink: (text, href, title) {
-                              if (href != null) {
-                                UrlManager.launch(href);
-                              }
-                            },
-                            builders: {
-                              'pre': PreBlockBuilder(context),
-                              'code': InlineCodeBuilder(),
-                            },
+                            strong: context.textTheme.bodySmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: ColorManager.white,
+                            ),
+                            em: context.textTheme.bodySmall?.copyWith(
+                              fontStyle: FontStyle.italic,
+                              color: ColorManager.white,
+                            ),
+                            code: context.textTheme.bodySmall?.copyWith(
+                              color: ColorManager.white,
+                            ),
+                            tableBody: context.textTheme.bodySmall?.copyWith(
+                              color: ColorManager.white,
+                            ),
+                            tableHead: context.textTheme.bodySmall?.copyWith(
+                              color: ColorManager.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            tablePadding: EdgeInsets.zero,
+                            tableCellsPadding: const EdgeInsets.symmetric(
+                                vertical: 4, horizontal: 6),
                           ),
+                          onTapLink: (text, href, title) {
+                            if (href != null) {
+                              UrlManager.launch(href);
+                            }
+                          },
+                          builders: {
+                            'pre': PreBlockBuilder(context),
+                            'code': InlineCodeBuilder(),
+                          },
                         ),
                       ),
                     ),
-                    SizedBox(height: 5.h),
-                    Row(
-                      children: [
-                        Text(
-                          "AI",
-                          style: context.textTheme.bodySmall,
-                        ),
-                        AnimatedOpacity(
-                          duration: const Duration(milliseconds: 500),
+                  ),
+                  SizedBox(height: 5.h),
+                  Row(
+                    children: [
+                      Text(
+                        "AI",
+                        style: context.textTheme.bodySmall,
+                      ),
+                      AnimatedOpacity(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.ease,
+                        opacity: _isShowDateTime ? 1 : 0,
+                        child: AnimatedContainer(
                           curve: Curves.ease,
-                          opacity: _isShowDateTime ? 1 : 0,
-                          child: AnimatedContainer(
-                            curve: Curves.ease,
-                            duration: const Duration(milliseconds: 250),
-                            height: _isShowDateTime ? 18.h : 0.0,
-                            padding: EdgeInsets.only(left: 16.w),
-                            child: Row(
-                              children: [
-                                Text(
-                                  RegExpManager.formatDateTime(widget.time),
-                                  style: context.textTheme.bodySmall,
+                          duration: const Duration(milliseconds: 250),
+                          height: _isShowDateTime ? 18.h : 0.0,
+                          padding: EdgeInsets.only(left: 16.w),
+                          child: Row(
+                            children: [
+                              Text(
+                                RegExpManager.formatDateTime(widget.time),
+                                style: context.textTheme.bodySmall,
+                              ),
+                              SizedBox(width: 15.w),
+                              GestureDetector(
+                                onTap:
+                                    _isCopyMessage ? null : _copyToClipboard,
+                                child: Icon(
+                                  _isCopyMessage
+                                      ? Icons.done_rounded
+                                      : Icons.copy_all_rounded,
+                                  size: 16,
+                                  color: ColorManager.white,
                                 ),
-                                SizedBox(width: 15.w),
-                                GestureDetector(
-                                  onTap:
-                                      _isCopyMessage ? null : _copyToClipboard,
-                                  child: Icon(
-                                    _isCopyMessage
-                                        ? Icons.done_rounded
-                                        : Icons.copy_all_rounded,
-                                    size: 16,
-                                    color: ColorManager.white,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+                      ),
+                    ],
+                  ),
+                ],
+              ).withOnlyPadding(left: 12.w, top: 7.h, bottom: 7.h),
             )
           : const SizedBox.shrink(),
     );

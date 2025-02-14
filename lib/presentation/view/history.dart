@@ -95,14 +95,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       onClear: _viewModel.clearSearch,
                     ),
                   ),
-                  if (filteredSessions.isEmpty)
+                  if (filteredSessions.length <= 1)
                     SliverFillRemaining(
-                      child: Center(
-                        child: const EmptyBodyCard(
-                          title: "No matching chats found",
-                          image: ImageManager.history,
-                        ).withOnlyPadding(bottom: 10.h),
-                      ),
+                      child: const EmptyBodyCard(
+                        title: "No matching chats found",
+                        image: ImageManager.history,
+                      ).center().withOnlyPadding(bottom: 10.h),
                     )
                   else
                     SliverList(

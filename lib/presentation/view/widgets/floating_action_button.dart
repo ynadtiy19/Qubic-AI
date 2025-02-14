@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qubic_ai/core/utils/extensions/extensions.dart';
 
 import '../../../core/utils/constants/colors.dart';
 
@@ -9,19 +10,16 @@ class BuildFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: FloatingActionButton.small(
-        shape: const CircleBorder(),
-        splashColor: ColorManager.white.withOpacity(0.3),
-        elevation: 2,
-        onPressed: onPressed,
-        backgroundColor: ColorManager.purple,
-        child: Icon(
-          iconData ?? Icons.arrow_downward,
-          color: ColorManager.white,
-        ),
+    return FloatingActionButton.small(
+      shape: const CircleBorder(),
+      splashColor: ColorManager.white.withValues(alpha: 0.3),
+      elevation: 2,
+      onPressed: onPressed,
+      backgroundColor: ColorManager.purple,
+      child: Icon(
+        iconData ?? Icons.arrow_downward,
+        color: ColorManager.white,
       ),
-    );
+    ).withOnlyPadding(bottom: 10);
   }
 }

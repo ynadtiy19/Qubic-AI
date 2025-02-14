@@ -108,7 +108,7 @@ class _TopSnackBarState extends State<TopSnackBar>
     if (textStyle != null) {
       final effectiveTextStyle = textStyle.copyWith(
         fontSize: textStyle.fontSize != null
-            ? textStyle.fontSize! * mediaQuery.textScaleFactor
+            ? textStyle.fontSize! * mediaQuery.textScaler.textScaleFactor
             : null,
       );
 
@@ -155,32 +155,20 @@ class _TopSnackBarState extends State<TopSnackBar>
         children: [
           SlideTransition(
             position: _animation,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Material(
-                color: Colors.transparent,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(25),
-                  ),
-                  child: Container(
-                    width: containerWidth,
-                    color: widget.color.withOpacity(0.95),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 16, horizontal: 32),
-                    child: Center(
-                      child: Text(
-                        widget.message,
-                        maxLines: 3,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: textStyle,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                width: containerWidth,
+                color: widget.color.withValues(alpha: 0.95),
+                child: Text(
+                  widget.message,
+                  maxLines: 3,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  style: textStyle,
+                ).center().withSymmetricPadding(vertical: 16, horizontal: 32),
+              ).circular(25),
+            ).withAllPadding(8.0),
           ),
         ],
       ),

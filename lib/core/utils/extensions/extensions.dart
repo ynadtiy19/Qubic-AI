@@ -9,3 +9,5 @@ export '/core/utils/extensions/media_query_extensions.dart';
 export '/core/utils/extensions/sizedbox_extensions.dart';
 export '/core/utils/extensions/transform_extensions.dart';
 export '/core/utils/extensions/visibility_extensions.dart';
+export '/core/utils/extensions/cliprrect_extensions.dart';
+export '/core/utils/extensions/color_extensions.dart';

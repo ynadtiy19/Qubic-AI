@@ -9,13 +9,13 @@ import '../bloc/input/input_field_bloc.dart';
 class InputFieldViewModel {
   final TextEditingController _textController = TextEditingController();
   final InputFieldBloc inputFieldBloc;
-  final ChatBloc generativeAIBloc;
+  final ChatBloc chatBloc;
   final ImagePickerService imagePickerService;
   final TextRecognitionService textRecognitionService;
 
   InputFieldViewModel({
     required this.inputFieldBloc,
-    required this.generativeAIBloc,
+    required this.chatBloc,
     required this.imagePickerService,
     required this.textRecognitionService,
   }) {
@@ -68,7 +68,7 @@ class InputFieldViewModel {
     final currentState = inputFieldBloc.state;
 
     if (text.isNotEmpty || currentState.selectedImage != null) {
-      generativeAIBloc.add(StreamDataEvent(
+      chatBloc.add(StreamDataEvent(
         prompt: text,
         isUser: true,
         chatId: chatId ?? 0,
