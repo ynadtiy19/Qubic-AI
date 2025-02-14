@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qubic_ai/core/utils/extension/extension.dart';
+import 'package:qubic_ai/core/utils/extensions/extensions.dart';
 
 import '../../core/di/locator.dart';
 import '../../core/utils/constants/images.dart';

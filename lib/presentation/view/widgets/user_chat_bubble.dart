@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:qubic_ai/core/utils/extension/extension.dart';
+import 'package:qubic_ai/core/utils/extensions/extensions.dart';
 
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/helper/regexp_methods.dart';

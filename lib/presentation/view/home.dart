@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qubic_ai/core/di/locator.dart';
-import 'package:qubic_ai/core/utils/extension/extension.dart';
+import 'package:qubic_ai/core/utils/extensions/extensions.dart';
 import 'package:qubic_ai/core/utils/helper/network_status.dart';
 import 'package:qubic_ai/presentation/bloc/chat/chat_bloc.dart';
 

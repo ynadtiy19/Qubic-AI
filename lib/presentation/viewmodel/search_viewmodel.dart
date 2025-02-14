@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../bloc/chat/chat_bloc.dart';
 import '../bloc/search/search_bloc.dart';
-
+ 
 class SearchViewModel {
   final TextEditingController searchController;
   final SearchBloc searchBloc;

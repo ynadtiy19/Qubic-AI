@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:qubic_ai/core/utils/extensions/extensions.dart';
 import 'package:qubic_ai/core/utils/helper/custom_toast.dart';
 import 'package:qubic_ai/core/utils/helper/regexp_methods.dart';
 
 import '../../../core/utils/constants/colors.dart';
-import '../../../core/utils/extension/extension.dart';
 import '../../../core/utils/helper/clipboard.dart';
 import '../../../core/utils/helper/url_launcher.dart';
 import '../../../core/widgets/code_block_builder.dart';

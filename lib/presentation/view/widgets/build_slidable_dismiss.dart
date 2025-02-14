@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:qubic_ai/core/utils/extension/extension.dart';
+import 'package:qubic_ai/core/utils/extensions/extensions.dart';
 import 'package:qubic_ai/core/utils/helper/custom_toast.dart';
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/constants/routes.dart';

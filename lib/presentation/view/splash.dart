@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qubic_ai/core/utils/constants/colors.dart';
 import 'package:qubic_ai/core/utils/constants/routes.dart';
-import 'package:qubic_ai/core/utils/extension/extension.dart';
+import 'package:qubic_ai/core/utils/extensions/extensions.dart';
 
 import '../../core/utils/constants/images.dart';
 import '../../core/widgets/colorize_text_animation.dart';

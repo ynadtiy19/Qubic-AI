@@ -8,7 +8,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 import 'package:popup_menu/popup_menu.dart';
 import 'package:qubic_ai/core/di/locator.dart';
 import 'package:qubic_ai/core/service/text_recognition.dart';
-import 'package:qubic_ai/core/utils/extension/extension.dart';
+import 'package:qubic_ai/core/utils/extensions/extensions.dart';
 
 import '../../../core/service/image_packer.dart';
 import '../../../core/utils/constants/colors.dart';
