@@ -75,7 +75,7 @@ class MessageRepository {
 
   Future<int> createNewChatSession() async {
     final lastChatId = _sessionBox.values.isEmpty
-        ? 0
+        ? 2
         : _sessionBox.values
             .map((session) => session.chatId)
             .reduce((a, b) => a > b ? a : b);

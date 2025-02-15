@@ -17,6 +17,7 @@ import '../../bloc/chat/chat_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/input/input_field_bloc.dart';
+import '../../bloc/search/search_bloc.dart';
 import '../../viewmodel/input_field_viewmodel.dart';
 
 class BuildInputField extends StatefulWidget {
@@ -39,12 +40,14 @@ class BuildInputField extends StatefulWidget {
 
 class _BuildInputFieldState extends State<BuildInputField> {
   late InputFieldBloc _inputFieldBloc;
+  late SearchBloc _searchBloc;
   late InputFieldViewModel _viewModel;
   late GlobalKey _popupMenuKey;
 
   @override
   void initState() {
     super.initState();
+    _searchBloc = getIt<SearchBloc>();
     _inputFieldBloc = InputFieldBloc();
     _viewModel = InputFieldViewModel(
       inputFieldBloc: _inputFieldBloc,
@@ -112,15 +115,19 @@ class _BuildInputFieldState extends State<BuildInputField> {
       ),
       items: menuItems,
       onClickMenu: (item) async {
-        bool res = true;
+        bool? res = true;
         if (item.menuTitle == 'Camera') {
           res = await _viewModel.pickImage(ImageSource.camera);
         } else if (item.menuTitle == 'Gallery') {
           res = await _viewModel.pickImage(ImageSource.gallery);
         } else if (item.menuTitle == 'Chat') {
           widget.chatBloc.add(const CreateNewChatSessionEvent());
+          _searchBloc.add(SearchQueryChanged(''));
         }
-        if (!res) {
+        if (res == null) {
+          showCustomToast(context,
+              message: 'Image not found', color: ColorManager.error);
+        } else if (!res) {
           showCustomToast(context,
               message: 'No text recognized in the image',
               color: ColorManager.error);

@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qubic_ai/core/utils/constants/colors.dart';
@@ -32,10 +33,12 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          Image.asset(
-            ImageManager.logo,
-            width: 100.w,
-            height: 100.w,
+          Bounce(
+            child: Image.asset(
+              ImageManager.logo,
+              width: 100.w,
+              height: 100.w,
+            ),
           ),
           Positioned(
             bottom: 50.h,

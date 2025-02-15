@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qubic_ai/core/utils/extensions/extensions.dart';
@@ -21,9 +22,11 @@ class EmptyBodyCard extends StatelessWidget {
           width: 120.w,
         ),
         const SizedBox(height: 10),
-        Text(
-          title,
-          style: context.textTheme.bodyLarge?.copyWith(fontSize: 17.sp),
+        BounceIn(
+          child: Text(
+            title,
+            style: context.textTheme.bodyLarge?.copyWith(fontSize: 17.sp),
+          ),
         ),
       ],
     ).center();

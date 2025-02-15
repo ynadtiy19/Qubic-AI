@@ -142,10 +142,12 @@ class _AIBubbleState extends State<AIBubble> {
           ),
           tableBody: context.textTheme.bodySmall?.copyWith(
             color: ColorManager.white,
+            fontSize: 12,
           ),
           tableHead: context.textTheme.bodySmall?.copyWith(
             color: ColorManager.white,
             fontWeight: FontWeight.bold,
+            fontSize: 12,
           ),
           tablePadding: EdgeInsets.zero,
           tableCellsPadding:

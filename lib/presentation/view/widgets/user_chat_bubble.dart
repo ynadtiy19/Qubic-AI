@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:qubic_ai/core/utils/extensions/extensions.dart';
+import 'package:qubic_ai/core/utils/helper/custom_toast.dart';
 
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/helper/regexp_methods.dart';
@@ -51,21 +52,28 @@ class _UserBubbleState extends State<UserBubble> {
     setState(() {});
   }
 
-  void _showImage() async => await showGeneralDialog(
-        context: context,
-        barrierDismissible: true,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        transitionDuration: const Duration(milliseconds: 300),
-        pageBuilder: (context, animation, secondaryAnimation) {
-          return InteractiveViewer(
-            child: Image.file(
-              File(widget.image!),
-              fit: BoxFit.contain,
-            ),
-          ).withSymmetricPadding(horizontal: 14).center();
-        },
-      );
+  Future<void> _showImage() async {
+    if (widget.image == null || !File(widget.image!).existsSync()) {
+      showCustomToast(context,
+          message: "Image not found", color: ColorManager.error);
+      return;
+    }
+
+    await showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return InteractiveViewer(
+          child: Image.file(
+            File(widget.image!),
+            fit: BoxFit.contain,
+          ),
+        ).withSymmetricPadding(horizontal: 14).center();
+      },
+    );
+  }
 
   Widget _buildMessageCard() => Container(
         constraints: BoxConstraints(maxWidth: context.width / 1.3),
@@ -127,10 +135,12 @@ class _UserBubbleState extends State<UserBubble> {
           ),
           tableBody: context.textTheme.bodySmall?.copyWith(
             color: ColorManager.white,
+            fontSize: 12,
           ),
           tableHead: context.textTheme.bodySmall?.copyWith(
             color: ColorManager.white,
             fontWeight: FontWeight.bold,
+            fontSize: 12,
           ),
           tablePadding: EdgeInsets.zero,
           tableCellsPadding:

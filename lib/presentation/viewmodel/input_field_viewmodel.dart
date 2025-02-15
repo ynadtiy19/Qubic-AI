@@ -43,13 +43,13 @@ class InputFieldViewModel {
   //     inputFieldBloc.add(UpdateFieldEvent(_isFieldEmpty));
   //   }
   // }
-  Future<bool> pickImage(ImageSource source) async {
+  Future<bool?> pickImage(ImageSource source) async {
     try {
       final image = await imagePickerService.pickImage(source);
       if (image != null) {
         final recognizedText = await textRecognitionService.extractText(image);
         if (recognizedText.isEmpty) {
-          throw Exception("Image selected but no text recognized.");
+          return false;
         }
         inputFieldBloc.add(UpdateImageEvent(
           selectedImage: image.path,
@@ -57,9 +57,9 @@ class InputFieldViewModel {
         ));
         return true;
       }
-      return false;
+      return null;
     } catch (_) {
-      return false;
+      return null;
     }
   }
 
