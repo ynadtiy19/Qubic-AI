@@ -7,6 +7,7 @@ import 'package:qubic_ai/core/utils/extensions/extensions.dart';
 import 'package:qubic_ai/core/utils/helper/custom_toast.dart';
 
 import '../../../core/utils/constants/colors.dart';
+import '../../../core/utils/helper/clipboard.dart';
 import '../../../core/utils/helper/regexp_methods.dart';
 import '../../../core/utils/helper/url_launcher.dart';
 import '../../../core/widgets/code_block_builder.dart';
@@ -29,6 +30,7 @@ class UserBubble extends StatefulWidget {
 
 class _UserBubbleState extends State<UserBubble> {
   bool _isShowDateTime = false;
+  bool _isCopyMessage = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,17 @@ class _UserBubbleState extends State<UserBubble> {
         ],
       ).withOnlyPadding(right: 12.w, top: 7.h, bottom: 7.h),
     );
+  }
+
+  void _copyToClipboard() {
+    ClipboardManager.copyToClipboard(widget.message);
+    showCustomToast(context, message: "Copied to clipboard");
+    _isCopyMessage = true;
+    setState(() {});
+    Future.delayed(const Duration(milliseconds: 2500), () {
+      _isCopyMessage = false;
+      setState(() {});
+    });
   }
 
   void _showDate() {
@@ -169,9 +182,24 @@ class _UserBubbleState extends State<UserBubble> {
               duration: const Duration(milliseconds: 250),
               height: _isShowDateTime ? 18.h : 0.0,
               padding: EdgeInsets.only(right: 16.w),
-              child: Text(
-                RegExpManager.formatDateTime(widget.time),
-                style: context.textTheme.bodySmall,
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: _isCopyMessage ? null : _copyToClipboard,
+                    child: Icon(
+                      _isCopyMessage
+                          ? Icons.done_rounded
+                          : Icons.copy_all_rounded,
+                      size: 16,
+                      color: ColorManager.white,
+                    ),
+                  ),
+                  SizedBox(width: 15.w),
+                  Text(
+                    RegExpManager.formatDateTime(widget.time),
+                    style: context.textTheme.bodySmall,
+                  ),
+                ],
               ),
             ),
           ),

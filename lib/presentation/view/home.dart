@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Add this import
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qubic_ai/core/di/locator.dart';
 import 'package:qubic_ai/core/utils/extensions/extensions.dart';
@@ -57,14 +58,37 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    // ignore: deprecated_member_use
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      // ignore: deprecated_member_use
+      onPopInvoked: (bool didPop) async {
+        if (didPop) return;
+
         if (_currentTabIndex == 1) {
-          _tabController.index = 0;
-          return false;
+          setState(() {
+            _tabController.index = 0;
+          });
+        } else if (_currentTabIndex == 0) {
+          await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(
+                'Logout',
+                style: context.textTheme.bodyLarge,
+                textAlign: TextAlign.center,
+              ),
+              content: Text(
+                'Are you sure you want to logout?',
+                style: context.textTheme.bodySmall,
+                textAlign: TextAlign.center,
+              ),
+              actionsAlignment: MainAxisAlignment.center,
+              actions: [
+                _buildDialogActions(context),
+              ],
+            ),
+          );
         }
-        return true;
       },
       child: Scaffold(
         appBar: AppBar(
@@ -100,17 +124,33 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Tab _buildTab(String title, String icon) {
-    return Tab(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
+  Widget _buildDialogActions(context) => Row(
+        spacing: 10,
         children: [
-          Image.asset(icon, width: 20, height: 20),
-          const SizedBox(width: 8),
-          Text(title, style: context.textTheme.bodySmall),
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancel'),
+            ),
+          ),
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () => SystemNavigator.pop(),
+              child: const Text('Logout'),
+            ),
+          ),
         ],
-      ),
-    );
-  }
+      );
+
+  Tab _buildTab(String title, String icon) => Tab(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(icon, width: 20, height: 20),
+            const SizedBox(width: 8),
+            Text(title, style: context.textTheme.bodySmall),
+          ],
+        ),
+      );
 }

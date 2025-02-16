@@ -8,19 +8,20 @@ class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ButtonStyle(
-          overlayColor:
-              WidgetStatePropertyAll(ColorManager.white.withOpacity(0.2)),
-          foregroundColor: const WidgetStatePropertyAll(ColorManager.white),
-          backgroundColor: WidgetStatePropertyAll(ColorManager.dark),
-          shape: WidgetStatePropertyAll(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-        ),
+        style: ElevatedButton.styleFrom(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            backgroundColor: ColorManager.purple,
+            foregroundColor: ColorManager.white),
       ),
 
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side: BorderSide(width: 2)),
+            foregroundColor: ColorManager.white),
+      ),
       iconTheme: const IconThemeData(color: ColorManager.white, size: 25),
       useMaterial3: true,
       brightness: Brightness.dark,
