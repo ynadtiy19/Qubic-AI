@@ -18,8 +18,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   final GenerativeAIWebService _webService;
   final MessageRepository _messageRepository;
 
-  ChatBloc(this._webService, this._messageRepository)
-      : super(ChatInitial()) {
+  ChatBloc(this._webService, this._messageRepository) : super(ChatInitial()) {
     on<PostDataEvent>(_onPostData);
     on<StreamDataEvent>(_onStreamData);
     on<CreateNewChatSessionEvent>(_onCreateNewChatSession);
@@ -64,8 +63,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     }
   }
 
-  Future<void> _onPostData(
-      PostDataEvent event, Emitter<ChatState> emit) async {
+  Future<void> _onPostData(PostDataEvent event, Emitter<ChatState> emit) async {
     emit(ChatLoading());
     try {
       if (!await NetworkManager.isConnected()) {
@@ -80,7 +78,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         message: event.prompt, // Original text only
         timestamp: DateTime.now().toString(),
       );
-
+      emit(ChatSendSuccess());
       // Get all messages (including the one we just added)
       final messages = _messageRepository.getMessages(event.chatId);
 
@@ -103,7 +101,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           message: response,
           timestamp: DateTime.now().toString(),
         );
-        emit(ChatSuccess(response));
+        emit(ChatReciveSuccess(response));
       } else {
         emit(ChatFailure("Failed to get a response"));
       }
@@ -117,25 +115,23 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       StreamDataEvent event, Emitter<ChatState> emit) async {
     emit(ChatLoading());
     final StringBuffer fullResponse = StringBuffer();
+    String buffer = '';
 
     try {
       if (!await NetworkManager.isConnected()) {
         emit(ChatFailure("No internet connection"));
       }
 
-      // Save ONLY the original prompt to the database
       await _messageRepository.addMessage(
         chatId: event.chatId,
         isUser: true,
         image: event.image,
-        message: event.prompt, // Original text only
+        message: event.prompt,
         timestamp: DateTime.now().toString(),
       );
-
-      // Get all messages (including the one we just added)
+      emit(ChatSendSuccess());
       final messages = _messageRepository.getMessages(event.chatId);
 
-      // Prepare AI content: Combine recognizedText with the latest message
       final contents = messages.map((msg) {
         if (msg == messages.last && event.recognizedText != null) {
           return ai.Content.text(
@@ -145,15 +141,38 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         }
       }).toList();
 
-      // Stream response
       await for (final chunk in _webService.streamData(contents)) {
         if (chunk != null) {
           fullResponse.write(chunk);
-          emit(ChatStreaming(chunk));
+          buffer += chunk;
+
+          while (buffer.isNotEmpty) {
+            final part = buffer.substring(0, 1);
+            emit(ChatStreaming(part));
+            buffer = buffer.substring(1);
+            await Future.delayed(Duration(microseconds: 200));
+          }
         }
       }
 
-      // Save AI response
+      // await for (final chunk in _webService.streamData(contents)) {
+      //   if (chunk != null) {
+      //     fullResponse.write(chunk);
+      //     buffer += chunk;
+
+      //     while (buffer.contains(' ')) {
+      //       final part = buffer.substring(0, buffer.indexOf(' ') + 1);
+      //       emit(ChatStreaming(part));
+      //       buffer = buffer.substring(buffer.indexOf(' ') + 1);
+      //       await Future.delayed(Duration(milliseconds: 200));
+      //     }
+      //   }
+      // }
+
+      if (buffer.isNotEmpty) {
+        emit(ChatStreaming(buffer));
+      }
+
       final completeResponse = fullResponse.toString();
       await _messageRepository.addMessage(
         chatId: event.chatId,
@@ -162,7 +181,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         timestamp: DateTime.now().toString(),
       );
 
-      emit(ChatSuccess(completeResponse));
+      emit(ChatReciveSuccess(completeResponse));
     } catch (error) {
       log(error.toString());
       emit(ChatFailure("Failed to get a response"));

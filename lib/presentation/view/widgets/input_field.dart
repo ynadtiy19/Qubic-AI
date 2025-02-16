@@ -193,13 +193,9 @@ class _BuildInputFieldState extends State<BuildInputField> {
               )
             : null,
         icon: widget.isLoading
-            ? const SizedBox(
-                height: 25,
-                width: 25,
-                child: LoadingIndicator(
-                  indicatorType: Indicator.lineSpinFadeLoader,
-                ),
-              )
+            ? LoadingIndicator(
+                indicatorType: Indicator.ballPulseSync,
+              ).withSize(width: 25, height: 25)
             : Icon(
                 Icons.arrow_upward_rounded,
                 color: ColorManager.dark,

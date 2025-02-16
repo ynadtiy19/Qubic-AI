@@ -7,10 +7,12 @@ class ChatInitial extends ChatState {}
 
 class ChatLoading extends ChatState {}
 
-class ChatSuccess extends ChatState {
+class ChatSendSuccess extends ChatState {}
+
+class ChatReciveSuccess extends ChatState {
   final String response;
 
-  ChatSuccess(this.response);
+  ChatReciveSuccess(this.response);
 }
 
 class ChatStreaming extends ChatState {
@@ -36,4 +38,5 @@ class ChatSessionDeleted extends ChatState {
 
   ChatSessionDeleted(this.chatId);
 }
+
 class ChatListUpdated extends ChatState {}

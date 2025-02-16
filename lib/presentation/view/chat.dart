@@ -29,7 +29,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   late ChatViewModel _viewModel;
-  late  ScrollController _scrollController;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
@@ -83,20 +83,25 @@ class _ChatScreenState extends State<ChatScreen> {
               message: state.error, color: ColorManager.error);
         }
         if (state is ChatStreaming) {
-          _viewModel.isLoading = true;
           _viewModel.prompt += state.streamedText;
+          _viewModel.isLoading = true;
           _scrollToEnd(100);
           _isButtonVisible = false;
         }
-        if (state is ChatSuccess) {
+        if (state is ChatReciveSuccess) {
           _viewModel.isLoading = false;
           _viewModel.prompt = "";
+          _isButtonVisible = false;
+          _scrollToEnd(100);
+        }
+        if (state is ChatSendSuccess) {
           _isButtonVisible = false;
           _scrollToEnd(100);
         }
         if (state is NewChatSessionCreated) {
           _isButtonVisible = false;
           _viewModel.isLoading = false;
+          _scrollToEnd(100);
           showCustomToast(context, message: "New Chat Created Successfully!");
         }
       },
@@ -113,8 +118,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 )
               : null,
           resizeToAvoidBottomInset: false,
-          floatingActionButton:  _isButtonVisible
-              ? BuildFloatingActionButton(onPressed:  _scrollToEnd)
+          floatingActionButton: _isButtonVisible
+              ? BuildFloatingActionButton(onPressed: _scrollToEnd)
               : null,
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
@@ -127,7 +132,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   )
                 : BuildChatListViewBuilder(
                     state: state,
-                    scrollController:  _scrollController,
+                    scrollController: _scrollController,
                     messagesLength: messagesLength,
                     prompt: _viewModel.prompt,
                     messages: messages,
@@ -144,4 +149,3 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
-
