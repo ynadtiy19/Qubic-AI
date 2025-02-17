@@ -85,7 +85,6 @@ class _ChatScreenState extends State<ChatScreen> {
         if (state is ChatStreaming) {
           _viewModel.prompt += state.streamedText;
           _viewModel.isLoading = true;
-          _scrollToEnd(100);
           _isButtonVisible = false;
         }
         if (state is ChatReciveSuccess) {

@@ -98,9 +98,9 @@ class _BuildInputFieldState extends State<BuildInputField> {
 
   void _showMenuBox() {
     final menuItems = [
-      _buildMenuItem("Camera", Icons.camera_alt_rounded),
-      _buildMenuItem("Gallery", Icons.photo_library_rounded),
-      if (!widget.isChatHistory) _buildMenuItem("Chat", Icons.add),
+      _buildMenuItem("Camera", Icons.add_a_photo_outlined),
+      _buildMenuItem("Gallery", Icons.add_photo_alternate_outlined),
+      if (!widget.isChatHistory) _buildMenuItem("Chat", Icons.add_box_outlined),
     ];
 
     PopupMenu(
@@ -173,7 +173,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
 
   Widget _buildSendMessageButton(InputFieldState state) => IconButton(
         style: IconButton.styleFrom(
-          enableFeedback: _viewModel.textController.text.trim().isNotEmpty ||
+          enableFeedback: !widget.isLoading ||
               state.selectedImage != null,
           overlayColor: _viewModel.textController.text.trim().isEmpty &&
                   state.selectedImage == null
@@ -194,7 +194,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
             : null,
         icon: widget.isLoading
             ? LoadingIndicator(
-                indicatorType: Indicator.ballPulseSync,
+                indicatorType: Indicator.ballBeat,
               ).withSize(width: 25, height: 25)
             : Icon(
                 Icons.arrow_upward_rounded,

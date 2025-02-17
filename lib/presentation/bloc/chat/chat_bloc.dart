@@ -70,19 +70,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         emit(ChatFailure("No internet connection"));
       }
 
-      // Save ONLY the original prompt to the database
       await _messageRepository.addMessage(
         chatId: event.chatId,
         isUser: true,
         image: event.image,
-        message: event.prompt, // Original text only
+        message: event.prompt,
         timestamp: DateTime.now().toString(),
       );
       emit(ChatSendSuccess());
-      // Get all messages (including the one we just added)
       final messages = _messageRepository.getMessages(event.chatId);
 
-      // Prepare AI content: Combine recognizedText with the latest message
       final contents = messages.map((msg) {
         if (msg == messages.last && event.recognizedText != null) {
           return ai.Content.text(
@@ -92,7 +89,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         }
       }).toList();
 
-      // Send to AI
       final response = await _webService.postData(contents);
       if (response != null) {
         await _messageRepository.addMessage(
@@ -115,7 +111,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       StreamDataEvent event, Emitter<ChatState> emit) async {
     emit(ChatLoading());
     final StringBuffer fullResponse = StringBuffer();
-    String buffer = '';
 
     try {
       if (!await NetworkManager.isConnected()) {
@@ -130,6 +125,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         timestamp: DateTime.now().toString(),
       );
       emit(ChatSendSuccess());
+
       final messages = _messageRepository.getMessages(event.chatId);
 
       final contents = messages.map((msg) {
@@ -144,33 +140,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       await for (final chunk in _webService.streamData(contents)) {
         if (chunk != null) {
           fullResponse.write(chunk);
-          buffer += chunk;
-
-          while (buffer.isNotEmpty) {
-            final part = buffer.substring(0, 1);
-            emit(ChatStreaming(part));
-            buffer = buffer.substring(1);
-            await Future.delayed(Duration(microseconds: 200));
-          }
+          emit(ChatStreaming(chunk));
         }
-      }
-
-      // await for (final chunk in _webService.streamData(contents)) {
-      //   if (chunk != null) {
-      //     fullResponse.write(chunk);
-      //     buffer += chunk;
-
-      //     while (buffer.contains(' ')) {
-      //       final part = buffer.substring(0, buffer.indexOf(' ') + 1);
-      //       emit(ChatStreaming(part));
-      //       buffer = buffer.substring(buffer.indexOf(' ') + 1);
-      //       await Future.delayed(Duration(milliseconds: 200));
-      //     }
-      //   }
-      // }
-
-      if (buffer.isNotEmpty) {
-        emit(ChatStreaming(buffer));
       }
 
       final completeResponse = fullResponse.toString();

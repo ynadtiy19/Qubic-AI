@@ -8,8 +8,8 @@ import '../../../core/utils/helper/regexp_methods.dart';
 import '../../../data/models/hive.dart';
 import '../../bloc/chat/chat_bloc.dart';
 
-class SlidableDismissCard extends StatelessWidget {
-  const SlidableDismissCard({
+class SlidableChatCard extends StatelessWidget {
+  const SlidableChatCard({
     super.key,
     required ChatBloc chatBloc,
     required this.chatMessages,

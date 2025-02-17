@@ -16,7 +16,7 @@ class AppRouter {
       case RouteManager.chat:
         final sessionId = settings.arguments as List;
         final chatBloc = settings.arguments as List;
-        return PageTransitionManager.slideTransition(ChatScreen(
+        return PageTransitionManager.materialSlideTransition(ChatScreen(
           chatBloc: chatBloc[1],
           chatId: sessionId[0],
           isChatHistory: true,

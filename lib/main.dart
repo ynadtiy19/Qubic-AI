@@ -21,7 +21,7 @@ Future<void> main() async {
   getItSetup();
   await PermissionService().requestNotificationPermission();
   await NotificationService().init();
-    await BackgroundService.initialize();
+  await BackgroundService.initialize();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       systemNavigationBarColor: ColorManager.black,
@@ -30,4 +30,3 @@ Future<void> main() async {
   );
   runApp(const MyApp());
 }
-

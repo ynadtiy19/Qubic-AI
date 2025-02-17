@@ -14,15 +14,7 @@ void onStart(ServiceInstance service) async {
   final notificationService = NotificationService();
   await notificationService.init(createChannel: false);
 
-  if (service is AndroidServiceInstance) {
-    service.setForegroundNotificationInfo(
-      title: "Qubic AI Service",
-      content: "Running in background",
-    );
-  }
-
-  Timer.periodic(const Duration(minutes: 1), (timer) async {
-    // 8-hour interval
+  Timer.periodic(const Duration(hours: 8), (timer) async {
     try {
       await notificationService.showNotification(
         id: 1,
@@ -44,7 +36,7 @@ class BackgroundService {
       androidConfiguration: AndroidConfiguration(
         onStart: onStart,
         autoStart: true,
-        isForegroundMode: true,
+        isForegroundMode: false,
         notificationChannelId: 'qubic_ai_channel',
         initialNotificationTitle: 'Qubic AI',
         initialNotificationContent: 'Initializing...',

@@ -8,7 +8,7 @@ import '../../core/utils/constants/images.dart';
 import '../bloc/chat/chat_bloc.dart';
 import '../bloc/search/search_bloc.dart';
 import '../viewmodel/search_viewmodel.dart';
-import 'widgets/build_slidable_dismiss.dart';
+import 'widgets/slidable_chat_card.dart';
 import 'widgets/empty_body.dart';
 import 'widgets/floating_action_button.dart';
 import 'widgets/search_field.dart';
@@ -109,7 +109,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           final session = filteredSessions[index];
                           final chatMessages =
                               _chatBloc.getMessages(session.chatId);
-                          return SlidableDismissCard(
+                          return SlidableChatCard(
                             index: index,
                             chatSessions: filteredSessions,
                             chatBloc: _chatBloc,
