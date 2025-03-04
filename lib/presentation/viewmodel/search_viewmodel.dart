@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../bloc/chat/chat_bloc.dart';
 import '../bloc/search/search_bloc.dart';
- 
+
 class SearchViewModel {
   final TextEditingController searchController;
   final SearchBloc searchBloc;
@@ -24,11 +24,15 @@ class SearchViewModel {
   }
 
   void handleSearchChange(String value) {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
-      searchBloc.add(SearchQueryChanged(value.trim()));
-    });
+    searchBloc.add(SearchQueryChanged(value.trim()));
   }
+
+  // void handleSearchChange(String value) {
+  //   if (_debounce?.isActive ?? false) _debounce?.cancel();
+  //   _debounce = Timer(const Duration(milliseconds: 500), () {
+  //     searchBloc.add(SearchQueryChanged(value.trim()));
+  //   });
+  // }
 
   void clearSearch() {
     searchController.clear();

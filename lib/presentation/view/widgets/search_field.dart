@@ -7,7 +7,7 @@ import 'package:qubic_ai/core/utils/extensions/extensions.dart';
 import '../../../core/utils/helper/regexp_methods.dart';
 
 class SearchField extends StatelessWidget {
-  const SearchField({
+  const  SearchField({
     super.key,
     required this.searchController,
     required this.onChanged,

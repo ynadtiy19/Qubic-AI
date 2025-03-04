@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Add this import
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -134,9 +135,11 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
           Expanded(
-            child: ElevatedButton(
-              onPressed: () => SystemNavigator.pop(),
-              child: const Text('Logout'),
+            child: BounceIn(
+              child: ElevatedButton(
+                onPressed: () => SystemNavigator.pop(),
+                child: const Text('Logout'),
+              ),
             ),
           ),
         ],

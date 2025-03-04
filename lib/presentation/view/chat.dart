@@ -50,7 +50,7 @@ class _ChatScreenState extends State<ChatScreen> {
   bool _isButtonVisible = false;
 
   void _scrollListener() {
-    final isAtBottom = _scrollController.position.pixels <= 150;
+    final isAtBottom = _scrollController.position.pixels <= 100;
     if (!isAtBottom && !_isButtonVisible) {
       setState(() => _isButtonVisible = true);
     } else if (isAtBottom && _isButtonVisible) {

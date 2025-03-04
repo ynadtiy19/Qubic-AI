@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -141,14 +142,14 @@ class _BuildInputFieldState extends State<BuildInputField> {
       title: title,
       textStyle: context.textTheme.bodySmall
           ?.copyWith(fontWeight: FontWeight.w500, fontSize: 11.spMin),
-      image: Icon(icon, color: ColorManager.white, size: 22),
+      image: FadeIn(child: Icon(icon, color: ColorManager.white, size: 22)),
     );
   }
 
   Widget _buildTextField() => Expanded(
         child: TextField(
           minLines: 1,
-          maxLines: 5,
+          maxLines: 10,
           style: context.textTheme.bodyMedium?.copyWith(fontSize: 15.spMin),
           controller: _viewModel.textController,
           textDirection:
@@ -161,47 +162,50 @@ class _BuildInputFieldState extends State<BuildInputField> {
         ),
       );
 
-  Widget _buildMenuButton() => IconButton(
-        key: _popupMenuKey,
-        onPressed: _showMenuBox,
-        icon: const Icon(
-          Icons.add,
-          color: ColorManager.white,
-          size: 25,
-        ),
-      ).withOnlyPadding(left: 5, top: 5, bottom: 5);
+  Widget _buildMenuButton() => BounceIn(
+    child: IconButton(
+          key: _popupMenuKey,
+          onPressed: _showMenuBox,
+          icon: const Icon(
+            Icons.add,
+            color: ColorManager.white,
+            size: 25,
+          ),
+        ).withOnlyPadding(left: 5, top: 5, bottom: 5),
+  );
 
-  Widget _buildSendMessageButton(InputFieldState state) => IconButton(
-        style: IconButton.styleFrom(
-          enableFeedback: !widget.isLoading ||
-              state.selectedImage != null,
-          overlayColor: _viewModel.textController.text.trim().isEmpty &&
-                  state.selectedImage == null
-              ? Colors.transparent
+  Widget _buildSendMessageButton(InputFieldState state) => BounceIn(
+        child: IconButton(
+          style: IconButton.styleFrom(
+            enableFeedback: !widget.isLoading || state.selectedImage != null,
+            overlayColor: _viewModel.textController.text.trim().isEmpty &&
+                    state.selectedImage == null
+                ? Colors.transparent
+                : null,
+            backgroundColor: widget.isLoading
+                ? ColorManager.white
+                : _viewModel.textController.text.trim().isEmpty &&
+                        state.selectedImage == null
+                    ? ColorManager.grey
+                    : ColorManager.white,
+          ),
+          onPressed: () => !widget.isLoading
+              ? _viewModel.sendMessage(
+                  chatId: widget.chatId,
+                  isChatHistory: widget.isChatHistory,
+                )
               : null,
-          backgroundColor: widget.isLoading
-              ? ColorManager.white
-              : _viewModel.textController.text.trim().isEmpty &&
-                      state.selectedImage == null
-                  ? ColorManager.grey
-                  : ColorManager.white,
-        ),
-        onPressed: () => !widget.isLoading
-            ? _viewModel.sendMessage(
-                chatId: widget.chatId,
-                isChatHistory: widget.isChatHistory,
-              )
-            : null,
-        icon: widget.isLoading
-            ? LoadingIndicator(
-                indicatorType: Indicator.ballBeat,
-              ).withSize(width: 25, height: 25)
-            : Icon(
-                Icons.arrow_upward_rounded,
-                color: ColorManager.dark,
-                size: 25,
-              ),
-      ).withAllPadding(5);
+          icon: widget.isLoading
+              ? LoadingIndicator(
+                  indicatorType: Indicator.ballBeat,
+                ).withSize(width: 25, height: 25)
+              : Icon(
+                  Icons.arrow_upward_rounded,
+                  color: ColorManager.dark,
+                  size: 25,
+                ),
+        ).withAllPadding(5),
+      );
 
   Widget _buildImageCard(InputFieldState state) => Stack(
         children: [

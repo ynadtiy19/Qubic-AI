@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,7 +43,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   void _scrollListener() {
-    final isAtBottom = _scrollController.position.pixels <= 150;
+    final isAtBottom = _scrollController.position.pixels <= 100;
     if (!isAtBottom && !_showScrollButton) {
       setState(() => _showScrollButton = true);
     } else if (isAtBottom && _showScrollButton) {
@@ -85,41 +86,43 @@ class _HistoryScreenState extends State<HistoryScreen> {
               final filteredSessions = searchState is SearchResults
                   ? searchState.filteredSessions
                   : _chatBloc.getChatSessions();
-              return CustomScrollView(
-                controller: _scrollController,
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: SearchField(
-                      searchController: _viewModel.searchController,
-                      onChanged: _viewModel.handleSearchChange,
-                      onClear: _viewModel.clearSearch,
-                    ),
-                  ),
-                  if (filteredSessions.length <= 1)
-                    SliverFillRemaining(
-                      child: const EmptyBodyCard(
-                        title: "No matching chats found",
-                        image: ImageManager.history,
-                      ).center().withOnlyPadding(bottom: 10.h),
-                    )
-                  else
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final session = filteredSessions[index];
-                          final chatMessages =
-                              _chatBloc.getMessages(session.chatId);
-                          return SlidableChatCard(
-                            index: index,
-                            chatSessions: filteredSessions,
-                            chatBloc: _chatBloc,
-                            chatMessages: chatMessages,
-                          );
-                        },
-                        childCount: filteredSessions.length,
+              return FadeInDown(
+                child: CustomScrollView(
+                  controller: _scrollController,
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: SearchField(
+                        searchController: _viewModel.searchController,
+                        onChanged: _viewModel.handleSearchChange,
+                        onClear: _viewModel.clearSearch,
                       ),
                     ),
-                ],
+                    if (filteredSessions.length <= 1)
+                      SliverFillRemaining(
+                        child: const EmptyBodyCard(
+                          title: "No matching chats found",
+                          image: ImageManager.history,
+                        ).center().withOnlyPadding(bottom: 10.h),
+                      )
+                    else
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final session = filteredSessions[index];
+                            final chatMessages =
+                                _chatBloc.getMessages(session.chatId);
+                            return SlidableChatCard(
+                              index: index,
+                              chatSessions: filteredSessions,
+                              chatBloc: _chatBloc,
+                              chatMessages: chatMessages,
+                            );
+                          },
+                          childCount: filteredSessions.length,
+                        ),
+                      ),
+                  ],
+                ),
               );
             },
           );
