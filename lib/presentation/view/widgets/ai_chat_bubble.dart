@@ -112,7 +112,7 @@ class _AIBubbleState extends State<AIBubble> {
                       _isCopyMessage
                           ? Icons.done_rounded
                           : Icons.copy_all_rounded,
-                      size: 16,
+                      size: 20,
                       color: ColorManager.white,
                     ),
                   ),

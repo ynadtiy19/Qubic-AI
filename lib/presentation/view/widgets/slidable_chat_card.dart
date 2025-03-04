@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:qubic_ai/core/utils/extensions/extensions.dart';
 import 'package:qubic_ai/core/utils/helper/custom_toast.dart';
+
 import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/constants/routes.dart';
 import '../../../core/utils/helper/regexp_methods.dart';
@@ -63,7 +64,6 @@ class SlidableChatCard extends StatelessWidget {
                 surfaceTintColor: ColorManager.transparent,
                 shape: const BeveledRectangleBorder(),
                 child: ListTile(
-                  splashColor: ColorManager.purple,
                   title: Text(
                     chatMessages.last.message,
                     textDirection: RegExpManager.getTextDirection(
