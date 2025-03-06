@@ -11,14 +11,12 @@ import '../../../core/utils/helper/url_launcher.dart';
 import '../../../core/widgets/code_block_builder.dart';
 
 class AIBubble extends StatefulWidget {
-  const AIBubble({
-    super.key,
-    required this.message,
-    required this.time,
-  });
+  const AIBubble(
+      {super.key, required this.message, required this.time, this.isStreaming});
 
   final String message;
   final String time;
+  final bool? isStreaming;
 
   @override
   State<AIBubble> createState() => _AIBubbleState();
@@ -69,12 +67,23 @@ class _AIBubbleState extends State<AIBubble> {
         constraints: BoxConstraints(maxWidth: context.width / 1.2),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-            topRight: Radius.circular(16),
-            bottomRight: Radius.circular(16),
-            topLeft: Radius.circular(16),
-          ),
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(16),
+              bottomRight: Radius.circular(16),
+              topLeft: Radius.circular(16),
+              bottomLeft: widget.isStreaming == true
+                  ? Radius.circular(16)
+                  : Radius.zero),
           color: ColorManager.dark,
+          boxShadow: widget.isStreaming == true
+              ? [
+                  BoxShadow(
+                    color: ColorManager.purple,
+                    blurRadius: 30,
+                    offset: Offset(0, 0),
+                  ),
+                ]
+              : null,
         ),
         child: TextSelectionTheme(
           data: context.theme.textSelectionTheme,

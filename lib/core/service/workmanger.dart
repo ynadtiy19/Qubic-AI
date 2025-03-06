@@ -39,7 +39,7 @@ class WorkManagerService {
     Workmanager().registerPeriodicTask(
       "1",
       periodicTaskName,
-      frequency: const Duration(minutes: 8),
+      frequency: const Duration(hours: 8),
       initialDelay: const Duration(seconds: 10),
     );
   }

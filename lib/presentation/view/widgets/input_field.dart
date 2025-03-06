@@ -81,6 +81,11 @@ class _BuildInputFieldState extends State<BuildInputField> {
               decoration: BoxDecoration(
                 color: ColorManager.grey.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(30),
+                border: _viewModel.textController.text.isNotEmpty
+                    ? Border.all(
+                        color: ColorManager.purple,
+                      )
+                    : null,
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -100,7 +105,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
   void _showMenuBox() {
     final menuItems = [
       _buildMenuItem("Camera", Icons.add_a_photo_outlined),
-      _buildMenuItem("Gallery", Icons.add_photo_alternate_outlined),
+      _buildMenuItem("Image", Icons.add_photo_alternate_outlined),
       if (!widget.isChatHistory) _buildMenuItem("Chat", Icons.add_box_outlined),
     ];
 
@@ -119,7 +124,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
         bool? res = true;
         if (item.menuTitle == 'Camera') {
           res = await _viewModel.pickImage(ImageSource.camera);
-        } else if (item.menuTitle == 'Gallery') {
+        } else if (item.menuTitle == 'Image') {
           res = await _viewModel.pickImage(ImageSource.gallery);
         } else if (item.menuTitle == 'Chat') {
           widget.chatBloc.add(const CreateNewChatSessionEvent());
@@ -149,7 +154,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
   Widget _buildTextField() => Expanded(
         child: TextField(
           minLines: 1,
-          maxLines: 10,
+          maxLines: 8,
           style: context.textTheme.bodyMedium?.copyWith(fontSize: 15.spMin),
           controller: _viewModel.textController,
           textDirection:
@@ -163,7 +168,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
       );
 
   Widget _buildMenuButton() => BounceIn(
-    child: IconButton(
+        child: IconButton(
           key: _popupMenuKey,
           onPressed: _showMenuBox,
           icon: const Icon(
@@ -172,7 +177,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
             size: 25,
           ),
         ).withOnlyPadding(left: 5, top: 5, bottom: 5),
-  );
+      );
 
   Widget _buildSendMessageButton(InputFieldState state) => BounceIn(
         child: IconButton(
@@ -186,7 +191,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
                 ? ColorManager.white
                 : _viewModel.textController.text.trim().isEmpty &&
                         state.selectedImage == null
-                    ? ColorManager.grey
+                    ? ColorManager.white.withValues(alpha: 0.5)
                     : ColorManager.white,
           ),
           onPressed: () => !widget.isLoading

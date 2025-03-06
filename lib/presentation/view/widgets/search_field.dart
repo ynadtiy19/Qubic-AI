@@ -7,7 +7,7 @@ import 'package:qubic_ai/core/utils/extensions/extensions.dart';
 import '../../../core/utils/helper/regexp_methods.dart';
 
 class SearchField extends StatelessWidget {
-  const  SearchField({
+  const SearchField({
     super.key,
     required this.searchController,
     required this.onChanged,
@@ -22,7 +22,7 @@ class SearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BounceIn(
       child: ColoredBox(
-        color: ColorManager.dark,
+        color: ColorManager.grey.withValues(alpha: 0.18),
         child: Row(
           children: [
             Expanded(
@@ -31,8 +31,8 @@ class SearchField extends StatelessWidget {
                 textInputAction: TextInputAction.search,
                 textAlignVertical: TextAlignVertical.center,
                 controller: searchController,
-                style: context.textTheme.bodyMedium
-                    ?.copyWith(fontSize: 15.spMin),
+                style:
+                    context.textTheme.bodyMedium?.copyWith(fontSize: 15.spMin),
                 textDirection:
                     RegExpManager.getTextDirection(searchController.text),
                 decoration: const InputDecoration(

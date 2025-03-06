@@ -33,6 +33,7 @@ class BuildChatListViewBuilder extends StatelessWidget {
           return AIBubble(
             message: prompt.trim(),
             time: DateTime.now().toString(),
+          isStreaming: true,
           );
         } else {
           final adjustedIndex = state is ChatStreaming ? index - 1 : index;

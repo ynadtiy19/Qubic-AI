@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen>
       },
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 5,
+          toolbarHeight: 3,
           bottom: TabBar(
             indicatorColor: ColorManager.white,
             controller: _tabController,
