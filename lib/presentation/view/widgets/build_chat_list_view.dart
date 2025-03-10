@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/models/hive.dart';
@@ -23,37 +24,43 @@ class BuildChatListViewBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      key: ValueKey(messagesLength),
-      controller: _scrollController,
-      reverse: true,
-      itemCount: messagesLength,
-      itemBuilder: (context, index) {
-        if (state is ChatStreaming && index == 0) {
-          return AIBubble(
-            message: prompt.trim(),
-            time: DateTime.now().toString(),
-          isStreaming: true,
-          );
-        } else {
-          final adjustedIndex = state is ChatStreaming ? index - 1 : index;
-          final message = messages[adjustedIndex];
+    return FadeIn(
+      duration: const Duration(milliseconds: 300),
+      child: ListView.builder(
+        key: ValueKey(messagesLength),
+        controller: _scrollController,
+        reverse: true,
+        itemCount: messagesLength,
+        itemBuilder: (context, index) {
+          if (state is ChatStreaming && index == 0) {
+            return ZoomIn(
+              duration: const Duration(milliseconds: 150),
+              child: AIBubble(
+                message: prompt.trim(),
+                time: DateTime.now().toString(),
+                isStreaming: true,
+              ),
+            );
+          } else {
+            final adjustedIndex = state is ChatStreaming ? index - 1 : index;
+            final message = messages[adjustedIndex];
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: message.isUser
-                ? UserBubble(
-                    message: message.message.trim(),
-                    time: message.timestamp,
-                    image: message.image,
-                  )
-                : AIBubble(
-                    message: message.message.trim(),
-                    time: message.timestamp,
-                  ),
-          );
-        }
-      },
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: message.isUser
+                  ? UserBubble(
+                      message: message.message.trim(),
+                      time: message.timestamp,
+                      image: message.image,
+                    )
+                  : AIBubble(
+                      message: message.message.trim(),
+                      time: message.timestamp,
+                    ),
+            );
+          }
+        },
+      ),
     );
   }
 }

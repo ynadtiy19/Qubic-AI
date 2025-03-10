@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -78,12 +79,15 @@ class _UserBubbleState extends State<UserBubble> {
       barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
       transitionDuration: const Duration(milliseconds: 300),
       pageBuilder: (context, animation, secondaryAnimation) {
-        return InteractiveViewer(
-          child: Image.file(
-            File(widget.image!),
-            fit: BoxFit.contain,
-          ),
-        ).withSymmetricPadding(horizontal: 14).center();
+        return ZoomIn(
+          duration: const Duration(milliseconds: 200),
+          child: InteractiveViewer(
+            child: Image.file(
+              File(widget.image!),
+              fit: BoxFit.contain,
+            ),
+          ).withSymmetricPadding(horizontal: 14).center(),
+        );
       },
     );
   }

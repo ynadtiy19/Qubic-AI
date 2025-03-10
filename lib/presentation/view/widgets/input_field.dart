@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -15,8 +16,6 @@ import '../../../core/utils/constants/colors.dart';
 import '../../../core/utils/helper/custom_toast.dart';
 import '../../../core/utils/helper/regexp_methods.dart';
 import '../../bloc/chat/chat_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../bloc/input/input_field_bloc.dart';
 import '../../bloc/search/search_bloc.dart';
 import '../../viewmodel/input_field_viewmodel.dart';
@@ -132,10 +131,12 @@ class _BuildInputFieldState extends State<BuildInputField> {
         }
         if (res == null) {
           showCustomToast(context,
-              message: 'Image not found', color: ColorManager.error);
+              message: 'Image not found',
+              color: ColorManager.error,
+              durationInMilliseconds: 3000);
         } else if (!res) {
           showCustomToast(context,
-              message: 'No text recognized in the image',
+              message: 'No text extracted from the image',
               color: ColorManager.error);
         }
       },

@@ -140,10 +140,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       await for (final chunk in _webService.streamData(contents)) {
         if (chunk != null) {
           fullResponse.write(chunk);
+          await Future.delayed(Duration(milliseconds: 200));
           emit(ChatStreaming(chunk));
         }
       }
-
+      await Future.delayed(Duration(milliseconds: 500));
       final completeResponse = fullResponse.toString();
       await _messageRepository.addMessage(
         chatId: event.chatId,

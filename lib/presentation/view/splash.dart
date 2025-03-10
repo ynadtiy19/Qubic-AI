@@ -33,11 +33,13 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          Bounce(
-            child: Image.asset(
-              ImageManager.logo,
-              width: 100.w,
-              height: 100.w,
+          ZoomIn(
+            child: Bounce(
+              child: Image.asset(
+                ImageManager.logo,
+                width: 100.w,
+                height: 100.w,
+              ),
             ),
           ),
           Positioned(

@@ -65,7 +65,11 @@ class SlidableChatCard extends StatelessWidget {
                 shape: const BeveledRectangleBorder(),
                 child: ListTile(
                   title: Text(
-                    chatMessages.last.message,
+                    chatMessages.last.image == null
+                        ? chatMessages.last.message
+                        : chatMessages.length >= 2
+                            ? chatMessages[chatMessages.length - 2].message
+                            : 'Image',
                     textDirection: RegExpManager.getTextDirection(
                       chatMessages.last.message,
                     ),
