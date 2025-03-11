@@ -34,6 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
         alignment: Alignment.center,
         children: [
           ZoomIn(
+            duration: const Duration(milliseconds: 2000),
             child: Bounce(
               child: Image.asset(
                 ImageManager.logo,

@@ -21,8 +21,16 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BounceIn(
-      child: ColoredBox(
-        color: ColorManager.grey.withValues(alpha: 0.18),
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: ColorManager.grey.withValues(alpha: 0.18),
+            border: searchController.text.isNotEmpty
+                ? Border.all(
+                    color: ColorManager.purple,
+                    strokeAlign: BorderSide.strokeAlignOutside
+                  )
+                : null),
         child: Row(
           children: [
             Expanded(
@@ -35,7 +43,7 @@ class SearchField extends StatelessWidget {
                     context.textTheme.bodyMedium?.copyWith(fontSize: 15.spMin),
                 textDirection:
                     RegExpManager.getTextDirection(searchController.text),
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                   hintText: 'Search chat history',
@@ -46,7 +54,9 @@ class SearchField extends StatelessWidget {
             IconButton(
               icon: Icon(
                   searchController.text.isEmpty ? Icons.search : Icons.close),
-              color: ColorManager.grey,
+              color: searchController.text.isEmpty
+                  ? ColorManager.grey
+                  : ColorManager.white,
               onPressed: onClear,
             ),
           ],

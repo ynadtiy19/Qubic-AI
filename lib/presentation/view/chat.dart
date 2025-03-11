@@ -7,8 +7,8 @@ import '../../core/utils/helper/custom_toast.dart';
 import '../bloc/chat/chat_bloc.dart';
 import '../viewmodel/chat_viewmodel.dart';
 import 'widgets/build_chat_list_view.dart';
-import 'widgets/empty_body.dart';
-import 'widgets/floating_action_button.dart';
+import '../../core/widgets/empty_body.dart';
+import '../../core/widgets/floating_action_button.dart';
 import 'widgets/input_field.dart';
 
 class ChatScreen extends StatefulWidget {

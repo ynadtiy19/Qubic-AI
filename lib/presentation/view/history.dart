@@ -10,8 +10,8 @@ import '../bloc/chat/chat_bloc.dart';
 import '../bloc/search/search_bloc.dart';
 import '../viewmodel/search_viewmodel.dart';
 import 'widgets/slidable_chat_card.dart';
-import 'widgets/empty_body.dart';
-import 'widgets/floating_action_button.dart';
+import '../../core/widgets/empty_body.dart';
+import '../../core/widgets/floating_action_button.dart';
 import 'widgets/search_field.dart';
 
 class HistoryScreen extends StatefulWidget {

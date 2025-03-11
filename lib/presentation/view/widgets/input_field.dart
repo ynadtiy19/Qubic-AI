@@ -83,7 +83,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
                 border: _viewModel.textController.text.isNotEmpty
                     ? Border.all(
                         color: ColorManager.purple,
-                      )
+                        strokeAlign: BorderSide.strokeAlignOutside)
                     : null,
               ),
               child: Row(

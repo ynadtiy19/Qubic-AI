@@ -73,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen>
           await showDialog<bool>(
             context: context,
             builder: (context) => AlertDialog(
+              backgroundColor: ColorManager.dark,
               title: Text(
                 'Logout',
                 style: context.textTheme.bodyLarge,
@@ -93,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen>
       },
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 3,
+          toolbarHeight: 0,
           bottom: TabBar(
             indicatorColor: ColorManager.white,
             controller: _tabController,

@@ -34,7 +34,7 @@ class BuildChatListViewBuilder extends StatelessWidget {
         itemBuilder: (context, index) {
           if (state is ChatStreaming && index == 0) {
             return ZoomIn(
-              duration: const Duration(milliseconds: 150),
+              duration: const Duration(milliseconds: 300),
               child: AIBubble(
                 message: prompt.trim(),
                 time: DateTime.now().toString(),

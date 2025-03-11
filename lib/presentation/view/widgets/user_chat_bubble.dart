@@ -107,21 +107,29 @@ class _UserBubbleState extends State<UserBubble> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (widget.image != null)
-              Image.file(
-                File(widget.image!),
-                width: 200,
-                height: 200,
-                fit: BoxFit.cover,
-              )
-                  .circular(8)
-                  .withWidth(double.infinity)
-                  .center()
-                  .onTapAndLongPress(
-                    onTap: _showImage,
-                    onLongPress: _showImage,
-                  )
-                  .withOnlyPadding(bottom: 8),
+            if (widget.image != null) ...[
+              if (File(widget.image!).existsSync()) ...[
+                Image.file(
+                  File(widget.image!),
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.cover,
+                )
+                    .circular(8)
+                    .withWidth(double.infinity)
+                    .center()
+                    .onTapAndLongPress(
+                      onTap: _showImage,
+                      onLongPress: _showImage,
+                    )
+                    .withOnlyPadding(bottom: 8),
+              ] else ...[
+                Icon(
+                  Icons.broken_image_rounded,
+                  size: 35,
+                ).withSquareSize(200).center()
+              ]
+            ],
             TextSelectionTheme(
               data: context.theme.textSelectionTheme,
               child: SelectionArea(
@@ -188,16 +196,17 @@ class _UserBubbleState extends State<UserBubble> {
               padding: EdgeInsets.only(right: 16.w),
               child: Row(
                 children: [
-                  GestureDetector(
-                    onTap: _isCopyMessage ? null : _copyToClipboard,
-                    child: Icon(
-                      _isCopyMessage
-                          ? Icons.done_rounded
-                          : Icons.copy_all_rounded,
-                      size: 20,
-                      color: ColorManager.white,
+                  if (widget.message.isNotEmpty)
+                    GestureDetector(
+                      onTap: _isCopyMessage ? null : _copyToClipboard,
+                      child: Icon(
+                        _isCopyMessage
+                            ? Icons.done_rounded
+                            : Icons.copy_all_rounded,
+                        size: 20,
+                        color: ColorManager.white,
+                      ),
                     ),
-                  ),
                   SizedBox(width: 15.w),
                   Text(
                     RegExpManager.formatDateTime(widget.time),
