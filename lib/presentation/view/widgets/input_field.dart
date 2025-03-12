@@ -74,7 +74,8 @@ class _BuildInputFieldState extends State<BuildInputField> {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (state.selectedImage != null) _buildImageCard(state),
-            Container(
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
               margin: EdgeInsets.only(
                   right: 9, left: 9, bottom: context.viewInsetsBottom + 8),
               decoration: BoxDecoration(
@@ -83,7 +84,7 @@ class _BuildInputFieldState extends State<BuildInputField> {
                 border: _viewModel.textController.text.isNotEmpty
                     ? Border.all(
                         color: ColorManager.purple,
-                        strokeAlign: BorderSide.strokeAlignOutside)
+                        strokeAlign: BorderSide.strokeAlignInside)
                     : null,
               ),
               child: Row(

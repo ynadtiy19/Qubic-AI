@@ -84,7 +84,8 @@ class SlidableChatCard extends StatelessWidget {
                     style: context.textTheme.bodySmall
                         ?.copyWith(color: ColorManager.grey),
                   ),
-                  onTap: () => Navigator.pushNamed(
+                  onTap: ()=>
+                  Navigator.pushNamed(
                     context,
                     RouteManager.chat,
                     arguments: [session.chatId, _chatBloc],
@@ -96,3 +97,4 @@ class SlidableChatCard extends StatelessWidget {
     );
   }
 }
+

@@ -21,14 +21,15 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BounceIn(
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: ColorManager.grey.withValues(alpha: 0.18),
             border: searchController.text.isNotEmpty
                 ? Border.all(
                     color: ColorManager.purple,
-                    strokeAlign: BorderSide.strokeAlignOutside
+                    strokeAlign: BorderSide.strokeAlignOutside,
                   )
                 : null),
         child: Row(
@@ -51,17 +52,49 @@ class SearchField extends StatelessWidget {
                 onChanged: onChanged,
               ),
             ),
-            IconButton(
-              icon: Icon(
-                  searchController.text.isEmpty ? Icons.search : Icons.close),
-              color: searchController.text.isEmpty
-                  ? ColorManager.grey
-                  : ColorManager.white,
-              onPressed: onClear,
-            ),
+            _BuildSearchIcon(searchController: searchController, onClear: onClear),
           ],
         ),
       ).withAllPadding(4),
+    );
+  }
+}
+
+class _BuildSearchIcon extends StatelessWidget {
+  const _BuildSearchIcon({
+    required this.searchController,
+    required this.onClear,
+  });
+
+  final TextEditingController searchController;
+  final VoidCallback onClear;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      switchInCurve: Curves.easeIn,
+      switchOutCurve: Curves.easeOut,
+      transitionBuilder: (child, animation) {
+        return FadeTransition(
+          opacity: animation,
+          child: ScaleTransition(
+            scale: animation,
+            child: child,
+          ),
+        );
+      },
+      duration: const Duration(milliseconds: 300),
+      child: IconButton(
+        key: ValueKey<bool>(searchController.text.isNotEmpty),
+        icon: Icon(
+            searchController.text.isEmpty ? Icons.search : Icons.close),
+        color: searchController.text.isEmpty
+            ? ColorManager.grey
+            : ColorManager.white,
+        onPressed: searchController.text.isNotEmpty
+            ? onClear
+            : () => FocusScope.of(context).unfocus(),
+      ),
     );
   }
 }

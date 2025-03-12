@@ -63,7 +63,8 @@ class _AIBubbleState extends State<AIBubble> {
     });
   }
 
-  Widget _buildMessageCard() => Container(
+  Widget _buildMessageCard() => AnimatedContainer(
+        duration: Duration(milliseconds: widget.isStreaming == true ? 300 : 0),
         constraints: BoxConstraints(maxWidth: context.width / 1.2),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
